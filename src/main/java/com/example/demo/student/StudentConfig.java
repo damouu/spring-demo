@@ -17,7 +17,6 @@ public class StudentConfig {
                     1L,
                     "dede",
                     LocalDate.of(2000, Month.JULY, 5),
-                    23,
                     "saladeTomateOgnionsPiments"
             );
             studentRepository.saveAndFlush(dede);
