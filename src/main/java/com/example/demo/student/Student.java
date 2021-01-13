@@ -11,7 +11,7 @@ public class Student {
     @SequenceGenerator(name = "student_sequence", allocationSize = 1, sequenceName = "student_sequence")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_sequence")
     @Column(updatable = false)
-    private Long id;
+    private Integer id;
     @Column(nullable = false, name = "name")
     private String name;
     @Column(nullable = false)
@@ -21,7 +21,7 @@ public class Student {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String email;
 
-    public Student(Long id, String name, LocalDate dob, String email) {
+    public Student(Integer id, String name, LocalDate dob, String email) {
         this.id = id;
         this.name = name;
         this.dob = dob;
@@ -32,12 +32,12 @@ public class Student {
 
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.id = Math.toIntExact(id);
     }
 
     public String getName() {
