@@ -50,4 +50,14 @@ public class StudentService {
             student.setEmail(email);
         }
     }
+
+    public Student findById(Long studentId) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new IllegalStateException("not Student found by the given id"));
+        if (student != null) {
+            return student;
+        } else {
+            throw new IllegalStateException("email already taken");
+        }
+    }
 }
