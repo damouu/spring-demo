@@ -10,6 +10,7 @@ import org.mockito.MockitoAnnotations;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import static org.mockito.Mockito.when;
 
@@ -58,5 +59,25 @@ class StudentServiceTest {
 
     @Test
     void findById() {
+        Faker faker = new Faker();
+        ArrayList<Student> studentArrayList2 = new ArrayList<>();
+        for (int i = 1; i < 4; i++) {
+            Student student = new Student(
+                    i,
+                    faker.name().name(),
+                    LocalDate.of(faker.number().numberBetween(1900, 2021), Month.NOVEMBER, faker.number().numberBetween(1, 31)),
+                    faker.internet().emailAddress()
+            );
+            studentArrayList2.add(student);
+        }
+        when(studentRepository.findById(1)).thenReturn(java.util.Optional.ofNullable(studentArrayList2.get(1)));
+        Optional<Student> student = studentRepository.findById(1);
+        Assertions.assertNotNull(student);
+        Assertions.assertTrue(student.isPresent());
+        Assertions.assertNotNull(student.get().getId());
+        Assertions.assertNotNull(student.get().getName());
+        Assertions.assertNotNull(student.get().getDob());
+        Assertions.assertNotNull(student.get().getEmail());
+        Assertions.assertEquals(student.get().getName(), studentArrayList2.get(1).getName());
     }
 }
