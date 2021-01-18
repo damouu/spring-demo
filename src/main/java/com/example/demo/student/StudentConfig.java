@@ -15,7 +15,7 @@ public class StudentConfig {
     CommandLineRunner commandLineRunner(StudentRepository studentRepository) {
         return args -> {
             Faker faker = new Faker();
-            for (int i = 1; i < 30; i++) {
+            for (int i = 1; i < 50; i++) {
                 Student student = new Student(
                         i,
                         faker.name().name(),
