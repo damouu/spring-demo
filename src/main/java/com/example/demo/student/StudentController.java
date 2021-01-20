@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/student")
@@ -18,8 +19,8 @@ public class StudentController {
     }
 
     @GetMapping
-    public List<Student> allStudents() {
-        return studentService.allStudents();
+    public List<Student> allStudents(@RequestParam(name = "age") Optional<Integer> queryParam) {
+        return studentService.allStudents(queryParam);
     }
 
     @GetMapping(path = "{studentId}")
