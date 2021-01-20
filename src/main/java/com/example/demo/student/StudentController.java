@@ -1,12 +1,13 @@
 package com.example.demo.student;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("api/student")
+@RequestMapping(path = "api/student")
 public class StudentController {
 
     private final StudentService studentService;
@@ -22,7 +23,7 @@ public class StudentController {
     }
 
     @GetMapping(path = "{studentId}")
-    public Student findById(@PathVariable("studentId") Integer studentId) {
+    public ResponseEntity<?> findById(@PathVariable("studentId") Integer studentId) {
         return studentService.findById(studentId);
     }
 
