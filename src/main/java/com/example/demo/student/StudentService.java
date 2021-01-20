@@ -1,6 +1,8 @@
 package com.example.demo.student;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -50,13 +52,11 @@ public class StudentService {
         }
     }
 
-    public Student findById(Integer studentId) {
-        Student student = studentRepository.findById(studentId)
-                .orElseThrow(() -> new IllegalStateException("not Student found by the given id"));
-        if (student != null) {
-            return student;
-        } else {
-            throw new IllegalStateException("email already taken");
+    public ResponseEntity<?> findById(Integer studentId) {
+        Optional<Student> optionalStudent = studentRepository.findStudentsById(studentId);
+        if (optionalStudent.isPresent()) {
+            return ResponseEntity.ok(optionalStudent);
         }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("not user found by the given ID");
     }
 }
