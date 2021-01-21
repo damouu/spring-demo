@@ -1,5 +1,8 @@
 package com.example.demo.student;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
@@ -21,7 +24,7 @@ public class Student {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String email;
 
-    public Student(Integer id, String name, LocalDate dob, String email) {
+    public Student(Integer id, @JsonProperty("name") String name, @JsonProperty("dob") LocalDate dob, @JsonProperty("email") String email) {
         this.id = id;
         this.name = name;
         this.dob = dob;
@@ -29,12 +32,13 @@ public class Student {
     }
 
     public Student() {
-
     }
 
+    @JsonProperty("getTheId")
     public Integer getId() {
         return id;
     }
+
 
     public void setId(Long id) {
         this.id = Math.toIntExact(id);
@@ -64,6 +68,7 @@ public class Student {
         this.age = age;
     }
 
+    @JsonIgnore
     public String getEmail() {
         return email;
     }
