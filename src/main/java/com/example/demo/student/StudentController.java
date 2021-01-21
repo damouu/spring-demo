@@ -1,14 +1,18 @@
 package com.example.demo.student;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
 
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
-@RequestMapping(path = "api/student")
+@Component
+@Path("api/student")
 public class StudentController {
 
     private final StudentService studentService;
@@ -18,8 +22,9 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    @GetMapping
-    public List<Student> allStudents(@RequestParam(name = "age") Optional<Integer> queryParam) {
+    @GET
+    @Produces(MediaType.APPLICATION_JSON_VALUE)
+    public List<Student> allStudents(@QueryParam("age") Optional<Integer> queryParam) {
         return studentService.allStudents(queryParam);
     }
 
