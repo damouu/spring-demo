@@ -4,10 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,12 +26,14 @@ public class StudentController {
         return studentService.allStudents(queryParam);
     }
 
-    @GetMapping(path = "{studentId}")
-    public ResponseEntity<?> findById(@PathVariable("studentId") Integer studentId) {
+    @GET
+    @Path("/{studentId}")
+    @Produces(MediaType.APPLICATION_JSON_VALUE)
+    public Response findById(@PathParam("studentId") Integer studentId) {
         return studentService.findById(studentId);
     }
 
-    @PostMapping
+    /*@PostMapping
     public void inertNewStudent(@RequestBody Student student) {
         studentService.addNewStudent(student);
     }
@@ -49,5 +49,5 @@ public class StudentController {
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String email) {
         studentService.updateStudent(studentId, name, email);
-    }
+    }*/
 }
