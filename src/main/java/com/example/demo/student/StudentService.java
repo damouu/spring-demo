@@ -40,12 +40,13 @@ public class StudentService {
         return Response.ok(student).status(201).contentLocation(URI.create("http://localhost:8080/api/student/" + student.getId())).build();
     }
 
-    public void deleteStudent(Integer studentId) {
+    public Response deleteStudent(Integer studentId) {
         boolean exist = studentRepository.existsById(studentId);
         if (!exist) {
             throw new IllegalStateException("no student exist by the given Id");
         } else {
             studentRepository.deleteById(studentId);
+            return Response.noContent().status(204).build();
         }
     }
 
