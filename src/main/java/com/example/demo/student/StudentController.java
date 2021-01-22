@@ -40,12 +40,13 @@ public class StudentController {
         return studentService.addNewStudent(student);
     }
 
-    /*@DeleteMapping(path = "{studentId}")
-    public void deleteStudent(@PathVariable("studentId") Integer studentId) {
-        studentService.deleteStudent(studentId);
+    @DELETE
+    @Path("/{studentId}")
+    public Response deleteStudent(@PathParam("studentId") Integer studentId) {
+        return studentService.deleteStudent(studentId);
     }
 
-    @PutMapping(path = "{studentId}")
+    /*@PutMapping(path = "{studentId}")
     public void updateStudent(
             @PathVariable("studentId") Integer studentId,
             @RequestParam(required = false) String name,
