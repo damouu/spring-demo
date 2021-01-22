@@ -46,11 +46,11 @@ public class StudentController {
         return studentService.deleteStudent(studentId);
     }
 
-    /*@PutMapping(path = "{studentId}")
-    public void updateStudent(
-            @PathVariable("studentId") Integer studentId,
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String email) {
-        studentService.updateStudent(studentId, name, email);
-    }*/
+    @PUT
+    @Path("/{studentId}")
+    @Consumes(MediaType.APPLICATION_JSON_VALUE)
+    @Produces(MediaType.APPLICATION_JSON_VALUE)
+    public Response updateStudent(@PathParam("studentId") Integer studentId, Student student) {
+        return studentService.updateStudent(studentId, student);
+    }
 }
