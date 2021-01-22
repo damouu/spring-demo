@@ -1,12 +1,19 @@
 package com.example.demo.student;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)    //  ignore all null fields
 @Entity(name = "student")
 @Table(name = "student", uniqueConstraints = {@UniqueConstraint(name = "student_email_unique", columnNames = "email")})
 public class Student {
@@ -18,13 +25,16 @@ public class Student {
     @Column(nullable = false, name = "name")
     private String name;
     @Column(nullable = false)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate dob;
     @Transient
     private Integer age;
     @Column(nullable = false, columnDefinition = "TEXT")
     private String email;
 
-    public Student(Integer id, @JsonProperty("name") String name, @JsonProperty("dob") LocalDate dob, @JsonProperty("email") String email) {
+    @JsonCreator
+    public Student(@JsonProperty("id") Integer id, @JsonProperty("name") String name, @JsonProperty("dob") LocalDate dob, @JsonProperty("email") String email) {
         this.id = id;
         this.name = name;
         this.dob = dob;
@@ -34,13 +44,11 @@ public class Student {
     public Student() {
     }
 
-    @JsonProperty("getTheId")
     public Integer getId() {
         return id;
     }
 
-
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = Math.toIntExact(id);
     }
 
@@ -52,6 +60,7 @@ public class Student {
         this.name = name;
     }
 
+    @JsonIgnore
     public LocalDate getDob() {
         return dob;
     }
@@ -68,7 +77,6 @@ public class Student {
         this.age = age;
     }
 
-    @JsonIgnore
     public String getEmail() {
         return email;
     }
