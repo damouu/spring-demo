@@ -3,7 +3,6 @@ package com.example.demo.student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.time.LocalDate;
@@ -50,16 +49,16 @@ public class StudentService {
         }
     }
 
-    @Transactional
-    public void updateStudent(Integer studentId, String name, String email) {
-        Student student = studentRepository.findById(studentId)
-                .orElseThrow(() -> new IllegalStateException("not Student found by the given id"));
-        if (name != null) {
-            student.setName(name);
+    public Response updateStudent(Integer studentId, Student student) {
+        if (studentRepository.findStudentsById(studentId).isPresent()) {
+            Student student1 = studentRepository.findStudentsById(studentId).get();
+            student1.setName(student.getName());
+            student1.setDob(student.getDob());
+            student1.setEmail(student.getEmail());
+            studentRepository.save(student1);
+            return Response.ok(student1).status(204).build();
         }
-        if (email != null) {
-            student.setEmail(email);
-        }
+        return Response.notModified().status(404).build();
     }
 
     public Response findById(Integer studentId) {
