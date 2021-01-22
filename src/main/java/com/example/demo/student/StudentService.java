@@ -1,11 +1,10 @@
 package com.example.demo.student;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import javax.ws.rs.core.Response;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
@@ -60,11 +59,11 @@ public class StudentService {
         }
     }
 
-    public ResponseEntity<?> findById(Integer studentId) {
+    public Response findById(Integer studentId) {
         Optional<Student> optionalStudent = studentRepository.findStudentsById(studentId);
         if (optionalStudent.isPresent()) {
-            return ResponseEntity.ok(optionalStudent);
+            return Response.ok().entity(optionalStudent.get()).build();
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("not user found by the given ID");
+        return Response.status(404).build();
     }
 }
