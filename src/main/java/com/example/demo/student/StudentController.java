@@ -33,12 +33,14 @@ public class StudentController {
         return studentService.findById(studentId);
     }
 
-    /*@PostMapping
-    public void inertNewStudent(@RequestBody Student student) {
-        studentService.addNewStudent(student);
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON_VALUE)
+    @Produces(MediaType.APPLICATION_JSON_VALUE)
+    public Response inertNewStudent(Student student) {
+        return studentService.addNewStudent(student);
     }
 
-    @DeleteMapping(path = "{studentId}")
+    /*@DeleteMapping(path = "{studentId}")
     public void deleteStudent(@PathVariable("studentId") Integer studentId) {
         studentService.deleteStudent(studentId);
     }
