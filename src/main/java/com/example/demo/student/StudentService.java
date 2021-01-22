@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import javax.ws.rs.core.Response;
+import java.net.URI;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
@@ -30,12 +31,13 @@ public class StudentService {
         return students;
     }
 
-    public void addNewStudent(Student student) {
+    public Response addNewStudent(Student student) {
         Optional<Student> studentsByEmail = studentRepository.findStudentsByEmail(student.getEmail());
         if (studentsByEmail.isPresent()) {
-            throw new IllegalStateException("email already taken");
+            return Response.status(400).build();
         }
         studentRepository.save(student);
+        return Response.ok(student).status(201).contentLocation(URI.create("http://localhost:8080/api/student/" + student.getId())).build();
     }
 
     public void deleteStudent(Integer studentId) {
