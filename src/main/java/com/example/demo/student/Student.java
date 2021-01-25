@@ -10,6 +10,8 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.Period;
 
@@ -23,14 +25,18 @@ public class Student {
     @Column(updatable = false)
     private Integer id;
     @Column(nullable = false, name = "name")
+    @NotNull
     private String name;
     @Column(nullable = false)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
+    @NotNull
     private LocalDate dob;
     @Transient
     private Integer age;
     @Column(nullable = false, columnDefinition = "TEXT")
+    @NotNull
+    @Email
     private String email;
 
     @JsonCreator
