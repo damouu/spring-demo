@@ -3,12 +3,15 @@ package com.example.demo.student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Optional;
 
+@Validated
 @Component
 @Path("api/student")
 public class StudentController {
@@ -36,7 +39,7 @@ public class StudentController {
     @POST
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @Produces(MediaType.APPLICATION_JSON_VALUE)
-    public Response inertNewStudent(Student student) {
+    public Response inertNewStudent(@Valid Student student) {
         return studentService.addNewStudent(student);
     }
 
