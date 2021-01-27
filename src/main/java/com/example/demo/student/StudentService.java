@@ -1,11 +1,15 @@
 package com.example.demo.student;
 
+import com.example.demo.course.Course;
+import com.example.demo.course.CourseRepository;
+import com.github.javafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.Period;
 import java.util.List;
 import java.util.Optional;
@@ -15,9 +19,12 @@ public class StudentService {
 
     private final StudentRepository studentRepository;
 
+    private final CourseRepository courseRepository;
+
     @Autowired
-    public StudentService(StudentRepository studentRepository) {
+    public StudentService(StudentRepository studentRepository, CourseRepository courseRepository) {
         this.studentRepository = studentRepository;
+        this.courseRepository = courseRepository;
     }
 
     public List<Student> allStudents(Optional<Integer> queryParam) {
@@ -62,6 +69,12 @@ public class StudentService {
     }
 
     public Response findById(Integer studentId) {
+        Course course = new Course(50, "japanese_kanji", "language_japanese");
+        Faker faker = new Faker();
+        Student student = new Student(1000, "dede", LocalDate.of(faker.number().numberBetween(1900, 2021), Month.NOVEMBER, faker.number().numberBetween(1, 31)), "deed@gmail.com");
+        course.getStudents().add(student);
+        student.getCourses().add(course);
+        courseRepository.save(course);
         Optional<Student> optionalStudent = studentRepository.findStudentsById(studentId);
         if (optionalStudent.isPresent()) {
             return Response.ok().entity(optionalStudent.get()).build();
