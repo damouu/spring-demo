@@ -28,13 +28,21 @@ public class Course {
     @NotNull
     private String department;
 
+    public Set<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(Set<Student> students) {
+        this.students = students;
+    }
+
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
-                    CascadeType.MERGE
+                    CascadeType.ALL
             },
             mappedBy = "courses")
-    private final Set<Student> students = new HashSet<>();
+    protected  Set<Student> students = new HashSet<>();
 
     public Course(@JsonProperty("id") Integer id, @NotNull @JsonProperty("name") String name, @NotNull @JsonProperty("department") String department) {
         this.id = id;
