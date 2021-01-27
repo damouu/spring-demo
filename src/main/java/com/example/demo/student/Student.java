@@ -15,8 +15,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)    //  ignore all null fields
 @Entity(name = "student")
@@ -42,15 +42,25 @@ public class Student {
     @Email
     private String email;
 
+    @JsonIgnore
+    public Set<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(Set<Course> courses) {
+        this.courses = courses;
+    }
+
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
-                    CascadeType.MERGE
+                    CascadeType.ALL
             })
-    @JoinTable(name = "student_course",
+    @JoinTable(name = "course_student",
             joinColumns = {@JoinColumn(name = "student_id")},
             inverseJoinColumns = {@JoinColumn(name = "course_id")})
-    private final List<Course> courses = new ArrayList<>();
+    @JsonIgnore
+    protected Set<Course> courses = new HashSet<>();
 
     @JsonCreator
     public Student(@JsonProperty("id") Integer id, @JsonProperty("name") String name, @JsonProperty("dob") LocalDate dob, @JsonProperty("email") String email) {
