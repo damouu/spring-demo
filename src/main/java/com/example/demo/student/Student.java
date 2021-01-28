@@ -1,6 +1,8 @@
 package com.example.demo.student;
 
+import com.example.demo.book.Book;
 import com.example.demo.course.Course;
+import com.example.demo.student_id_card.StudentIdCard;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -41,6 +43,28 @@ public class Student {
     @NotNull
     @Email
     private String email;
+
+    @OneToOne(mappedBy = "student")
+    private StudentIdCard studentIdCard;
+
+    public StudentIdCard getStudentIdCard() {
+        return studentIdCard;
+    }
+
+    public void setStudentIdCard(StudentIdCard studentIdCard) {
+        this.studentIdCard = studentIdCard;
+    }
+
+    public Set<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(Set<Book> books) {
+        this.books = books;
+    }
+
+    @OneToMany(mappedBy = "student")
+    private Set<Book>books;
 
     @JsonIgnore
     public Set<Course> getCourses() {
