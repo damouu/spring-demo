@@ -1,12 +1,22 @@
 package com.example.demo.book;
 
 import com.example.demo.student.Student;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
-@Entity(name = "Book")
-@Table(name = "books")
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Entity(name = "book")
+@Table(name = "book")
 public class Book {
     @Id
     @SequenceGenerator(name = "book_sequence", allocationSize = 1, sequenceName = "book_sequence")
@@ -24,12 +34,22 @@ public class Book {
     @Column(name = "author", nullable = false)
     private String author;
     @Column(name = "created_at", nullable = false, columnDefinition = "Date")
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @NotNull
     private LocalDate created_at;
     @ManyToOne
     @JoinColumn(name = "student_id")
     private Student student;
 
-    public Book(Integer id, String title, String genre, Integer totalPages, String publisher, String author, LocalDate created_at) {
+    @JsonCreator
+    public Book(@JsonProperty("id") Integer id,
+                @JsonProperty("title") String title,
+                @JsonProperty("genre") String genre,
+                @JsonProperty("totalPages") Integer totalPages,
+                @JsonProperty("publisher") String publisher,
+                @JsonProperty("author") String author,
+                @JsonProperty("created_at") LocalDate created_at) {
         this.id = id;
         this.title = title;
         this.genre = genre;
@@ -99,10 +119,12 @@ public class Book {
         this.student = student;
     }
 
+    @JsonIgnore
     public LocalDate getCreated_at() {
         return created_at;
     }
 
+    @JsonIgnore
     public void setCreated_at(LocalDate created_at) {
         this.created_at = created_at;
     }
