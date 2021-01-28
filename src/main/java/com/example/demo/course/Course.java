@@ -1,6 +1,8 @@
 package com.example.demo.course;
 
 import com.example.demo.student.Student;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -28,23 +30,16 @@ public class Course {
     @NotNull
     private String department;
 
-    public Set<Student> getStudents() {
-        return students;
-    }
-
-    public void setStudents(Set<Student> students) {
-        this.students = students;
-    }
-
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
                     CascadeType.ALL
             },
             mappedBy = "courses")
-    protected  Set<Student> students = new HashSet<>();
+    protected Set<Student> students = new HashSet<>();
 
-    public Course(@JsonProperty("id") Integer id, @NotNull @JsonProperty("name") String name, @NotNull @JsonProperty("department") String department) {
+    @JsonCreator
+    public Course(@JsonProperty("id") Integer id, @JsonProperty("name") String name, @JsonProperty("department") String department) {
         this.id = id;
         this.name = name;
         this.department = department;
@@ -75,5 +70,14 @@ public class Course {
 
     public void setDepartment(String department) {
         this.department = department;
+    }
+
+    @JsonIgnore
+    public Set<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(Set<Student> students) {
+        this.students = students;
     }
 }
