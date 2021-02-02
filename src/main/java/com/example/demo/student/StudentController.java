@@ -9,7 +9,7 @@ import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 @Validated
 @Component
@@ -25,15 +25,15 @@ public class StudentController {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON_VALUE)
-    public List<Student> allStudents(@QueryParam("age") Optional<Integer> queryParam) {
-        return studentService.allStudents(queryParam);
+    public List<Student> allStudents() {
+        return studentService.allStudents();
     }
 
     @GET
-    @Path("/{studentId}")
+    @Path("/{studentUuid}")
     @Produces(MediaType.APPLICATION_JSON_VALUE)
-    public Response findById(@PathParam("studentId") Integer studentId) {
-        return studentService.findById(studentId);
+    public Student getStudent(@PathParam("studentUuid") UUID studentUuid) {
+        return studentService.getStudent(studentUuid);
     }
 
     @POST
@@ -44,16 +44,16 @@ public class StudentController {
     }
 
     @DELETE
-    @Path("/{studentId}")
-    public Response deleteStudent(@PathParam("studentId") Integer studentId) {
-        return studentService.deleteStudent(studentId);
+    @Path("/{studentUuid}")
+    public Response deleteStudent(@PathParam("studentUuid") UUID studentUuid) {
+        return studentService.deleteStudent(studentUuid);
     }
 
     @PUT
-    @Path("/{studentId}")
+    @Path("/{studentUuid}")
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @Produces(MediaType.APPLICATION_JSON_VALUE)
-    public Response updateStudent(@PathParam("studentId") Integer studentId, Student student) {
-        return studentService.updateStudent(studentId, student);
+    public Response updateStudent(@PathParam("studentUuid") UUID studentUuid, Student student) {
+        return studentService.updateStudent(studentUuid, student);
     }
 }
