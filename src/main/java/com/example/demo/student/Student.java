@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)    //  ignore all null fields
 @Entity(name = "student")
@@ -29,6 +30,9 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_sequence")
     @Column(updatable = false)
     private Integer id;
+    @Column(nullable = false, columnDefinition = "UUID", name = "uuid")
+    @NotNull
+    private UUID uuid;
     @Column(nullable = false, name = "name")
     @NotNull
     private String name;
@@ -47,6 +51,7 @@ public class Student {
     @OneToOne(mappedBy = "student")
     private StudentIdCard studentIdCard;
 
+    @JsonIgnore
     public StudentIdCard getStudentIdCard() {
         return studentIdCard;
     }
@@ -55,6 +60,7 @@ public class Student {
         this.studentIdCard = studentIdCard;
     }
 
+    @JsonIgnore
     public Set<Book> getBooks() {
         return books;
     }
@@ -64,7 +70,7 @@ public class Student {
     }
 
     @OneToMany(mappedBy = "student")
-    private Set<Book>books;
+    private Set<Book> books;
 
     @JsonIgnore
     public Set<Course> getCourses() {
@@ -87,8 +93,9 @@ public class Student {
     protected Set<Course> courses = new HashSet<>();
 
     @JsonCreator
-    public Student(@JsonProperty("id") Integer id, @JsonProperty("name") String name, @JsonProperty("dob") LocalDate dob, @JsonProperty("email") String email) {
+    public Student(@JsonProperty("id") Integer id, @JsonProperty("uuid") UUID uuid, @JsonProperty("name") String name, @JsonProperty("dob") LocalDate dob, @JsonProperty("email") String email) {
         this.id = id;
+        this.uuid = uuid;
         this.name = name;
         this.dob = dob;
         this.email = email;
@@ -97,12 +104,21 @@ public class Student {
     public Student() {
     }
 
+    @JsonIgnore
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = Math.toIntExact(id);
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public String getName() {
@@ -122,6 +138,7 @@ public class Student {
         this.dob = dob;
     }
 
+    @JsonIgnore
     public Integer getAge() {
         return Period.between(this.dob, LocalDate.now()).getYears();
     }
