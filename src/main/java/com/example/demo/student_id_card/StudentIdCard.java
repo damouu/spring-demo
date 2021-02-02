@@ -1,14 +1,18 @@
 package com.example.demo.student_id_card;
 
 import com.example.demo.student.Student;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity(name = "Student_id_card")
-@Table(name = "Student_id_card", uniqueConstraints = {@UniqueConstraint(name = "card_number", columnNames = "card_number")})
+@Table(name = "Student_id_card", uniqueConstraints = {@UniqueConstraint(name = "uuid", columnNames = "uuid")})
 public class StudentIdCard {
     @Id
     @Column(unique = true, updatable = false, nullable = false)
@@ -16,30 +20,23 @@ public class StudentIdCard {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_id_card_sequence")
     private Integer id;
 
-    @Column(name = "card_number", columnDefinition = "TEXT", nullable = false)
-    private UUID card_number;
+    @Column(name = "uuid", columnDefinition = "UUID", nullable = false)
+    @NotNull
+    private UUID uuid;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "student_id", referencedColumnName = "id")
     private Student student;
 
-    public Student getStudent() {
-        return student;
-    }
-
-    public void setStudent(Student student) {
-        this.student = student;
-    }
-
-    public StudentIdCard(Integer id, UUID card_number) {
+    @JsonCreator
+    public StudentIdCard(@JsonProperty("id") Integer id, @JsonProperty("uuid") UUID uuid) {
         this.id = id;
-        this.card_number = card_number;
+        this.uuid = uuid;
     }
 
     public StudentIdCard() {
 
     }
-
 
     public Integer getId() {
         return id;
@@ -49,11 +46,20 @@ public class StudentIdCard {
         this.id = id;
     }
 
-    public UUID getCard_number() {
-        return card_number;
+    public UUID getuuid() {
+        return uuid;
     }
 
-    public void setCard_number(UUID card_number) {
-        this.card_number = card_number;
+    public void setuuid(UUID uuid) {
+        this.uuid = uuid;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    @JsonIgnore
+    public void setStudent(Student student) {
+        this.student = student;
     }
 }
