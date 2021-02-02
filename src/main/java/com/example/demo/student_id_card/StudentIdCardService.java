@@ -42,8 +42,8 @@ public class StudentIdCardService {
         return Response.noContent().status(404).build();
     }
 
-    public Response createStudentIdCard(Integer studentId) {
-        Optional<Student> optionalStudent = studentRepository.findStudentsById(studentId);
+    public Response createStudentIdCard(UUID studentUuid) {
+        Optional<Student> optionalStudent = studentRepository.findStudentByUuid(studentUuid);
         if (optionalStudent.isPresent()) {
             int studentIdCardLast = Math.toIntExact(studentIdCardSerializable.count());
             StudentIdCard studentIdCard = new StudentIdCard(studentIdCardLast + 1, UUID.randomUUID());
