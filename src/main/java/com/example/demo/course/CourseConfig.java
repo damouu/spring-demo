@@ -5,6 +5,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.UUID;
+
 @Configuration
 public class CourseConfig {
 
@@ -15,6 +17,7 @@ public class CourseConfig {
             for (int i = 1; i < 7; i++) {
                 Course course = new Course(
                         i,
+                        UUID.randomUUID(),
                         faker.educator().course(),
                         faker.educator().campus()
                 );
