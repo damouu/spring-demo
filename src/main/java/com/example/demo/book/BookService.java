@@ -7,6 +7,7 @@ import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class BookService {
@@ -22,15 +23,15 @@ public class BookService {
         return bookSerializable.findAll();
     }
 
-    public Book getBookById(Integer bookId) {
-        Optional<Book> book = bookSerializable.findById(bookId);
+    public Book getBookById(UUID bookUuid) {
+        Optional<Book> book = bookSerializable.findByUuid(bookUuid);
         return book.orElse(null);
     }
 
-    public Response deleteBook(Integer bookId) {
-        Optional<Book> book = bookSerializable.findById(bookId);
+    public Response deleteBook(UUID bookUuid) {
+        Optional<Book> book = bookSerializable.findByUuid(bookUuid);
         if (book.isPresent()) {
-            bookSerializable.deleteById(bookId);
+            bookSerializable.delete(book.get());
             return Response.accepted().build();
         }
         return Response.noContent().status(404).build();
@@ -41,9 +42,9 @@ public class BookService {
         return Response.accepted(book).status(201).entity(book).location(URI.create("http://localhost:8080/api/book/" + book.getId())).build();
     }
 
-    public Response updateBook(Integer bookId, Book book) {
-        if (bookSerializable.findById(bookId).isPresent()) {
-            Book optionalBook = bookSerializable.findById(bookId).get();
+    public Response updateBook(UUID bookUuid, Book book) {
+        if (bookSerializable.findByUuid(bookUuid).isPresent()) {
+            Book optionalBook = bookSerializable.findByUuid(bookUuid).get();
             optionalBook.setAuthor(book.getAuthor());
             optionalBook.setCreated_at(book.getCreated_at());
             optionalBook.setGenre(book.getGenre());
