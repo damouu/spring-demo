@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.UUID;
 
 @Validated
 @Component
@@ -30,10 +31,10 @@ public class BookController {
     }
 
     @GET
-    @Path("/{bookId}")
+    @Path("/{bookUuid}")
     @Produces(MediaType.APPLICATION_JSON_VALUE)
-    public Book getBookById(@PathParam("bookId") Integer bookId) {
-        return bookService.getBookById(bookId);
+    public Book getBookById(@PathParam("bookUuid") UUID bookUuid) {
+        return bookService.getBookById(bookUuid);
     }
 
     @POST
@@ -44,16 +45,16 @@ public class BookController {
     }
 
     @DELETE
-    @Path("/{bookId}")
-    public Response deleteBook(@PathParam("bookId") Integer bookId) {
-        return bookService.deleteBook(bookId);
+    @Path("/{bookUuid}")
+    public Response deleteBook(@PathParam("bookUuid") UUID bookUuid) {
+        return bookService.deleteBook(bookUuid);
     }
 
     @PUT
-    @Path("/{bookId}")
+    @Path("/{bookUuid}")
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @Produces(MediaType.APPLICATION_JSON_VALUE)
-    public Response updateBook(@PathParam("bookId") Integer bookId, @Valid Book book) {
-        return bookService.updateBook(bookId, book);
+    public Response updateBook(@PathParam("bookUuid") UUID bookUuid, @Valid Book book) {
+        return bookService.updateBook(bookUuid, book);
     }
 }
