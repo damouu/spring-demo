@@ -13,16 +13,20 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity(name = "book")
-@Table(name = "book")
+@Table(name = "book", uniqueConstraints = {@UniqueConstraint(name = "book_uuid", columnNames = "uuid")})
 public class Book {
     @Id
     @SequenceGenerator(name = "book_sequence", allocationSize = 1, sequenceName = "book_sequence")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_sequence")
     @Column(updatable = false, nullable = false)
     private Integer id;
+    @Column(nullable = false, columnDefinition = "UUID", name = "uuid")
+    @NotNull
+    private UUID uuid;
     @Column(name = "title", nullable = false)
     private String title;
     @Column(name = "genre", nullable = false)
@@ -44,6 +48,7 @@ public class Book {
 
     @JsonCreator
     public Book(@JsonProperty("id") Integer id,
+                @JsonProperty("uuid") UUID uuid,
                 @JsonProperty("title") String title,
                 @JsonProperty("genre") String genre,
                 @JsonProperty("totalPages") Integer totalPages,
@@ -51,6 +56,7 @@ public class Book {
                 @JsonProperty("author") String author,
                 @JsonProperty("created_at") LocalDate created_at) {
         this.id = id;
+        this.uuid = uuid;
         this.title = title;
         this.genre = genre;
         this.totalPages = totalPages;
@@ -63,12 +69,21 @@ public class Book {
 
     }
 
+    @JsonIgnore
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public String getTitle() {
