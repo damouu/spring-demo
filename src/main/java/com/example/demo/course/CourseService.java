@@ -7,6 +7,7 @@ import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class CourseService {
@@ -18,8 +19,8 @@ public class CourseService {
         this.courseRepository = courseRepository;
     }
 
-    public Course getCourse(Integer courseId) {
-        Optional<Course> course = courseRepository.findById(courseId);
+    public Course getCourse(UUID courseUuid) {
+        Optional<Course> course = courseRepository.findByUuid(courseUuid);
         return course.orElseThrow();
     }
 
@@ -29,25 +30,25 @@ public class CourseService {
 
     public Response createCourse(Course course) {
         courseRepository.save(course);
-        return Response.ok(course).status(201).location(URI.create("http://localhost:8080/api/course/" + course.getId())).build();
+        return Response.ok(course).status(201).contentLocation(URI.create("http://localhost:8080/api/course/" + course.getUuid())).build();
     }
 
-    public Response removeCourse(Integer courseId) {
-        if (courseRepository.findById(courseId).isPresent()) {
-            Course course = courseRepository.findById(courseId).get();
+    public Response removeCourse(UUID courseUuid) {
+        if (courseRepository.findByUuid(courseUuid).isPresent()) {
+            Course course = courseRepository.findByUuid(courseUuid).get();
             courseRepository.delete(course);
             return Response.ok(course).status(204).build();
         }
         return Response.noContent().status(404).build();
     }
 
-    public Response updateCourse(Integer courseId, Course course) {
-        if (courseRepository.findById(courseId).isPresent()) {
-            Course optionalCourse = courseRepository.findById(courseId).get();
+    public Response updateCourse(UUID courseUuid, Course course) {
+        if (courseRepository.findByUuid(courseUuid).isPresent()) {
+            Course optionalCourse = courseRepository.findByUuid(courseUuid).get();
             optionalCourse.setName(course.getName());
             optionalCourse.setDepartment(course.getDepartment());
             courseRepository.save(optionalCourse);
-            return Response.ok(course).status(204).location(URI.create("http://localhost:8080/api/course/" + course.getId())).build();
+            return Response.ok(course).status(204).location(URI.create("http://localhost:8080/api/course/" + course.getUuid())).build();
         }
         return Response.noContent().status(404).build();
     }
