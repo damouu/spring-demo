@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.UUID;
 
 @Configuration
 public class BookCommandRunner {
@@ -19,6 +20,7 @@ public class BookCommandRunner {
             for (int i = 1; i < 100; i++) {
                 Book book = new Book(
                         i,
+                        UUID.randomUUID(),
                         faker.book().title(),
                         faker.book().genre(),
                         faker.number().numberBetween(1, 900),
