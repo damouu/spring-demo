@@ -10,16 +10,24 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)    //  ignore all null fields
 @Entity(name = "course")
-@Table(name = "course", uniqueConstraints = {@UniqueConstraint(name = "course_name_unique", columnNames = "name")})
+@Table(name = "course", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"name", "name"}, name = "name"),
+        @UniqueConstraint(columnNames = {"uuid", "uuid"}, name = "uuid")
+})
 public class Course {
     @Id
     @SequenceGenerator(name = "course_sequence", allocationSize = 1, sequenceName = "course_sequence")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "course_sequence")
     @Column(updatable = false)
     private Integer id;
+
+    @Column(name = "uuid", nullable = false, columnDefinition = "UUID")
+    @NotNull
+    private UUID uuid;
 
     @Column(nullable = false, name = "name", columnDefinition = "TEXT")
     @NotNull
@@ -39,8 +47,9 @@ public class Course {
     protected Set<Student> students = new HashSet<>();
 
     @JsonCreator
-    public Course(@JsonProperty("id") Integer id, @JsonProperty("name") String name, @JsonProperty("department") String department) {
+    public Course(@JsonProperty("id") Integer id, @JsonProperty("uuid") UUID uuid, @JsonProperty("name") String name, @JsonProperty("department") String department) {
         this.id = id;
+        this.uuid = uuid;
         this.name = name;
         this.department = department;
     }
@@ -48,12 +57,21 @@ public class Course {
     public Course() {
     }
 
+    @JsonIgnore
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public String getName() {
