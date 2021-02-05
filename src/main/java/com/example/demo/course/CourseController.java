@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.UUID;
 
 @Validated
 @Component
@@ -25,9 +26,9 @@ public class CourseController {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON_VALUE)
-    @Path("/{courseId}")
-    public Course getCourse(@PathParam("courseId") Integer courseId) {
-        return courseService.getCourse(courseId);
+    @Path("/{courseUuid}")
+    public Course getCourse(@PathParam("courseUuid") UUID courseUuid) {
+        return courseService.getCourse(courseUuid);
     }
 
     @GET
@@ -45,16 +46,16 @@ public class CourseController {
 
     @DELETE
     @Produces(MediaType.APPLICATION_JSON_VALUE)
-    @Path("/{courseId}")
-    public Response deleteCourse(@PathParam("courseId") Integer courseId) {
-        return courseService.removeCourse(courseId);
+    @Path("/{courseUuid}")
+    public Response deleteCourse(@PathParam("courseUuid") UUID courseUuid) {
+        return courseService.removeCourse(courseUuid);
     }
 
     @PUT
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
-    @Path("/{courseId}")
-    public Response updateCourse(@PathParam("courseId") Integer courseId, @Valid Course course) {
-        return courseService.updateCourse(courseId, course);
+    @Path("/{courseUuid}")
+    public Response updateCourse(@PathParam("courseUuid") UUID courseUuid, @Valid Course course) {
+        return courseService.updateCourse(courseUuid, course);
     }
 }
