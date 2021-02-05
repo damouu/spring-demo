@@ -1,6 +1,5 @@
 package com.example.demo.student;
 
-import com.example.demo.course.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,12 +14,10 @@ public class StudentService {
 
     private final StudentRepository studentRepository;
 
-    private final CourseRepository courseRepository;
 
     @Autowired
-    public StudentService(StudentRepository studentRepository, CourseRepository courseRepository) {
+    public StudentService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
-        this.courseRepository = courseRepository;
     }
 
     public List<Student> allStudents() {
@@ -38,7 +35,7 @@ public class StudentService {
             return Response.status(400).build();
         }
         studentRepository.save(student);
-        return Response.ok(student).status(201).contentLocation(URI.create("http://localhost:8080/api/student/" + student.getId())).build();
+        return Response.ok(student).status(201).contentLocation(URI.create("http://localhost:8080/api/student/" + student.getUuid())).build();
     }
 
     public Response deleteStudent(UUID studentUuid) {
@@ -57,8 +54,9 @@ public class StudentService {
             student1.setName(student.getName());
             student1.setDob(student.getDob());
             student1.setEmail(student.getEmail());
+            student1.setUuid(studentUuid);
             studentRepository.save(student1);
-            return Response.ok(student1).status(204).build();
+            return Response.ok(student).status(204).contentLocation(URI.create("http://localhost:8080/api/student/" + student1.getUuid())).build();
         }
         return Response.notModified().status(404).build();
     }
