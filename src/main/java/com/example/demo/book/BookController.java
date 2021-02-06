@@ -26,8 +26,8 @@ public class BookController {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON_VALUE)
-    public List<Book> getBooks() {
-        return bookService.getBooks();
+    public List<Book> getBooks(@DefaultValue("0") @QueryParam("page") int page, @DefaultValue("5") @QueryParam("size") int size) {
+        return bookService.getBooks(page, size);
     }
 
     @GET
