@@ -126,10 +126,12 @@ public class Book {
         this.author = author;
     }
 
+    @JsonIgnore
     public Student getStudent() {
         return student;
     }
 
+    @JsonIgnore
     public void setStudent(Student student) {
         this.student = student;
     }
