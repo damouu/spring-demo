@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Validated
@@ -26,8 +27,9 @@ public class BookController {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON_VALUE)
-    public List<Book> getBooks(@DefaultValue("0") @QueryParam("page") int page, @DefaultValue("5") @QueryParam("size") int size) {
-        return bookService.getBooks(page, size);
+    public List<Book> getBooks(@DefaultValue("0") @QueryParam("page") int page, @DefaultValue("5") @QueryParam("size") int size,
+                               @QueryParam("totalPages") Optional<Integer> totalPages) {
+        return bookService.getBooks(page, size, totalPages);
     }
 
     @GET
