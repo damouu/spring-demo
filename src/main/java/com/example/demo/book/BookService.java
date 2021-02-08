@@ -22,8 +22,12 @@ public class BookService {
         this.bookSerializable = bookSerializable;
     }
 
-    public List<Book> getBooks(int page, int size) {
+    public List<Book> getBooks(int page, int size, Optional<Integer> totalPages) {
         Pageable pageable = PageRequest.of(page, size);
+        if (totalPages.isPresent()) {
+            Optional<List<Book>> pagedResult = bookSerializable.findAllByTotalPages(totalPages);
+            return pagedResult.orElse(null);
+        }
         Page<Book> pagedResult = bookSerializable.findAll(pageable);
         return pagedResult.toList();
     }
