@@ -6,9 +6,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import java.net.URI;
-import java.util.List;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -22,11 +23,19 @@ public class BookService {
         this.bookSerializable = bookSerializable;
     }
 
-    public List<Book> getBooks(int page, int size, Optional<Integer> totalPages) {
+    public Collection<Book> getBooks(int page, int size, Optional<Integer> totalPages, @QueryParam("genre") Optional<String> genre) {
         Pageable pageable = PageRequest.of(page, size);
-        if (totalPages.isPresent()) {
-            Optional<List<Book>> pagedResult = bookSerializable.findAllByTotalPages(totalPages);
+        if (totalPages.isPresent() && genre.isEmpty()) {
+            Optional<Collection<Book>> pagedResult = bookSerializable.findAllByTotalPages(totalPages);
+            return pagedResult.get();
+        }
+        if (genre.isPresent() && totalPages.isEmpty()) {
+            Optional<Collection<Book>> pagedResult = bookSerializable.findAllByGenre(genre);
             return pagedResult.orElse(null);
+        }
+        if (genre.isPresent() && totalPages.isPresent()) {
+            Optional<Collection<Book>> books = bookSerializable.findAllByGenreAndTotalPages(genre, totalPages);
+            return books.orElse(null);
         }
         Page<Book> pagedResult = bookSerializable.findAll(pageable);
         return pagedResult.toList();
