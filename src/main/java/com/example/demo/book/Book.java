@@ -126,22 +126,18 @@ public class Book {
         this.author = author;
     }
 
-    @JsonIgnore
     public Student getStudent() {
         return student;
     }
 
-    @JsonIgnore
     public void setStudent(Student student) {
         this.student = student;
     }
 
-    @JsonIgnore
     public LocalDate getCreated_at() {
         return created_at;
     }
 
-    @JsonIgnore
     public void setCreated_at(LocalDate created_at) {
         this.created_at = created_at;
     }
