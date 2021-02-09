@@ -85,9 +85,24 @@ public class BookService {
         Optional<Book> book = bookSerializable.findByUuid(bookUuid);
         Optional<Student> student = studentRepository.findStudentByUuid(studentUuid);
         if (book.isPresent() && student.isPresent()) {
-            book.get().setStudent(student.get());
-            bookSerializable.save(book.get());
-            return Response.ok(book.get(), MediaType.APPLICATION_JSON_TYPE).status(201).build();
+            if (book.get().getStudent() == null) {
+                book.get().setStudent(student.get());
+                bookSerializable.save(book.get());
+                return Response.ok(book.get(), MediaType.APPLICATION_JSON_TYPE).status(201).build();
+            }
+        }
+        return Response.status(406).build();
+    }
+
+    public Response returnStudentBorrowBooks(UUID bookUuid, UUID studentUuid) {
+        Optional<Book> book = bookSerializable.findByUuid(bookUuid);
+        Optional<Student> student = studentRepository.findStudentByUuid(studentUuid);
+        if (book.isPresent() && student.isPresent()) {
+            if (book.get().getStudent().getUuid().equals(student.get().getUuid())) {
+                book.get().setStudent(null);
+                bookSerializable.save(book.get());
+                return Response.ok(book.get(), MediaType.APPLICATION_JSON_TYPE).status(200).build();
+            }
         }
         return Response.status(406).build();
     }
