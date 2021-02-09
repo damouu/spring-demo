@@ -33,19 +33,24 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_sequence")
     @Column(updatable = false)
     private Integer id;
+
     @Column(nullable = false, columnDefinition = "UUID", name = "uuid")
     @NotNull
     private UUID uuid;
+
     @Column(nullable = false, name = "name")
     @NotNull
     private String name;
+
     @Column(nullable = false)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
     @NotNull
     private LocalDate dob;
+
     @Transient
     private Integer age;
+
     @Column(nullable = false, columnDefinition = "TEXT")
     @NotNull
     @Email
@@ -54,37 +59,10 @@ public class Student {
     @OneToOne(mappedBy = "student")
     private StudentIdCard studentIdCard;
 
-    @JsonIgnore
-    public StudentIdCard getStudentIdCard() {
-        return studentIdCard;
-    }
-
-    public void setStudentIdCard(StudentIdCard studentIdCard) {
-        this.studentIdCard = studentIdCard;
-    }
-
-    @JsonIgnore
-    public Set<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(Set<Book> books) {
-        this.books = books;
-    }
-
-    @OneToMany(mappedBy = "student")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "student", fetch = FetchType.EAGER)
     private Set<Book> books;
 
-    @JsonIgnore
-    public Set<Course> getCourses() {
-        return courses;
-    }
-
-    public void setCourses(Set<Course> courses) {
-        this.courses = courses;
-    }
-
-    @ManyToMany(fetch = FetchType.LAZY,
+    @ManyToMany(fetch = FetchType.EAGER,
             cascade = {
                     CascadeType.PERSIST,
                     CascadeType.ALL
@@ -92,7 +70,6 @@ public class Student {
     @JoinTable(name = "course_student",
             joinColumns = {@JoinColumn(name = "student_id")},
             inverseJoinColumns = {@JoinColumn(name = "course_id")})
-    @JsonIgnore
     protected Set<Course> courses = new HashSet<>();
 
     @JsonCreator
@@ -132,7 +109,6 @@ public class Student {
         this.name = name;
     }
 
-    @JsonIgnore
     public LocalDate getDob() {
         return dob;
     }
@@ -141,7 +117,6 @@ public class Student {
         this.dob = dob;
     }
 
-    @JsonIgnore
     public Integer getAge() {
         return Period.between(this.dob, LocalDate.now()).getYears();
     }
@@ -156,5 +131,32 @@ public class Student {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @JsonIgnore
+    public StudentIdCard getStudentIdCard() {
+        return studentIdCard;
+    }
+
+    public void setStudentIdCard(StudentIdCard studentIdCard) {
+        this.studentIdCard = studentIdCard;
+    }
+
+    @JsonIgnore
+    public Set<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(Set<Book> books) {
+        this.books = books;
+    }
+
+    @JsonIgnore
+    public Set<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(Set<Course> courses) {
+        this.courses = courses;
     }
 }
