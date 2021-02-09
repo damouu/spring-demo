@@ -24,26 +24,34 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_sequence")
     @Column(updatable = false, nullable = false)
     private Integer id;
+
     @Column(nullable = false, columnDefinition = "UUID", name = "uuid")
     @NotNull
     private UUID uuid;
+
     @Column(name = "title", nullable = false)
     private String title;
+
     @Column(name = "genre", nullable = false)
     private String genre;
+
     @Column(name = "totalPages", nullable = false)
     private Integer totalPages;
+
     @Column(name = "publisher", nullable = false)
     private String publisher;
+
     @Column(name = "author", nullable = false)
     private String author;
+
     @Column(name = "created_at", nullable = false, columnDefinition = "Date")
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
     @NotNull
     private LocalDate created_at;
-    @ManyToOne
-    @JoinColumn(name = "student_id")
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "student_id", referencedColumnName = "id")
     private Student student;
 
     @JsonCreator
@@ -126,6 +134,7 @@ public class Book {
         this.author = author;
     }
 
+    @JsonIgnore
     public Student getStudent() {
         return student;
     }
