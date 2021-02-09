@@ -58,4 +58,10 @@ public class CourseController {
     public Response updateCourse(@PathParam("courseUuid") UUID courseUuid, @Valid Course course) {
         return courseService.updateCourse(courseUuid, course);
     }
+
+    @POST
+    @Produces(MediaType.APPLICATION_JSON_VALUE)
+    public Response postStudentCourse(@QueryParam("courseUuid") UUID courseUuid, @QueryParam("studentUuid") UUID studentUuid) {
+        return courseService.postStudentCourse(courseUuid, studentUuid);
+    }
 }
