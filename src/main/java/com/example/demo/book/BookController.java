@@ -71,4 +71,11 @@ public class BookController {
     public Response returnStudentBorrowBooks(@QueryParam("book") UUID bookUuid, @QueryParam("student") UUID studentUuid) {
         return bookService.returnStudentBorrowBooks(bookUuid, studentUuid);
     }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON_VALUE)
+    @Path("/student/{studentUuid}")
+    public Response bookStudentBorrow(@PathParam("studentUuid") UUID studentUuid) {
+        return bookService.getStudentBook(studentUuid);
+    }
 }
