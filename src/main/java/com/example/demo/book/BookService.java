@@ -1,5 +1,7 @@
 package com.example.demo.book;
 
+import com.example.demo.student.Student;
+import com.example.demo.student.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -7,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.util.Collection;
@@ -18,9 +21,12 @@ public class BookService {
 
     private BookSerializable bookSerializable;
 
+    private StudentRepository studentRepository;
+
     @Autowired
-    public BookService(BookSerializable bookSerializable) {
+    public BookService(BookSerializable bookSerializable, StudentRepository studentRepository) {
         this.bookSerializable = bookSerializable;
+        this.studentRepository = studentRepository;
     }
 
     public Collection<Book> getBooks(int page, int size, Optional<Integer> totalPages, @QueryParam("genre") Optional<String> genre) {
@@ -73,5 +79,16 @@ public class BookService {
             return Response.ok().status(204).contentLocation(URI.create("http://localhost:8080/api/book/" + optionalBook.getId())).build();
         }
         return Response.noContent().status(404).build();
+    }
+
+    public Response insertStudentBorrowBooks(UUID bookUuid, UUID studentUuid) {
+        Optional<Book> book = bookSerializable.findByUuid(bookUuid);
+        Optional<Student> student = studentRepository.findStudentByUuid(studentUuid);
+        if (book.isPresent() && student.isPresent()) {
+            book.get().setStudent(student.get());
+            bookSerializable.save(book.get());
+            return Response.ok(book.get(), MediaType.APPLICATION_JSON_TYPE).status(201).build();
+        }
+        return Response.status(406).build();
     }
 }
