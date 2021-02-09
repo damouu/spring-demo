@@ -46,6 +46,12 @@ public class BookController {
         return bookService.insertBook(book);
     }
 
+    @POST
+    @Produces(MediaType.APPLICATION_JSON_VALUE)
+    public Response studentBorrowBooks(@QueryParam("book") UUID bookUuid, @QueryParam("student") UUID studentUuid) {
+        return bookService.insertStudentBorrowBooks(bookUuid, studentUuid);
+    }
+
     @DELETE
     @Path("/{bookUuid}")
     public Response deleteBook(@PathParam("bookUuid") UUID bookUuid) {
