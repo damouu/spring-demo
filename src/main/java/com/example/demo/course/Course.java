@@ -38,7 +38,7 @@ public class Course {
     @NotNull
     private String department;
 
-    @ManyToMany(fetch = FetchType.LAZY,
+    @ManyToMany(fetch = FetchType.EAGER,
             cascade = {
                     CascadeType.PERSIST,
                     CascadeType.ALL
