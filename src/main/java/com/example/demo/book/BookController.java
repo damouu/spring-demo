@@ -46,12 +46,6 @@ public class BookController {
         return bookService.insertBook(book);
     }
 
-    @POST
-    @Produces(MediaType.APPLICATION_JSON_VALUE)
-    public Response studentBorrowBooks(@QueryParam("book") UUID bookUuid, @QueryParam("student") UUID studentUuid) {
-        return bookService.insertStudentBorrowBooks(bookUuid, studentUuid);
-    }
-
     @DELETE
     @Path("/{bookUuid}")
     public Response deleteBook(@PathParam("bookUuid") UUID bookUuid) {
@@ -64,5 +58,17 @@ public class BookController {
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     public Response updateBook(@PathParam("bookUuid") UUID bookUuid, @Valid Book book) {
         return bookService.updateBook(bookUuid, book);
+    }
+
+    @POST
+    @Produces(MediaType.APPLICATION_JSON_VALUE)
+    public Response studentBorrowBooks(@QueryParam("book") UUID bookUuid, @QueryParam("student") UUID studentUuid) {
+        return bookService.insertStudentBorrowBooks(bookUuid, studentUuid);
+    }
+
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON_VALUE)
+    public Response returnStudentBorrowBooks(@QueryParam("book") UUID bookUuid, @QueryParam("student") UUID studentUuid) {
+        return bookService.returnStudentBorrowBooks(bookUuid, studentUuid);
     }
 }
