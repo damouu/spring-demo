@@ -106,4 +106,12 @@ public class BookService {
         }
         return Response.status(406).build();
     }
+
+    public Response getStudentBook(UUID studentUuid) {
+        Optional<Student> student = studentRepository.findStudentByUuid(studentUuid);
+        if (student.isPresent() && !student.get().getBooks().isEmpty()) {
+            return Response.ok(student.get().getBooks()).status(200).build();
+        }
+        return Response.noContent().build();
+    }
 }
