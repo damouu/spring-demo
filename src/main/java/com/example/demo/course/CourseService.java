@@ -1,5 +1,7 @@
 package com.example.demo.course;
 
+import com.example.demo.student.Student;
+import com.example.demo.student.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +16,12 @@ public class CourseService {
 
     private CourseRepository courseRepository;
 
+    private StudentRepository studentRepository;
+
     @Autowired
-    public CourseService(CourseRepository courseRepository) {
+    public CourseService(CourseRepository courseRepository, StudentRepository studentRepository) {
         this.courseRepository = courseRepository;
+        this.studentRepository = studentRepository;
     }
 
     public Course getCourse(UUID courseUuid) {
@@ -51,5 +56,18 @@ public class CourseService {
             return Response.ok(course).status(204).location(URI.create("http://localhost:8080/api/course/" + course.getUuid())).build();
         }
         return Response.noContent().status(404).build();
+    }
+
+    public Response postStudentCourse(UUID courseUuid, UUID studentUuid) {
+        Optional<Course> course = courseRepository.findByUuid(courseUuid);
+        Optional<Student> student = studentRepository.findStudentByUuid(studentUuid);
+        if (course.isPresent() && student.isPresent()) {
+            if (!course.get().getStudents().contains(student.get())) {
+                student.get().getCourses().add(course.get());
+                this.studentRepository.save(student.get());
+                return Response.ok(course.get()).status(201).build();
+            }
+        }
+        return Response.noContent().build();
     }
 }
