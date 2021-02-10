@@ -8,7 +8,12 @@ pipeline {
         }
         stage('Test') {
             steps {
-                echo 'Testing..'
+                sh './mvnw test'
+            }
+            post {
+                always {
+                    junit '***/target/surefire-reports/TEST-*.xml'
+                }
             }
         }
         stage('Deploy') {
