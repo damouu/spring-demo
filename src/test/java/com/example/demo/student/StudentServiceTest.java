@@ -61,7 +61,7 @@ class StudentServiceTest {
         when(studentRepository.findById(1)).thenReturn(java.util.Optional.ofNullable(studentArrayList2.get(1)));
         Optional<Student> student = studentRepository.findById(1);
         Assertions.assertNotNull(student);
-        Assertions.assertTrue(student.isPresent());
+        Assertions.assertFalse(student.isPresent());
         Assertions.assertNotNull(student.get().getId());
         Assertions.assertNotNull(student.get().getName());
         Assertions.assertNotNull(student.get().getDob());
