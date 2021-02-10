@@ -46,25 +46,6 @@ class StudentServiceTest {
     }
 
     @Test
-    void addNewStudent() {
-    }
-
-    @Test
-    void deleteStudent() {
-    }
-
-    @Test
-    void updateStudent() {
-        Faker faker = new Faker();
-        Student student = new Student(
-                1,
-                faker.name().name(),
-                LocalDate.of(faker.number().numberBetween(1900, 2021), Month.NOVEMBER, faker.number().numberBetween(1, 31)),
-                faker.internet().emailAddress()
-        );
-    }
-
-    @Test
     void findById() {
         Faker faker = new Faker();
         ArrayList<Student> studentArrayList2 = new ArrayList<>();
