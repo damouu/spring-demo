@@ -70,4 +70,19 @@ public class CourseService {
         }
         return Response.noContent().build();
     }
+
+    public Response deleteStudentCourse(UUID courseUuid, UUID studentUuid) {
+        Optional<Course> course = courseRepository.findByUuid(courseUuid);
+        Optional<Student> student = studentRepository.findStudentByUuid(studentUuid);
+        if (course.isPresent() && student.isPresent()) {
+            for (Student student1 : course.get().getStudents()) {
+                if (student1.getUuid().compareTo(student.get().getUuid()) == 0) {
+                    student1.getCourses().remove(course.get());
+                    this.studentRepository.save(student1);
+                    return Response.status(204).build();
+                }
+            }
+        }
+        return Response.status(404).build();
+    }
 }
