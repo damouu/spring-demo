@@ -85,4 +85,12 @@ public class CourseService {
         }
         return Response.status(404).build();
     }
+
+    public Response getStudentsCourse(UUID courseUuid) {
+        Optional<Course> course = courseRepository.findByUuid(courseUuid);
+        if (course.isPresent()) {
+            return Response.ok(course.get().getStudents()).status(200).build();
+        }
+        return Response.status(404).build();
+    }
 }
