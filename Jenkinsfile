@@ -1,19 +1,19 @@
 pipeline {
     agent any
         stages {
-            stage("Dit SALAM JENKINS"){
-                steps{
-                    echo 'لسٌَلامُ عَلَيْكُمْ'
+            stage("Dit SALAM JENKINS") {
+                steps {
+                    echo "dede"
                 }
             }
-            stage("DIT BISMILLAH"){
-                steps{
-                    echo 'بسم الله '
+            stage("DIT BISMILLAH") {
+                steps {
+                    echo "dedede"
                 }
             }
-            stage("DIT BISLEHMA"){
-                steps{
-                    echo 'بيسلاما'
+            stage("DIT BISLEHMA") {
+                steps {
+                    echo "dededede"
                 }
             }
         }
