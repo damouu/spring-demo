@@ -6,10 +6,11 @@ pipeline {
                 echo 'Building..'
             }
         }
-        stage('Test') {
+        stage('Unit Tests') {
             steps {
-                echo 'Testing..'
+                  echo "$GIT_BRANCH"
             }
+            post
         }
         stage('Deploy') {
             steps {
