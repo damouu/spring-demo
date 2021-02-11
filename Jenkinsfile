@@ -10,7 +10,6 @@ pipeline {
             steps {
                   echo "$GIT_BRANCH"
             }
-            post
         }
         stage('Deploy') {
             steps {
