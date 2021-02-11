@@ -6,12 +6,12 @@ pipeline {
                     echo 'لسٌَلامُ عَلَيْكُمْ'
                 }
             }
-            stages("DIT BISMILLAH"){
+            stage("DIT BISMILLAH"){
                 steps{
                     echo 'بسم الله '
                 }
             }
-            stages("DIT BISLEHMA"){
+            stage("DIT BISLEHMA"){
                 steps{
                     echo 'بيسلاما'
                 }
