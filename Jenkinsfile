@@ -6,9 +6,9 @@ pipeline {
                     echo "dede"
                 }
             }
-            stage("DIT BISMILLAH") {
+            stage("Run Unit Test") {
                 steps {
-                    echo "dedede"
+                    sh './mvnw test'
                 }
             }
             stage("DIT BISLEHMA") {
