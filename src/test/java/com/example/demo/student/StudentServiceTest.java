@@ -30,6 +30,7 @@ class StudentServiceTest {
                 "dede@fdp.com");
         Assertions.assertEquals(student, student);
         Assertions.assertNotNull(student);
+        Assertions.assertNotEquals(student,student);
     }
 
     @Test
