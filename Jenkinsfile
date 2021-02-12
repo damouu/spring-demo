@@ -1,14 +1,14 @@
 pipeline {
     agent any
-    tools {
-            maven 'Maven'
-            jdk 'JDKopen'
-        }
         stages {
-            stage("Unit Test") {
+            stage("Dit SALAM JENKINS") {
                 steps {
-                    echo "run les test"
-                     sh 'mvn test'
+                    echo "dede"
+                }
+            }
+            stage("Run Unit Test") {
+                steps {
+                    echo "dedede"
                 }
             }
             stage("DIT BISLEHMA") {
