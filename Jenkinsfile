@@ -1,13 +1,9 @@
 pipeline {
     agent any
         stages {
-            stage("Dit SALAM JENKINS") {
+            stage("Unit Test") {
                 steps {
-                    echo "dede"
-                }
-            }
-            stage("Run Unit Test") {
-                steps {
+                    echo "run les test"
                     sh './mvnw test'
                 }
             }
