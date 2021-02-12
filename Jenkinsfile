@@ -5,7 +5,7 @@ pipeline {
                 steps {
                         script {
                             docker.withRegistry('https://index.docker.io/v1/','DockerHub') {
-                            def damouImage = docker.build("damou/springdemo:${env.BUILD_ID}","-f ${dockerfile} ./dockerfiles")
+                            def damouImage = docker.build("damou/springdemo:${env.BUILD_ID}","-f ${dockerfile} ./Dockerfile")
                             damouImage.push()
                     }
                 }
