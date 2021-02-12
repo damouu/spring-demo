@@ -4,7 +4,7 @@ pipeline {
             stage("Unit Test") {
                 steps {
                     echo "run les test"
-                    sh './mvn test'
+                    sh 'mvn test'
                 }
             }
             stage("DIT BISLEHMA") {
