@@ -10,6 +10,14 @@ pipeline {
                     }
                 }
             }
+            post {
+                    success {
+                        echo "image published successfully"
+                    }
+                    failure{
+                        echo "error when trying to publishing the image"
+                    }
+            }
         }
     }
 }
