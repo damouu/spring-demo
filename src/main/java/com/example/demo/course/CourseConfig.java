@@ -14,12 +14,13 @@ public class CourseConfig {
     CommandLineRunner lineRunner(CourseRepository courseRepository) {
         return args -> {
             Faker faker = new Faker();
-            for (int i = 1; i < 7; i++) {
+            for (int i = 1; i < 50; i++) {
                 Course course = new Course(
                         i,
                         UUID.randomUUID(),
                         faker.educator().course(),
-                        faker.educator().campus()
+                        faker.educator().campus(),
+                        faker.educator().university()
                 );
                 courseRepository.save(course);
             }
