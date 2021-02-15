@@ -3,7 +3,6 @@ pipeline {
         stages {
             stage('JUnit test'){
                 steps {
-                 sh 'mvn test'
                  withMaven(maven: 'maven-latest'){
                         sh 'mvn test install'
                     }
