@@ -81,7 +81,7 @@ public class CourseController {
     @GET
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     @Path("/search")
-    public Response getCourseDepartment(@QueryParam("campus") String campus) {
-        return courseService.getCourseDepartment(campus);
+    public Response getCourseSearchQueryParam(@QueryParam("university") String university, @QueryParam("campus") String campus, @QueryParam("name") String name) {
+        return courseService.getCourseSearchQueryParam(university, campus, name);
     }
 }
