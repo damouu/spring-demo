@@ -3,9 +3,7 @@ pipeline {
         stages {
             stage('JUnit test'){
                 steps {
-                        withMaven(maven: 'Maven'){
                             sh 'mvn test'
-                        }
                 }
             }
             stage('Push to DockerHub') {
