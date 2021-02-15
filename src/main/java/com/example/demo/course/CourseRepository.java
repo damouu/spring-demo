@@ -13,7 +13,17 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
 
     Optional<Course> findByUuid(@NotNull UUID uuid);
 
-    // the "containing" keyword is used as the LIKE keyword in SQL syntax.
-    // Containing: select ... like %:place%
+    // the "containing" keyword is used as the LIKE keyword in SQL syntax. // Containing: select ... like %:place%
     Optional<Collection<Course>> findByCampusContaining(String department);
+
+    Optional<Collection<Course>> findByUniversityContaining(String department);
+
+    Optional<Collection<Course>> findByNameContaining(String department);
+
+    Optional<Collection<Course>> findByUniversityContainingAndCampusContaining(String university, String campus);
+
+    Optional<Collection<Course>> findByUniversityContainingAndNameContaining(String university, String name);
+
+    Optional<Collection<Course>> findByNameContainingAndCampusContaining(String university, String name);
+
 }
