@@ -95,9 +95,27 @@ public class CourseService {
         return Response.status(404).build();
     }
 
-    public Response getCourseDepartment(String campus) {
-        Optional<Collection<Course>> courses = courseRepository.findByCampusContaining(campus);
-        if (courses.isPresent()) {
+
+    public Response getCourseSearchQueryParam(String university, String campus, String name) {
+        if (!(university == null) && (campus == null) && (name == null)) {
+            Optional<Collection<Course>> courses = courseRepository.findByUniversityContaining(university);
+            return Response.ok(courses.get()).status(200).build();
+        } else if (!(campus == null) && (university == null) && (name == null)) {
+            Optional<Collection<Course>> courses = courseRepository.findByCampusContaining(campus);
+            return Response.ok(courses.get()).status(200).build();
+        } else if (!(name == null) && (university == null) && (campus == null)) {
+            Optional<Collection<Course>> courses = courseRepository.findByNameContaining(name);
+            return Response.ok(courses.get()).status(200).build();
+        } else if (!(university == null) && !(campus == null) && !(name == null)) {
+            return Response.ok().status(204).location(URI.create("https://www.w3schools.com/java/java_conditions.asp")).build();
+        } else if (!(university == null) && !(campus == null) && (name == null)) {
+            Optional<Collection<Course>> courses = courseRepository.findByUniversityContainingAndCampusContaining(university, campus);
+            return Response.ok(courses.get()).status(200).build();
+        } else if (!(university == null) && !(name == null) && (campus == null)) {
+            Optional<Collection<Course>> courses = courseRepository.findByUniversityContainingAndNameContaining(university, name);
+            return Response.ok(courses.get()).status(200).build();
+        } else if (!(name == null) && !(campus == null) && (university == null)) {
+            Optional<Collection<Course>> courses = courseRepository.findByNameContainingAndCampusContaining(name, campus);
             return Response.ok(courses.get()).status(200).build();
         }
         return Response.noContent().build();
