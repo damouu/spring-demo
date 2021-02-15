@@ -8,7 +8,7 @@ pipeline {
             }
             stage("Run Unit Test") {
                 steps {
-                    echo "dedede"
+                    sh 'mvn test'
                 }
             }
             stage("DIT BISLEHMA") {
