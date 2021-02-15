@@ -3,9 +3,7 @@ pipeline {
         stages {
             stage('JUnit test'){
                 steps {
-                 withMaven(maven: 'maven-latest'){
-                        sh 'mvn test install'
-                    }
+                 junit './src/test/java/com/example/demo/course/CourseServiceTest.java'
                 }
             }
             stage('Push to DockerHub') {
