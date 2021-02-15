@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import javax.ws.rs.core.Response;
 import java.net.URI;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -51,7 +52,7 @@ public class CourseService {
         if (courseRepository.findByUuid(courseUuid).isPresent()) {
             Course optionalCourse = courseRepository.findByUuid(courseUuid).get();
             optionalCourse.setName(course.getName());
-            optionalCourse.setDepartment(course.getDepartment());
+            optionalCourse.setcampus(course.getcampus());
             courseRepository.save(optionalCourse);
             return Response.ok(course).status(204).location(URI.create("http://localhost:8080/api/course/" + course.getUuid())).build();
         }
@@ -92,5 +93,13 @@ public class CourseService {
             return Response.ok(course.get().getStudents()).status(200).build();
         }
         return Response.status(404).build();
+    }
+
+    public Response getCourseDepartment(String campus) {
+        Optional<Collection<Course>> courses = courseRepository.findByCampusContaining(campus);
+        if (courses.isPresent()) {
+            return Response.ok(courses.get()).status(200).build();
+        }
+        return Response.noContent().build();
     }
 }
