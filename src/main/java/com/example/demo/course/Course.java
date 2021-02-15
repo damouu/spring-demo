@@ -14,10 +14,7 @@ import java.util.UUID;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)    //  ignore all null fields
 @Entity(name = "course")
-@Table(name = "course", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"name", "name"}, name = "name"),
-        @UniqueConstraint(columnNames = {"uuid", "uuid"}, name = "uuid")
-})
+@Table(name = "course", uniqueConstraints = {@UniqueConstraint(columnNames = {"uuid", "uuid"}, name = "uuid")})
 public class Course {
     @Id
     @SequenceGenerator(name = "course_sequence", allocationSize = 1, sequenceName = "course_sequence")
@@ -34,9 +31,13 @@ public class Course {
     private String name;
 
 
-    @Column(nullable = false, name = "department", columnDefinition = "TEXT")
+    @Column(nullable = false, name = "campus", columnDefinition = "TEXT")
     @NotNull
-    private String department;
+    private String campus;
+
+    @Column(nullable = false, name = "university", columnDefinition = "TEXT")
+    @NotNull
+    private String university;
 
     @ManyToMany(fetch = FetchType.EAGER,
             cascade = {
@@ -47,11 +48,12 @@ public class Course {
     protected Set<Student> students = new HashSet<>();
 
     @JsonCreator
-    public Course(@JsonProperty("id") Integer id, @JsonProperty("uuid") UUID uuid, @JsonProperty("name") String name, @JsonProperty("department") String department) {
+    public Course(@JsonProperty("id") Integer id, @JsonProperty("uuid") UUID uuid, @JsonProperty("name") String name, @JsonProperty("campus") String campus, @JsonProperty("university") String university) {
         this.id = id;
         this.uuid = uuid;
         this.name = name;
-        this.department = department;
+        this.campus = campus;
+        this.university = university;
     }
 
     public Course() {
@@ -82,13 +84,17 @@ public class Course {
         this.name = name;
     }
 
-    public String getDepartment() {
-        return department;
+    public String getcampus() {
+        return campus;
     }
 
-    public void setDepartment(String department) {
-        this.department = department;
+    public void setcampus(String campus) {
+        this.campus = campus;
     }
+
+    public String getuniversity() { return university; }
+
+    public void setuniversity(String university) { this.university = university; }
 
     @JsonIgnore
     public Set<Student> getStudents() {
