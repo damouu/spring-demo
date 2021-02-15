@@ -1,20 +1,28 @@
 pipeline {
     agent any
         stages {
-            stage("Dit SALAM JENKINS") {
+            stage('JUnit test'){
                 steps {
-                    echo "dede"
+                 sh 'mvn test'
                 }
             }
-            stage("Run Unit Test") {
+            stage('Push to DockerHub') {
                 steps {
-                    sh "./mvnw test"
+                        script {
+                            docker.withRegistry('https://index.docker.io/v1/','DockerHub') {
+                            def damouImage = docker.build("damou/springdemo:${env.BUILD_ID}")
+                            damouImage.push()
+                    }
                 }
             }
-            stage("DIT BISLEHMA") {
-                steps {
-                    echo "dededede"
-                }
+            post {
+                    success {
+                        echo "image published successfully"
+                    }
+                    failure{
+                        echo "error when trying to publishing the image"
+                    }
             }
         }
+    }
 }
