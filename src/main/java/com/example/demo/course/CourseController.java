@@ -77,4 +77,11 @@ public class CourseController {
     public Response getStudentsCourse(@QueryParam("courseUuid") UUID courseUuid) {
         return courseService.getStudentsCourse(courseUuid);
     }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON_VALUE)
+    @Path("/search")
+    public Response getCourseDepartment(@QueryParam("campus") String campus) {
+        return courseService.getCourseDepartment(campus);
+    }
 }
