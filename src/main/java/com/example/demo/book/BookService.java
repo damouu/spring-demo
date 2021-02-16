@@ -31,11 +31,11 @@ public class BookService {
 
     public Collection<Book> getBooks(int page, int size, Optional<Integer> totalPages, @QueryParam("genre") Optional<String> genre) {
         Pageable pageable = PageRequest.of(page, size);
-        if (totalPages.isPresent() && genre.isEmpty()) {
+        if (totalPages.isPresent() && !genre.isPresent()) {
             Optional<Collection<Book>> pagedResult = bookSerializable.findAllByTotalPages(totalPages);
             return pagedResult.get();
         }
-        if (genre.isPresent() && totalPages.isEmpty()) {
+        if (genre.isPresent() && !totalPages.isPresent()) {
             Optional<Collection<Book>> pagedResult = bookSerializable.findAllByGenre(genre);
             return pagedResult.orElse(null);
         }

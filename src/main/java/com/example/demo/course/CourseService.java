@@ -27,7 +27,7 @@ public class CourseService {
 
     public Course getCourse(UUID courseUuid) {
         Optional<Course> course = courseRepository.findByUuid(courseUuid);
-        return course.orElseThrow();
+        return course.get();
     }
 
     public List<Course> getCourses() {
