@@ -3,7 +3,7 @@ pipeline {
         stages {
             stage('describe branch') {
                 steps {
-                    echo env.BRANCH_NAME
+                    echo "$GIT_BRANCH"
                 }
             }
             stage('Clean') {
