@@ -29,7 +29,7 @@ pipeline {
                   }
                }
             }
-            stage('Push to DockerHub') {
+            stage('DockerHub') {
                 when { branch 'main' }
                     steps {
                        sh 'mvn install'
@@ -43,7 +43,8 @@ pipeline {
                         }
                         post {
                                 success {
-                                    echo "image published successfully"
+                                    sh "rm -rf /home/mouad/IdeaProjects/spring-demo/target/demo-0.0.1-SNAPSHOT.jar"
+                                    sh "rm -rf /var/lib/jenkins/.m2/repository/com/example/demo/0.0.1-SNAPSHOT/"
                                 }
                                 failure{
                                     echo "error when trying to publishing the image"
