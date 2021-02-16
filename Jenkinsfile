@@ -3,8 +3,9 @@ pipeline {
         stages {
             stage('JUnit test'){
                 steps {
-                        sh 'mvn -version '
-                        sh 'java -version '
+                        withMaven(maven: 'Maven') {
+                                    sh "mvn install"
+                        }
                 }
             }
             stage('Push to DockerHub') {
