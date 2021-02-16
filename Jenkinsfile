@@ -31,7 +31,7 @@ pipeline {
             }
             stage('Move tar locale') {
                             steps {
-                                echo "bonjour"
+                                sh "cp /var/lib/jenkins/.m2/repository/com/example/demo/0.0.1-SNAPSHOT/demo-0.0.1-SNAPSHOT.jar /home/mouad/IdeaProjects/spring-demo/target/"
                            }
                         }
             stage('Push to DockerHub') {
