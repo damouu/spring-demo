@@ -1,7 +1,7 @@
 pipeline {
     agent any
         stages {
-            stage('describe branch') {
+            stage('Branch') {
                 steps {
                     echo "$GIT_BRANCH"
                 }
@@ -27,7 +27,7 @@ pipeline {
                     }
                 }
             }
-            stage('Push to DockerHub') {
+            stage('DockerHub') {
                 when { branch 'main' }
                     steps {
                         sh 'mvn install'
