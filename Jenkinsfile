@@ -3,7 +3,9 @@ pipeline {
         stages {
             stage('JUnit test'){
                 steps {
-                            sh 'mvn install'
+                        withMaven {
+                                    sh "mvn test"
+                        }
                 }
             }
             stage('Push to DockerHub') {
