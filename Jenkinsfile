@@ -16,11 +16,18 @@ pipeline {
                 }
             }
             stage('Test') {
-                          steps {
-                            withMaven(maven: 'Maven') {
-                                sh "mvn test"
+                steps {
+                    withMaven(maven: 'Maven') {
+                    sh "mvn test"
                     }
                 }
+            }
+            stage('Install') {
+                steps {
+                    withMaven(maven: 'Maven') {
+                    sh "mvn install"
+                  }
+               }
             }
             stage('Push to DockerHub') {
                 when { branch 'main' }
