@@ -1,39 +1,46 @@
 pipeline {
     agent any
         stages {
-            stage('Run on q/a branch'){
-                when { branch 'q/a' }
-                steps {
-                    echo 'Hi from q/a branch !'
-                }
-            }
-            stage('JUnit test'){
+            stage('Clean') {
                 steps {
                         withMaven(maven: 'Maven') {
-                                    sh "mvn test"
+                                    sh "mvn clean"
                         }
                 }
-                post {
-                       success {
-                                 echo "the test passed successfully ;)"
-                                }
-                       failure {
-                                 echo "something went wrong :("
-                                }
-                     }
             }
-            stage('Push to DockerHub not actually pushing to the repository') {
+            stage('Validate') {
                 steps {
-                       echo "here it should publish to Docker Hub"
+                        withMaven(maven: 'Maven') {
+                                         sh "mvn validate"
+                        }
+                }
             }
-            post {
-                    success {
-                        echo "image published successfully"
+            stage('Test') {
+                          steps {
+                            withMaven(maven: 'Maven') {
+                                sh "mvn test"
                     }
-                    failure{
-                        echo "error when trying to publishing the image"
+                }
+            }
+            stage('Push to DockerHub') {
+                when { branch 'main' }
+                    steps {
+                        sh 'mvn install'
+                        script {
+                            docker.withRegistry('https://index.docker.io/v1/','DockerHub') {
+                            def damouImage = docker.build("damou/springdemo:master-${env.BUILD_ID}")
+                            damouImage.push()
+                                }
+                            }
+                        }
+                        post {
+                                success {
+                                    echo "image published successfully"
+                                }
+                                failure{
+                                    echo "error when trying to publishing the image"
                     }
+                }
             }
         }
     }
-}
