@@ -15,13 +15,6 @@ pipeline {
                         }
                 }
             }
-            stage('Verify') {
-               steps {
-                       withMaven(maven: 'Maven') {
-                                   sh "mvn verify"
-                                }
-                       }
-               }
             stage('Test') {
                           steps {
                             withMaven(maven: 'Maven') {
