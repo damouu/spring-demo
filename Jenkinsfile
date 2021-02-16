@@ -1,6 +1,10 @@
 pipeline {
     agent any
         stages {
+            stage('describe branch') {
+                echo env.BRANCH_NAME
+                }
+            }
             stage('Clean') {
                 steps {
                         withMaven(maven: 'Maven') {
