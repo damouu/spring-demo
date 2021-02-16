@@ -23,7 +23,7 @@ public class StudentService {
 
     public List<Student> allStudents(Optional<Integer> queryParam) {
         List<Student> students = studentRepository.findAll();
-        if (queryParam.isEmpty()) {
+        if (!queryParam.isPresent()) {
             return students;
         }
         students.stream().iterator().forEachRemaining(student -> student.setAge(Period.between(student.getDob(), LocalDate.now()).getYears()));
