@@ -34,16 +34,16 @@ class CourseServiceTest {
     void getCourse() {
         UUID uuid = UUID.randomUUID();
         Course course = new Course(1, uuid, "dede", "campus", "dede_univ");
-        Mockito.when(courseService.getCourse(course.getUuid())).thenReturn(course);
-        /*Mockito.when(courseRepository.findByUuid(course.getUuid())).thenReturn(Optional.of(course));
-        Mockito.verify(courseRepository).findByUuid(courseArgumentCaptor.capture().getUuid());*/
-//        Course course1 = courseService.getCourse(uuid);
-//        Assertions.assertEquals(course1, course);
+     /*   Mockito.when(courseService.getCourse(course.getUuid())).thenReturn(course);
+        Mockito.when(courseRepository.findByUuid(course.getUuid())).thenReturn(Optional.of(course));
+        Mockito.verify(courseRepository).findByUuid(courseArgumentCaptor.capture().getUuid());
+        Course course1 = courseService.getCourse(uuid);
+        Assertions.assertEquals(course1, course);*/
     }
 
     @Test
     void getCourses() {
-        List<Course> courses = new ArrayList<Course>();
+        List<Course> courses = new ArrayList<>();
         Course course = new Course(1, UUID.randomUUID(), "dede", "campus", "dede_univ");
         courses.add(course);
         Mockito.when(courseService.getCourses()).thenReturn(courses);
