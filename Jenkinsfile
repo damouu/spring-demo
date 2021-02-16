@@ -8,7 +8,7 @@ pipeline {
                         }
                 }
             }
-            stage('Push to DockerHub') {
+            stage('Push to DockerHub not actually pushing') {
                 steps {
                        echo "here it should publish to Docker Hub"
             }
