@@ -2,7 +2,8 @@ pipeline {
     agent any
         stages {
             stage('describe branch') {
-                echo env.BRANCH_NAME
+                steps {
+                    echo env.BRANCH_NAME
                 }
             }
             stage('Clean') {
