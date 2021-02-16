@@ -33,12 +33,6 @@ pipeline {
                 when { branch 'main' }
                     steps {
                         sh 'mvn install'
-                        script {
-                            docker.withRegistry('https://index.docker.io/v1/','DockerHub') {
-                            def damouImage = docker.build("damou/springdemo:master-${env.BUILD_ID}")
-                            damouImage.push()
-                                }
-                            }
                         }
                         post {
                                 success {
