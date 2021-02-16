@@ -4,7 +4,7 @@ pipeline {
             stage('JUnit test'){
                 steps {
                         withMaven {
-                                    sh "mvn test"
+                                    sh "mvn install"
                         }
                 }
             }
