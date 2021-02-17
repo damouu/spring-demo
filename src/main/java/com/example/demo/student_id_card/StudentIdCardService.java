@@ -28,9 +28,9 @@ public class StudentIdCardService {
         return studentIdCardSerializable.findAll();
     }
 
-    public StudentIdCard getStudentIdCard(UUID studentCardNumber) {
+    public Student getStudentIdCard(UUID studentCardNumber) {
         Optional<StudentIdCard> studentIdCardByCardNumber = studentIdCardSerializable.findStudentIdCardByUuid(studentCardNumber);
-        return studentIdCardByCardNumber.orElse(null);
+        return studentIdCardByCardNumber.map(StudentIdCard::getStudent).orElse(null);
     }
 
     public Response deleteStudentIdCard(UUID studentCardNumber) {
