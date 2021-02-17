@@ -59,7 +59,7 @@ pipeline {
                             script {
                                 docker.withRegistry('https://index.docker.io/v1/','DockerHub') {
                                 def damouImage = docker.build("damou/springdemo")
-                                damouImage.push('dede')
+                                damouImage.push('RESTEasy-'${env.BUILD_ID })
                                     }
                                   }
                                 }
