@@ -1,5 +1,6 @@
 package com.example.demo.student_id_card;
 
+import com.example.demo.student.Student;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -32,7 +33,7 @@ public class StudentIdCardController {
     @GET
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     @Path("/{studentCardNumber}")
-    public StudentIdCard getStudentIdCard(@PathParam("studentCardNumber") UUID studentCardNumber) {
+    public Student getStudentIdCard(@PathParam("studentCardNumber") UUID studentCardNumber) {
         return studentIdCardService.getStudentIdCard(studentCardNumber);
     }
 
