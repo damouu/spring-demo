@@ -1,0 +1,34 @@
+version: "3.7"
+
+networks:
+  springdemo-network:
+    driver: bridge
+
+services:
+  api.springdemo:
+    container_name: training-api.spring.demo.local
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "8083:8080"
+    networks:
+      - springdemo-network
+    links:
+      - postgres.springdemo:dbcat
+
+  #############################
+  # database
+  #############################
+
+  postgres.springdemo:
+    image: postgres:alpine
+    container_name: postgres.springdemo
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: student
+    networks:
+      - springdemo-network
+    ports:
+      - 5433:5432
