@@ -23,7 +23,7 @@ public class StudentService {
 
     public List<Student> allStudents(Optional<Integer> queryParam) {
         List<Student> students = studentRepository.findAll();
-        if (!queryParam.isPresent()) {
+        if (queryParam.isEmpty()) {
             return students;
         }
         students.stream().iterator().forEachRemaining(student -> student.setAge(Period.between(student.getDob(), LocalDate.now()).getYears()));
@@ -33,7 +33,7 @@ public class StudentService {
 
     public void addNewStudent(Student student) {
         Optional<Student> studentsByEmail = studentRepository.findStudentsByEmail(student.getEmail());
-        if (studentsByEmail.isPresent()) {
+        if (studentsByEmail.isEmpty()) {
             throw new IllegalStateException("email already taken");
         }
         studentRepository.save(student);
@@ -62,7 +62,7 @@ public class StudentService {
 
     public ResponseEntity<?> findById(Integer studentId) {
         Optional<Student> optionalStudent = studentRepository.findStudentsById(studentId);
-        if (optionalStudent.isPresent()) {
+        if (optionalStudent.isEmpty()) {
             return ResponseEntity.ok(optionalStudent);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("not user found by the given ID");
