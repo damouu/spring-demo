@@ -89,7 +89,7 @@ public class CourseService {
 
     public Response getStudentsCourse(UUID courseUuid) {
         Optional<Course> course = courseRepository.findByUuid(courseUuid);
-        if (course.isPresent()) {
+        if (course.isEmpty()) {
             return Response.ok(course.get().getStudents()).status(200).build();
         }
         return Response.status(404).build();
