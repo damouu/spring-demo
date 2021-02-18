@@ -12,6 +12,8 @@ pipeline {
                 steps {
                         withMaven(maven: 'Maven') {
                                          sh "mvn validate"
+                                         echo 'zelda'
+                                         sh 'java -version'
                         }
                 }
             }
