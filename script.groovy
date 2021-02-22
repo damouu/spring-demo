@@ -20,6 +20,7 @@ def buildAppDocker() {
     docker.withRegistry('https://index.docker.io/v1/', 'DockerHub') {
         def damouImage = docker.build("damou/springdemo-resteasy").push(params.tagImage)
     }
+    sh 'docker image prune -f'
 }
 
 def deleteJarFile() {
