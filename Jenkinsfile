@@ -2,7 +2,7 @@ def groovy
 pipeline {
     agent any
     parameters {
-        string(name: 'image description', defaultValue: '', description: 'image version description to deploy on DockerHub')
+        string(name: 'tagImage', defaultValue: 'latest', description: 'add a specific tag to the image')
         booleanParam(name: 'executeDeploy', defaultValue: true, description: 'build a new image and publish it to DockerHub repository.')
     }
     tools {
@@ -63,7 +63,9 @@ pipeline {
                     }
                 }
                 failure {
-                    echo "error when trying to publishing the image"
+                    script {
+                        groovy.errorPostBuildAppDocker()
+                    }
                 }
             }
         }
