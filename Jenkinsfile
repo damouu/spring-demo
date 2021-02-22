@@ -1,5 +1,10 @@
 pipeline {
     agent any
+    parameters {
+        string(name: 'VERSION', defaultValue: '', description: 'version to deploy on prod')
+        choice(name: 'VERSION', choices: ['1.0', '1.1', '1.2'], description: '')
+        booleanParam(name: 'executeTest', defaultValue: true, description: 'boolean parameter to set if a test should be run or not.')
+    }
     tools {
         maven 'Maven'
         jdk 'JDK'
@@ -16,16 +21,21 @@ pipeline {
             }
         }
         stage('Test') {
+            when {
+                expression {
+                    parameters.executeTest == true
+                }
+            }
             steps {
                 sh "mvn test"
             }
         }
-        stage('Install') {
+        /*stage('Install') {
             steps {
                 sh "mvn install"
             }
-        }
-        stage('DockerHub Main') {
+        }*/
+        /*stage('DockerHub Main') {
             when { branch 'main' }
             steps {
                 sh 'mvn install'
@@ -45,8 +55,8 @@ pipeline {
                     echo "error while  publishing the image"
                 }
             }
-        }
-        stage('DockerHub RESTEasy') {
+        }*/
+        /*stage('DockerHub RESTEasy') {
             when { branch 'RESTeasy' }
             steps {
                 sh 'mvn install'
@@ -66,6 +76,6 @@ pipeline {
                     echo "error when trying to publishing the image"
                 }
             }
-        }
+        }*/
     }
 }
