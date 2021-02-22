@@ -20,17 +20,17 @@ pipeline {
                 sh "mvn validate"
             }
         }
+        stage('Compile') {
+            steps {
+                sh "mvn compile"
+            }
+        }
         stage('Test') {
             steps {
                 sh "mvn test"
             }
         }
-        stage('Install') {
-            steps {
-                sh "mvn install"
-            }
-        }
-        stage('DockerHub RESTEasy') {
+        stage('DockerHub') {
             when {
                 expression {
                     params.executeDeploy
