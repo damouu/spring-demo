@@ -3,11 +3,7 @@ pipeline {
     parameters {
         string(name: 'VERSION', defaultValue: '', description: 'version to deploy on prod')
         choice(name: 'VERSION', choices: ['1.0', '1.1', '1.2'], description: '')
-        booleanParam(name: 'executeClean', defaultValue: true, description: 'boolean parameter to set if Clean should be run or not.')
-        booleanParam(name: 'executeValidate', defaultValue: true, description: 'boolean parameter to set if Validate should be run or not.')
-        booleanParam(name: 'executeTest', defaultValue: true, description: 'boolean parameter to set if a test should be run or not.')
-        booleanParam(name: 'executeInstall', defaultValue: true, description: 'boolean parameter to set if install should be run or not.')
-        booleanParam(name: 'executeDeploy', defaultValue: true, description: 'boolean parameter to set if deploy should be run or not.')
+        booleanParam(name: 'executeDeploy', defaultValue: true, description: 'build a new image and publish it to DockerHub repository.')
     }
     tools {
         maven 'Maven'
@@ -16,40 +12,20 @@ pipeline {
     stages {
         stage('Clean') {
             steps {
-                when {
-                    expression {
-                        params.executeClean
-                    }
-                }
                 sh "mvn clean"
             }
         }
         stage('Validate') {
-            when {
-                expression {
-                    params.executeValidate
-                }
-            }
             steps {
                 sh "mvn validate"
             }
         }
         stage('Test') {
-            when {
-                expression {
-                    params.executeTest
-                }
-            }
             steps {
                 sh "mvn test"
             }
         }
         stage('Install') {
-            when {
-                expression {
-                    params.executeInstall
-                }
-            }
             steps {
                 sh "mvn install"
             }
