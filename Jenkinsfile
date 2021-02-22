@@ -45,7 +45,7 @@ pipeline {
                 }
             }
         }
-        stage('DockerHub') {
+        stage('Deploy') {
             when {
                 expression {
                     params.executeDeploy
