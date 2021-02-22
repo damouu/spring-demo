@@ -1,4 +1,4 @@
-def groovy = load "script.groovy"
+def groovy
 pipeline {
     agent any
     parameters {
@@ -10,6 +10,13 @@ pipeline {
         jdk 'JDK'
     }
     stages {
+        stage('Initialize') {
+            steps {
+                script {
+                    groovy = load "script.groovy"
+                }
+            }
+        }
         stage('Clean') {
             steps {
                 script {
