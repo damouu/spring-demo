@@ -1,8 +1,8 @@
+def groovy
 pipeline {
     agent any
     parameters {
-        string(name: 'VERSION', defaultValue: '', description: 'version to deploy on prod')
-        choice(name: 'VERSION', choices: ['1.0', '1.1', '1.2'], description: '')
+        string(name: 'tagImage', defaultValue: 'latest', description: 'add a specific tag to the image')
         booleanParam(name: 'executeDeploy', defaultValue: true, description: 'build a new image and publish it to DockerHub repository.')
     }
     tools {
@@ -10,48 +10,62 @@ pipeline {
         jdk 'JDK'
     }
     stages {
+        stage('Initialize') {
+            steps {
+                script {
+                    groovy = load "script.groovy"
+                }
+            }
+        }
         stage('Clean') {
             steps {
-                sh "mvn clean"
+                script {
+                    groovy.clean()
+                }
             }
         }
         stage('Validate') {
             steps {
-                sh "mvn validate"
+                script {
+                    groovy.validate()
+                }
             }
         }
         stage('Compile') {
             steps {
-                sh "mvn compile"
+                script {
+                    groovy.compile()
+                }
             }
         }
         stage('Test') {
             steps {
-                sh "mvn test"
+                script {
+                    groovy.test()
+                }
             }
         }
-        stage('DockerHub') {
+        stage('Deploy') {
             when {
                 expression {
                     params.executeDeploy
                 }
             }
             steps {
-                sh 'mvn install'
-                sh "cp /var/lib/jenkins/.m2/repository/com/example/demo/0.0.1-SNAPSHOT/demo-0.0.1-SNAPSHOT.jar /home/mouad/IdeaProjects/spring-demo/target/"
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', 'DockerHub') {
-                        def damouImage = docker.build("damou/springdemo").push("latest")
-                    }
+                    groovy.buildAppDocker()
                 }
             }
             post {
                 success {
-                    sh "rm -rf /home/mouad/IdeaProjects/spring-demo/target/demo-0.0.1-SNAPSHOT.jar"
-                    sh "rm -rf /var/lib/jenkins/.m2/repository/com/example/demo/0.0.1-SNAPSHOT/"
+                    script {
+                        groovy.deleteJarFile()
+                    }
                 }
                 failure {
-                    echo "error when trying to publishing the image"
+                    script {
+                        groovy.errorPostBuildAppDocker()
+                    }
                 }
             }
         }
