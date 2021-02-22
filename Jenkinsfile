@@ -30,7 +30,7 @@ pipeline {
                 sh "mvn test"
             }
         }
-        stage('DockerHub RESTEasy') {
+        stage('DockerHub') {
             when {
                 expression {
                     params.executeDeploy
