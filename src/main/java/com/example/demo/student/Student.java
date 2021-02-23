@@ -1,6 +1,5 @@
 package com.example.demo.student;
 
-import com.example.demo.book.Book;
 import com.example.demo.course.Course;
 import com.example.demo.student_id_card.StudentIdCard;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -58,9 +57,6 @@ public class Student {
 
     @OneToOne(mappedBy = "student")
     private StudentIdCard studentIdCard;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "student", fetch = FetchType.EAGER)
-    private Set<Book> books;
 
     @ManyToMany(fetch = FetchType.EAGER,
             cascade = {
@@ -143,15 +139,6 @@ public class Student {
     }
 
     @JsonIgnore
-    public Set<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(Set<Book> books) {
-        this.books = books;
-    }
-
-    @JsonIgnore
     public Set<Course> getCourses() {
         return courses;
     }
@@ -159,4 +146,5 @@ public class Student {
     public void setCourses(Set<Course> courses) {
         this.courses = courses;
     }
+
 }
