@@ -1,7 +1,7 @@
 package com.example.demo.book;
 
-import com.example.demo.student.Student;
-import com.example.demo.student.StudentRepository;
+import com.example.demo.student_id_card.StudentIdCard;
+import com.example.demo.student_id_card.StudentIdCardSerializable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,23 +19,23 @@ import java.util.UUID;
 @Service
 public class BookService {
 
-    private BookSerializable bookSerializable;
+    private final BookSerializable bookSerializable;
 
-    private StudentRepository studentRepository;
+    private final StudentIdCardSerializable studentIdCardSerializable;
 
     @Autowired
-    public BookService(BookSerializable bookSerializable, StudentRepository studentRepository) {
+    public BookService(BookSerializable bookSerializable, StudentIdCardSerializable studentIdCardSerializable) {
         this.bookSerializable = bookSerializable;
-        this.studentRepository = studentRepository;
+        this.studentIdCardSerializable = studentIdCardSerializable;
     }
 
     public Collection<Book> getBooks(int page, int size, Optional<Integer> totalPages, @QueryParam("genre") Optional<String> genre) {
         Pageable pageable = PageRequest.of(page, size);
-        if (totalPages.isPresent() && !genre.isPresent()) {
+        if (totalPages.isPresent() && genre.isEmpty()) {
             Optional<Collection<Book>> pagedResult = bookSerializable.findAllByTotalPages(totalPages);
             return pagedResult.get();
         }
-        if (genre.isPresent() && !totalPages.isPresent()) {
+        if (genre.isPresent() && totalPages.isEmpty()) {
             Optional<Collection<Book>> pagedResult = bookSerializable.findAllByGenre(genre);
             return pagedResult.orElse(null);
         }
@@ -81,12 +81,12 @@ public class BookService {
         return Response.noContent().status(404).build();
     }
 
-    public Response insertStudentBorrowBooks(UUID bookUuid, UUID studentUuid) {
+    public Response insertStudentBorrowBooks(UUID bookUuid, UUID studentUuidCard) {
         Optional<Book> book = bookSerializable.findByUuid(bookUuid);
-        Optional<Student> student = studentRepository.findStudentByUuid(studentUuid);
-        if (book.isPresent() && student.isPresent()) {
-            if (book.get().getStudent() == null) {
-                book.get().setStudent(student.get());
+        Optional<StudentIdCard> studentIdCard = studentIdCardSerializable.findStudentIdCardByUuid(studentUuidCard);
+        if (book.isPresent() && studentIdCard.isPresent()) {
+            if (book.get().getStudentIdCard() == null) {
+                book.get().setStudentIdCard(studentIdCard.get());
                 bookSerializable.save(book.get());
                 return Response.ok(book.get(), MediaType.APPLICATION_JSON_TYPE).status(201).build();
             }
@@ -96,10 +96,10 @@ public class BookService {
 
     public Response returnStudentBorrowBooks(UUID bookUuid, UUID studentUuid) {
         Optional<Book> book = bookSerializable.findByUuid(bookUuid);
-        Optional<Student> student = studentRepository.findStudentByUuid(studentUuid);
-        if (book.isPresent() && student.isPresent()) {
-            if (book.get().getStudent().getUuid().equals(student.get().getUuid())) {
-                book.get().setStudent(null);
+        Optional<StudentIdCard> studentCard = studentIdCardSerializable.findStudentIdCardByUuid(studentUuid);
+        if (book.isPresent() && studentCard.isPresent()) {
+            if (book.get().getStudentIdCard().getUuid().equals(studentCard.get().getUuid())) {
+                book.get().setStudentIdCard(null);
                 bookSerializable.save(book.get());
                 return Response.ok(book.get(), MediaType.APPLICATION_JSON_TYPE).status(200).build();
             }
@@ -107,10 +107,10 @@ public class BookService {
         return Response.status(406).build();
     }
 
-    public Response getStudentBook(UUID studentUuid) {
-        Optional<Student> student = studentRepository.findStudentByUuid(studentUuid);
-        if (student.isPresent() && !student.get().getBooks().isEmpty()) {
-            return Response.ok(student.get().getBooks()).status(200).build();
+    public Response getBooksStudentCard(UUID studentCard) {
+        Optional<StudentIdCard> studentIdCard = studentIdCardSerializable.findStudentIdCardByUuid(studentCard);
+        if (studentIdCard.isPresent() && !studentIdCard.get().getBooks().isEmpty()) {
+            return Response.ok(studentIdCard.get().getBooks()).status(200).build();
         }
         return Response.noContent().build();
     }
