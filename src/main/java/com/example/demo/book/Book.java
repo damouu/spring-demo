@@ -1,6 +1,6 @@
 package com.example.demo.book;
 
-import com.example.demo.student.Student;
+import com.example.demo.student_id_card.StudentIdCard;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -51,8 +51,8 @@ public class Book {
     private LocalDate created_at;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "student_id", referencedColumnName = "id")
-    private Student student;
+    @JoinColumn(name = "studentUuidCard", referencedColumnName = "uuid")
+    private StudentIdCard studentIdCard;
 
     @JsonCreator
     public Book(@JsonProperty("id") Integer id,
@@ -135,12 +135,12 @@ public class Book {
     }
 
     @JsonIgnore
-    public Student getStudent() {
-        return student;
+    public StudentIdCard getStudentIdCard() {
+        return studentIdCard;
     }
 
-    public void setStudent(Student student) {
-        this.student = student;
+    public void setStudentIdCard(StudentIdCard studentIdCard) {
+        this.studentIdCard = studentIdCard;
     }
 
     public LocalDate getCreated_at() {
