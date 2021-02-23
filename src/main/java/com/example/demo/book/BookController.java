@@ -62,20 +62,22 @@ public class BookController {
 
     @POST
     @Produces(MediaType.APPLICATION_JSON_VALUE)
-    public Response studentBorrowBooks(@QueryParam("book") UUID bookUuid, @QueryParam("student") UUID studentUuid) {
-        return bookService.insertStudentBorrowBooks(bookUuid, studentUuid);
+    @Path("/{book}/studentCard/{studentCard}")
+    public Response studentBorrowBooks(@PathParam("book") UUID bookUuid, @PathParam("studentCard") UUID studentUuidCard) {
+        return bookService.insertStudentBorrowBooks(bookUuid, studentUuidCard);
     }
 
     @DELETE
     @Produces(MediaType.APPLICATION_JSON_VALUE)
-    public Response returnStudentBorrowBooks(@QueryParam("book") UUID bookUuid, @QueryParam("student") UUID studentUuid) {
-        return bookService.returnStudentBorrowBooks(bookUuid, studentUuid);
+    @Path("/{book}/studentCard/{studentCard}")
+    public Response returnStudentBorrowBooks(@PathParam("book") UUID bookUuid, @PathParam("studentCard") UUID studentUuidCard) {
+        return bookService.returnStudentBorrowBooks(bookUuid, studentUuidCard);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON_VALUE)
-    @Path("/student/{studentUuid}")
-    public Response bookStudentBorrow(@PathParam("studentUuid") UUID studentUuid) {
-        return bookService.getStudentBook(studentUuid);
+    @Path("/studentCard/{studentCard}")
+    public Response bookStudentBorrow(@PathParam("studentCard") UUID studentCard) {
+        return bookService.getBooksStudentCard(studentCard);
     }
 }
