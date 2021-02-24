@@ -15,9 +15,9 @@ import java.util.UUID;
 @Service
 public class CourseService {
 
-    private CourseRepository courseRepository;
+    private final CourseRepository courseRepository;
 
-    private StudentRepository studentRepository;
+    private final StudentRepository studentRepository;
 
     @Autowired
     public CourseService(CourseRepository courseRepository, StudentRepository studentRepository) {
