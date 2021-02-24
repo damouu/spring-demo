@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.UUID;
 
 @Configuration
-public class CourseConfig {
+public class CourseConfiguration {
 
     @Bean
     CommandLineRunner lineRunner(CourseRepository courseRepository) {
