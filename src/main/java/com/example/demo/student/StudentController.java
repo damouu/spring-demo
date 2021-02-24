@@ -2,7 +2,7 @@ package com.example.demo.student;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Validated
-@Component
+@Controller
 @Path("api/student")
 public class StudentController {
 
