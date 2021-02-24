@@ -3,7 +3,7 @@ package com.example.demo.course;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
@@ -13,11 +13,11 @@ import java.util.List;
 import java.util.UUID;
 
 @Validated
-@Component
+@Controller
 @Path("api/course")
 public class CourseController {
 
-    private CourseService courseService;
+    private final CourseService courseService;
 
     @Autowired
     public CourseController(CourseService courseService) {
