@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface BookSerializable extends JpaRepository<Book, Integer> {
+public interface BookRepository extends JpaRepository<Book, Integer> {
     Optional<Book> findByUuid(UUID uuid);
 
     Optional<Collection<Book>> findAllByTotalPages(Optional<Integer> integer);
