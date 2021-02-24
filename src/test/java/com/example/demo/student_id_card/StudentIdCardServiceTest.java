@@ -13,7 +13,7 @@ import java.util.UUID;
 class StudentIdCardServiceTest {
 
     @Mock
-    private StudentIdCardSerializable studentIdCardSerializable;
+    private StudentIdCardRepository studentIdCardRepository;
 
     private StudentIdCardService studentIdCardService;
 
@@ -25,7 +25,7 @@ class StudentIdCardServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        studentIdCardService = new StudentIdCardService(studentIdCardSerializable, studentRepository);
+        studentIdCardService = new StudentIdCardService(studentIdCardRepository, studentRepository);
     }
 
     @Test
