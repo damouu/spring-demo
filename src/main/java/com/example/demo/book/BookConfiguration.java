@@ -11,10 +11,10 @@ import java.time.Month;
 import java.util.UUID;
 
 @Configuration
-public class BookCommandRunner {
+public class BookConfiguration {
 
     @Bean
-    CommandLineRunner dedede(BookSerializable bookSerializable, StudentRepository studentRepository) {
+    CommandLineRunner dedede(BookRepository bookRepository, StudentRepository studentRepository) {
         return args -> {
             Faker faker = new Faker();
             for (int i = 1; i < 100; i++) {
@@ -27,7 +27,7 @@ public class BookCommandRunner {
                         faker.book().publisher(),
                         faker.book().author(),
                         LocalDate.of(faker.number().numberBetween(1900, 2021), Month.NOVEMBER, faker.number().numberBetween(1, 31)));
-                bookSerializable.save(book);
+                bookRepository.save(book);
             }
         };
     }
