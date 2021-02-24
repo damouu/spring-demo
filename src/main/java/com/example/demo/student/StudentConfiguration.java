@@ -10,7 +10,7 @@ import java.time.Month;
 import java.util.UUID;
 
 @Configuration
-public class CommandRunner {
+public class StudentConfiguration {
 
     @Bean
     CommandLineRunner commandLineRunner(StudentRepository studentRepository) {
