@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface StudentIdCardSerializable extends JpaRepository<StudentIdCard, Integer> {
+public interface StudentIdCardRepository extends JpaRepository<StudentIdCard, Integer> {
 
     Optional<StudentIdCard> findStudentIdCardByUuid(UUID studentCardNumber);
 }
