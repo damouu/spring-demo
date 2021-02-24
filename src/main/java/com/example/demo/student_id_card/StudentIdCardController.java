@@ -17,7 +17,7 @@ import java.util.UUID;
 @Path("api/studentCard")
 public class StudentIdCardController {
 
-    private StudentIdCardService studentIdCardService;
+    private final StudentIdCardService studentIdCardService;
 
     @Autowired
     public StudentIdCardController(StudentIdCardService studentIdCardService) {
