@@ -9,10 +9,10 @@ import org.springframework.context.annotation.Configuration;
 import java.util.UUID;
 
 @Configuration
-public class StudentIdCardCommandRunner {
+public class StudentIdCardConfiguration {
 
     @Bean
-    CommandLineRunner runner(StudentIdCardSerializable serializable, StudentRepository studentRepository) {
+    CommandLineRunner runner(StudentIdCardRepository serializable, StudentRepository studentRepository) {
         return args -> {
             for (int i = 1; i < 20; i++) {
                 StudentIdCard student_idCard = new StudentIdCard(
