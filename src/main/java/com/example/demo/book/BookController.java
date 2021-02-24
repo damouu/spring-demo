@@ -3,7 +3,7 @@ package com.example.demo.book;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
@@ -14,7 +14,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Validated
-@Component
+@Controller
 @Path("api/book")
 public class BookController {
 
