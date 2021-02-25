@@ -1,5 +1,6 @@
 def clean() {
     sh "mvn clean"
+    git branch: 'RESTeasy'
 }
 
 def validate() {
