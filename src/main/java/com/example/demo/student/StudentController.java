@@ -1,7 +1,6 @@
 package com.example.demo.student;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +23,7 @@ public class StudentController {
     }
 
     @GetMapping(path = "{studentId}")
-    public ResponseEntity<?> findById(@PathVariable("studentId") Integer studentId) {
+    public Student findById(@PathVariable("studentId") Integer studentId) {
         return studentService.findById(studentId);
     }
 
