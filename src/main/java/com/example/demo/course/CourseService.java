@@ -26,8 +26,7 @@ public class CourseService {
     }
 
     public Course getCourse(UUID courseUuid) {
-        Optional<Course> course = courseRepository.findByUuid(courseUuid);
-        return course.get();
+        return courseRepository.findByUuid(courseUuid).orElseThrow(() -> new IllegalStateException("course does not exist" + courseUuid));
     }
 
     public List<Course> getCourses() {
