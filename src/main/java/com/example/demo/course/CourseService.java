@@ -39,12 +39,9 @@ public class CourseService {
     }
 
     public Response removeCourse(UUID courseUuid) {
-        if (courseRepository.findByUuid(courseUuid).isPresent()) {
-            Course course = courseRepository.findByUuid(courseUuid).get();
-            courseRepository.delete(course);
-            return Response.ok(course).status(204).build();
-        }
-        return Response.noContent().status(404).build();
+        Course course = courseRepository.findByUuid(courseUuid).orElseThrow(() -> new IllegalStateException("course does not exist"));
+        courseRepository.delete(course);
+        return Response.ok(course).status(204).build();
     }
 
     public Response updateCourse(UUID courseUuid, Course course) {
