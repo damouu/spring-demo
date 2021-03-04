@@ -45,14 +45,11 @@ public class CourseService {
     }
 
     public Response updateCourse(UUID courseUuid, Course course) {
-        if (courseRepository.findByUuid(courseUuid).isPresent()) {
-            Course optionalCourse = courseRepository.findByUuid(courseUuid).get();
-            optionalCourse.setName(course.getName());
-            optionalCourse.setcampus(course.getcampus());
-            courseRepository.save(optionalCourse);
-            return Response.ok(course).status(204).location(URI.create("http://localhost:8080/api/course/" + course.getUuid())).build();
-        }
-        return Response.noContent().status(404).build();
+        Course optionalCourse = courseRepository.findByUuid(courseUuid).orElseThrow(() -> new IllegalStateException("course does not exist"));
+        optionalCourse.setName(course.getName());
+        optionalCourse.setcampus(course.getcampus());
+        courseRepository.save(optionalCourse);
+        return Response.ok(course).status(204).location(URI.create("http://localhost:8083/api/course/" + course.getUuid())).build();
     }
 
     public Response postStudentCourse(UUID courseUuid, UUID studentUuid) {
