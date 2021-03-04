@@ -9,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.util.Collection;
@@ -48,70 +47,59 @@ public class BookService {
     }
 
     public Book getBookById(UUID bookUuid) {
-        Optional<Book> book = bookRepository.findByUuid(bookUuid);
-        return book.orElse(null);
+        return bookRepository.findByUuid(bookUuid).orElseThrow(() -> new IllegalStateException("book not found" + " " + bookUuid));
     }
 
     public Response deleteBook(UUID bookUuid) {
-        Optional<Book> book = bookRepository.findByUuid(bookUuid);
-        if (book.isPresent()) {
-            bookRepository.delete(book.get());
-            return Response.accepted().build();
-        }
-        return Response.noContent().status(404).build();
+        Book book = bookRepository.findByUuid(bookUuid).orElseThrow(() -> new IllegalStateException("book does not exist"));
+        bookRepository.delete(book);
+        return Response.accepted().build();
     }
 
     public Response insertBook(Book book) {
         bookRepository.save(book);
-        return Response.accepted(book).status(201).entity(book).location(URI.create("http://localhost:8080/api/book/" + book.getId())).build();
+        return Response.accepted(book).status(201).entity(book).location(URI.create("http://localhost:8083/api/book/" + book.getUuid())).build();
     }
 
     public Response updateBook(UUID bookUuid, Book book) {
-        if (bookRepository.findByUuid(bookUuid).isPresent()) {
-            Book optionalBook = bookRepository.findByUuid(bookUuid).get();
-            optionalBook.setAuthor(book.getAuthor());
-            optionalBook.setCreated_at(book.getCreated_at());
-            optionalBook.setGenre(book.getGenre());
-            optionalBook.setPublisher(book.getPublisher());
-            optionalBook.setTitle(book.getTitle());
-            optionalBook.setTotalPages(book.getTotalPages());
-            bookRepository.save(optionalBook);
-            return Response.ok().status(204).contentLocation(URI.create("http://localhost:8080/api/book/" + optionalBook.getId())).build();
-        }
-        return Response.noContent().status(404).build();
+        Book optionalBook = bookRepository.findByUuid(bookUuid).orElseThrow(() -> new IllegalStateException("book does not exist"));
+        optionalBook.setAuthor(book.getAuthor());
+        optionalBook.setCreated_at(book.getCreated_at());
+        optionalBook.setGenre(book.getGenre());
+        optionalBook.setPublisher(book.getPublisher());
+        optionalBook.setTitle(book.getTitle());
+        optionalBook.setTotalPages(book.getTotalPages());
+        bookRepository.save(optionalBook);
+        return Response.ok().status(204).contentLocation(URI.create("http://localhost:8083/api/book/" + optionalBook.getUuid())).build();
     }
 
     public Response insertStudentBorrowBooks(UUID bookUuid, UUID studentUuidCard) {
-        Optional<Book> book = bookRepository.findByUuid(bookUuid);
-        Optional<StudentIdCard> studentIdCard = studentIdCardRepository.findStudentIdCardByUuid(studentUuidCard);
-        if (book.isPresent() && studentIdCard.isPresent()) {
-            if (book.get().getStudentIdCard() == null) {
-                book.get().setStudentIdCard(studentIdCard.get());
-                bookRepository.save(book.get());
-                return Response.ok(book.get(), MediaType.APPLICATION_JSON_TYPE).status(201).build();
-            }
+        Book book = bookRepository.findByUuid(bookUuid).orElseThrow(() -> new IllegalStateException("book does not exist"));
+        StudentIdCard studentIdCard = studentIdCardRepository.findStudentIdCardByUuid(studentUuidCard).orElseThrow(() -> new IllegalStateException("studentIdCard does not exist" + studentUuidCard));
+        if (book.getStudentIdCard() == null) {
+            book.setStudentIdCard(studentIdCard);
+            bookRepository.save(book);
+            return Response.ok(book).status(201).build();
         }
-        return Response.status(406).build();
+        return Response.notModified().status(406).build();
     }
 
-    public Response returnStudentBorrowBooks(UUID bookUuid, UUID studentUuid) {
-        Optional<Book> book = bookRepository.findByUuid(bookUuid);
-        Optional<StudentIdCard> studentCard = studentIdCardRepository.findStudentIdCardByUuid(studentUuid);
-        if (book.isPresent() && studentCard.isPresent()) {
-            if (book.get().getStudentIdCard().getUuid().equals(studentCard.get().getUuid())) {
-                book.get().setStudentIdCard(null);
-                bookRepository.save(book.get());
-                return Response.ok(book.get(), MediaType.APPLICATION_JSON_TYPE).status(200).build();
-            }
+    public Response returnStudentBorrowBooks(UUID bookUuid, UUID studentUuidCard) {
+        Book book = bookRepository.findByUuid(bookUuid).orElseThrow(() -> new IllegalStateException("book does not exist"));
+        StudentIdCard studentIdCard = studentIdCardRepository.findStudentIdCardByUuid(studentUuidCard).orElseThrow(() -> new IllegalStateException("studentIdCard does not exist" + studentUuidCard));
+        if (book.getStudentIdCard() != null && book.getStudentIdCard().getUuid().equals(studentIdCard.getUuid())) {
+            book.setStudentIdCard(null);
+            bookRepository.save(book);
+            return Response.ok(book).status(200).build();
         }
-        return Response.status(406).build();
+        return Response.notModified().status(406).build();
     }
 
-    public Response getBooksStudentCard(UUID studentCard) {
-        Optional<StudentIdCard> studentIdCard = studentIdCardRepository.findStudentIdCardByUuid(studentCard);
-        if (studentIdCard.isPresent() && !studentIdCard.get().getBooks().isEmpty()) {
-            return Response.ok(studentIdCard.get().getBooks()).status(200).build();
+    public Response getBooksStudentCard(UUID studentUuidCard) {
+        StudentIdCard studentIdCard = studentIdCardRepository.findStudentIdCardByUuid(studentUuidCard).orElseThrow(() -> new IllegalStateException("studentIdCard does not exist" + studentUuidCard));
+        if (!studentIdCard.getBooks().isEmpty()) {
+            return Response.ok(studentIdCard.getBooks()).status(200).build();
         }
-        return Response.noContent().build();
+        return Response.noContent().status(204).build();
     }
 }
