@@ -73,8 +73,8 @@ public class CourseController {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON_VALUE)
-    @Path("/student")
-    public Response getStudentsCourse(@QueryParam("courseUuid") UUID courseUuid) {
+    @Path("/{courseUuid}/student")
+    public Response getStudentsCourse(@PathParam("courseUuid") UUID courseUuid) {
         return courseService.getStudentsCourse(courseUuid);
     }
 
