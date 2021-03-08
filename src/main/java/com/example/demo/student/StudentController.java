@@ -56,4 +56,11 @@ public class StudentController {
     public Response updateStudent(@PathParam("studentUuid") UUID studentUuid, Student student) {
         return studentService.updateStudent(studentUuid, student);
     }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON_VALUE)
+    @Path("/{studentUuid}/course")
+    public Response getCourseStudent(@PathParam("studentUuid") UUID studentUuid) {
+        return studentService.getCourseStudent(studentUuid);
+    }
 }
