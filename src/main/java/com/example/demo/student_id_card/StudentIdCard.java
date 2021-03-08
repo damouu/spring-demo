@@ -44,6 +44,7 @@ public class StudentIdCard implements Serializable {
 
     }
 
+    @JsonIgnore
     public Integer getId() {
         return id;
     }
@@ -52,14 +53,15 @@ public class StudentIdCard implements Serializable {
         this.id = id;
     }
 
-    public UUID getuuid() {
+    public UUID getUuid() {
         return uuid;
     }
 
-    public void setuuid(UUID uuid) {
+    public void setUuid(UUID uuid) {
         this.uuid = uuid;
     }
 
+    @JsonIgnore
     public Student getStudent() {
         return student;
     }
@@ -67,14 +69,6 @@ public class StudentIdCard implements Serializable {
     @JsonIgnore
     public void setStudent(Student student) {
         this.student = student;
-    }
-
-    public UUID getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
     }
 
     @JsonIgnore
