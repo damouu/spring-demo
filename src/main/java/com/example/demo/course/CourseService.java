@@ -53,16 +53,15 @@ public class CourseService {
     }
 
     public Response postStudentCourse(UUID courseUuid, UUID studentUuid) {
-        Optional<Course> course = courseRepository.findByUuid(courseUuid);
-        Optional<Student> student = studentRepository.findStudentByUuid(studentUuid);
-        if (course.isPresent() && student.isPresent()) {
-            if (!course.get().getStudents().contains(student.get())) {
-                student.get().getCourses().add(course.get());
-                this.studentRepository.save(student.get());
-                return Response.ok(course.get()).status(201).build();
-            }
+        Course course = courseRepository.findByUuid(courseUuid).orElseThrow(() -> new IllegalStateException("course does not exist"));
+        Student student = studentRepository.findStudentByUuid(studentUuid).orElseThrow(() -> new IllegalStateException("student does not exist"));
+        if (course.getStudents().stream().anyMatch(student1 -> student1.getUuid().equals(student.getUuid()))) {
+            return Response.noContent().status(406).build();
+        } else {
+            student.getCourses().add(course);
+            this.studentRepository.save(student);
+            return Response.ok(course).status(201).build();
         }
-        return Response.noContent().build();
     }
 
     public Response deleteStudentCourse(UUID courseUuid, UUID studentUuid) {
