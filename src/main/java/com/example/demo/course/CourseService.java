@@ -65,18 +65,14 @@ public class CourseService {
     }
 
     public Response deleteStudentCourse(UUID courseUuid, UUID studentUuid) {
-        Optional<Course> course = courseRepository.findByUuid(courseUuid);
-        Optional<Student> student = studentRepository.findStudentByUuid(studentUuid);
-        if (course.isPresent() && student.isPresent()) {
-            for (Student student1 : course.get().getStudents()) {
-                if (student1.getUuid().compareTo(student.get().getUuid()) == 0) {
-                    student1.getCourses().remove(course.get());
-                    this.studentRepository.save(student1);
-                    return Response.status(204).build();
-                }
-            }
+        Course course = courseRepository.findByUuid(courseUuid).orElseThrow(() -> new IllegalStateException("course does not exist"));
+        Student student = studentRepository.findStudentByUuid(studentUuid).orElseThrow(() -> new IllegalStateException("student does not exist"));
+        if (course.getStudents().stream().anyMatch(student1 -> student1.getUuid().equals(student.getUuid()))) {
+            student.getCourses().removeIf(course1 -> course1.getUuid().equals(course.getUuid()));
+            this.studentRepository.save(student);
+            return Response.status(204).build();
         }
-        return Response.status(404).build();
+        return Response.noContent().status(406).build();
     }
 
     public Response getStudentsCourse(UUID courseUuid) {
