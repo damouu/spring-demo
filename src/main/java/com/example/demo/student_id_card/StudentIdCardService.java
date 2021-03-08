@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -28,9 +27,9 @@ public class StudentIdCardService {
         return studentIdCardRepository.findAll();
     }
 
-    public Student getStudentIdCard(UUID studentCardNumber) {
-        Optional<StudentIdCard> studentIdCardByCardNumber = studentIdCardRepository.findStudentIdCardByUuid(studentCardNumber);
-        return studentIdCardByCardNumber.map(StudentIdCard::getStudent).orElse(null);
+    public Response getStudentIdCard(UUID studentCardNumber) {
+        StudentIdCard studentIdCard = this.studentIdCardRepository.findStudentIdCardByUuid(studentCardNumber).orElseThrow(() -> new IllegalStateException("student card does not exist"));
+        return Response.ok(studentIdCard.getStudent()).status(200).build();
     }
 
     public Response deleteStudentIdCard(UUID studentCardNumber) {
