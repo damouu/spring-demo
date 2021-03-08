@@ -43,14 +43,10 @@ public class StudentIdCardService {
     }
 
     public Response createStudentIdCard(UUID studentUuid) {
-        Optional<Student> optionalStudent = studentRepository.findStudentByUuid(studentUuid);
-        if (optionalStudent.isPresent()) {
-            int studentIdCardLast = Math.toIntExact(studentIdCardRepository.count());
-            StudentIdCard studentIdCard = new StudentIdCard(studentIdCardLast + 1, UUID.randomUUID());
-            studentIdCard.setStudent(optionalStudent.get());
-            studentIdCardRepository.save(studentIdCard);
-            return Response.ok(studentIdCard).status(202).contentLocation(URI.create("http://localhost/api/studentCard/" + studentIdCard.getuuid())).build();
-        }
-        return Response.notModified().build();
+        Student student = this.studentRepository.findStudentByUuid(studentUuid).orElseThrow(() -> new IllegalStateException("student does not exist"));
+        StudentIdCard studentIdCard = new StudentIdCard(Math.toIntExact(studentIdCardRepository.count()) + 1, UUID.randomUUID());
+        studentIdCard.setStudent(student);
+        studentIdCardRepository.save(studentIdCard);
+        return Response.ok().status(202).contentLocation(URI.create("http://localhost:8083/api/studentCard/" + studentIdCard.getuuid())).build();
     }
 }
