@@ -68,7 +68,8 @@ public class CourseController {
 
     @DELETE
     @Produces(MediaType.APPLICATION_JSON_VALUE)
-    public Response deleteStudentCourse(@QueryParam("courseUuid") UUID courseUuid, @QueryParam("studentUuid") UUID studentUuid) {
+    @Path("/{courseUuid}/student/{studentUuid}")
+    public Response deleteStudentCourse(@PathParam("courseUuid") UUID courseUuid, @PathParam("studentUuid") UUID studentUuid) {
         return courseService.deleteStudentCourse(courseUuid, studentUuid);
     }
 
