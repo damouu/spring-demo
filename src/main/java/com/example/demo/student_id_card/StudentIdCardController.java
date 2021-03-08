@@ -46,7 +46,8 @@ public class StudentIdCardController {
 
     @POST
     @Produces(MediaType.APPLICATION_JSON_VALUE)
-    public Response createStudentIdCard(@QueryParam("studentId") UUID studentUuid) {
+    @Path("/student/{studentUuid}")
+    public Response createStudentIdCard(@PathParam("studentUuid") UUID studentUuid) {
         return studentIdCardService.createStudentIdCard(studentUuid);
     }
 
