@@ -34,12 +34,9 @@ public class StudentIdCardService {
     }
 
     public Response deleteStudentIdCard(UUID studentCardNumber) {
-        Optional<StudentIdCard> studentIdCard = studentIdCardRepository.findStudentIdCardByUuid(studentCardNumber);
-        if (studentIdCard.isPresent()) {
-            studentIdCardRepository.delete(studentIdCard.get());
-            return Response.ok(studentIdCard.get()).status(204).build();
-        }
-        return Response.noContent().status(404).build();
+        StudentIdCard studentIdCard = this.studentIdCardRepository.findStudentIdCardByUuid(studentCardNumber).orElseThrow(() -> new IllegalStateException("student card does not exist"));
+        studentIdCardRepository.delete(studentIdCard);
+        return Response.ok().status(204).build();
     }
 
     public Response createStudentIdCard(UUID studentUuid) {
