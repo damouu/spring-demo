@@ -60,4 +60,9 @@ public class StudentService {
         }
         return Response.notModified().status(404).build();
     }
+
+    public Response getCourseStudent(UUID studentUuid) {
+        Student student = studentRepository.findStudentByUuid(studentUuid).orElseThrow(() -> new IllegalStateException("provided studentUuid does not exist"));
+        return Response.ok(student.getCourses()).status(200).build();
+    }
 }
