@@ -8,7 +8,6 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
-import java.util.List;
 import java.util.UUID;
 
 @Validated
@@ -25,8 +24,8 @@ public class StudentIdCardController {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON_VALUE)
-    public List<StudentIdCard> getStudentIdCards() {
-        return studentIdCardService.getStudentIdCards();
+    public Response getStudentIdCards(@DefaultValue("0") @QueryParam("page") int page, @DefaultValue("5") @QueryParam("size") int size) {
+        return studentIdCardService.getStudentIdCards(page, size);
     }
 
     @GET
