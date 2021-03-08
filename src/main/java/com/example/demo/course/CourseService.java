@@ -76,11 +76,8 @@ public class CourseService {
     }
 
     public Response getStudentsCourse(UUID courseUuid) {
-        Optional<Course> course = courseRepository.findByUuid(courseUuid);
-        if (course.isEmpty()) {
-            return Response.ok(course.get().getStudents()).status(200).build();
-        }
-        return Response.status(404).build();
+        Course course = courseRepository.findByUuid(courseUuid).orElseThrow(() -> new IllegalStateException("course does not exist"));
+        return Response.ok(course.getStudents()).status(200).build();
     }
 
 
