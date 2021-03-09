@@ -11,6 +11,7 @@ import org.mockito.MockitoAnnotations;
 
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,15 +42,7 @@ class CourseServiceTest {
         Assertions.assertEquals(course1, course);*/
     }
 
-    @Test
-    void getCourses() {
-        List<Course> courses = new ArrayList<>();
-        Course course = new Course(1, UUID.randomUUID(), "dede", "campus", "dede_univ");
-        courses.add(course);
-        Mockito.when(courseService.getCourses()).thenReturn(courses);
-        List<Course> courses1 = courseService.getCourses();
-        Assertions.assertFalse(courses1.isEmpty());
-    }
+
 
     @Test
     void createCourse() {
