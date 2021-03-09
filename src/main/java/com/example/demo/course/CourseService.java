@@ -3,12 +3,14 @@ package com.example.demo.course;
 import com.example.demo.student.Student;
 import com.example.demo.student.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -29,8 +31,10 @@ public class CourseService {
         return courseRepository.findByUuid(courseUuid).orElseThrow(() -> new IllegalStateException("course does not exist" + courseUuid));
     }
 
-    public List<Course> getCourses() {
-        return courseRepository.findAll();
+    public Collection<Course> getCourses(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Course> courses = courseRepository.findAll(pageable);
+        return courses.toList();
     }
 
     public Response createCourse(Course course) {
