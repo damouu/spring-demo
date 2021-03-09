@@ -32,15 +32,15 @@ public class StudentController {
     @GET
     @Path("/{studentUuid}")
     @Produces(MediaType.APPLICATION_JSON_VALUE)
-    public Response getStudent(@PathParam("studentUuid") UUID studentUuid) {
+    public Student getStudent(@PathParam("studentUuid") UUID studentUuid) {
         return studentService.getStudent(studentUuid);
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @Produces(MediaType.APPLICATION_JSON_VALUE)
-    public Response inertNewStudent(@Valid Student student) {
-        return studentService.addNewStudent(student);
+    public Student postStudent(@Valid Student student) {
+        return studentService.postStudent(student);
     }
 
     @DELETE
