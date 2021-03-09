@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -38,13 +38,9 @@ public class StudentService {
     }
 
     public Response deleteStudent(UUID studentUuid) {
-        try {
-            Optional<Student> student = studentRepository.findStudentByUuid(studentUuid);
-            studentRepository.delete(student.get());
-            return Response.noContent().status(204).build();
-        } catch (Exception exception) {
-            return Response.noContent().status(404).language(String.valueOf(exception)).build();
-        }
+        Student student = studentRepository.findStudentByUuid(studentUuid).orElseThrow(() -> new EntityNotFoundException("student does not exist"));
+        studentRepository.delete(student);
+        return Response.accepted().status(204).build();
     }
 
     public Response updateStudent(UUID studentUuid, Student student) {
