@@ -23,7 +23,6 @@ public class Course {
     private Integer id;
 
     @Column(name = "uuid", nullable = false, columnDefinition = "UUID")
-    @NotNull
     private UUID uuid;
 
     @Column(nullable = false, name = "name", columnDefinition = "TEXT")
