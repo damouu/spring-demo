@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.ws.rs.core.Response;
-import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,17 +42,12 @@ public class StudentService {
         return Response.accepted().status(204).build();
     }
 
-    public Response updateStudent(UUID studentUuid, Student student) {
-        if (studentRepository.findStudentByUuid(studentUuid).isPresent()) {
-            Student student1 = studentRepository.findStudentByUuid(studentUuid).get();
-            student1.setName(student.getName());
-            student1.setDob(student.getDob());
-            student1.setEmail(student.getEmail());
-            student1.setUuid(studentUuid);
-            studentRepository.save(student1);
-            return Response.ok(student).status(204).contentLocation(URI.create("http://localhost:8080/api/student/" + student1.getUuid())).build();
-        }
-        return Response.notModified().status(404).build();
+    public Student updateStudent(UUID studentUuid, Student student) {
+        Student student1 = studentRepository.findStudentByUuid(studentUuid).orElseThrow(() -> new EntityNotFoundException("invalid uuid"));
+        student1.setName(student.getName());
+        student1.setDob(student.getDob());
+        student1.setEmail(student.getEmail());
+        return studentRepository.save(student1);
     }
 
     public Response getCourseStudent(UUID studentUuid) {
