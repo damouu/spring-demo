@@ -1,12 +1,15 @@
 package com.example.demo.student;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.ws.rs.core.Response;
-import java.util.List;
+import java.util.Collection;
 import java.util.UUID;
 
 @Service
@@ -19,8 +22,10 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
-    public List<Student> allStudents() {
-        return studentRepository.findAll();
+    public Collection<Student> allStudents(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Student> pages = studentRepository.findAll(pageable);
+        return pages.toList();
     }
 
     public Student getStudent(UUID studentUuid) {
