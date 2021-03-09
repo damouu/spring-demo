@@ -53,7 +53,7 @@ public class StudentController {
     @Path("/{studentUuid}")
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @Produces(MediaType.APPLICATION_JSON_VALUE)
-    public Response updateStudent(@PathParam("studentUuid") UUID studentUuid, Student student) {
+    public Student updateStudent(@PathParam("studentUuid") UUID studentUuid, @Valid Student student) {
         return studentService.updateStudent(studentUuid, student);
     }
 
