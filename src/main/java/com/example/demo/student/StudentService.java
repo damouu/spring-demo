@@ -24,9 +24,9 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
-    public Student getStudent(UUID studentUuid) {
-        Optional<Student> optionalStudent = studentRepository.findStudentByUuid(studentUuid);
-        return optionalStudent.orElse(null);
+    public Response getStudent(UUID studentUuid) {
+        Student student = studentRepository.findStudentByUuid(studentUuid).orElseThrow(() -> new IllegalStateException("student does not exist"));
+        return Response.ok(student).status(200).build();
     }
 
     public Response addNewStudent(Student student) {
