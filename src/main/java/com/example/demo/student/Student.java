@@ -34,7 +34,6 @@ public class Student {
     private Integer id;
 
     @Column(nullable = false, columnDefinition = "UUID", name = "uuid")
-    @NotNull
     private UUID uuid;
 
     @Column(nullable = false, name = "name")
