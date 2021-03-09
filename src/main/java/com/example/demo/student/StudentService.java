@@ -3,6 +3,7 @@ package com.example.demo.student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityExistsException;
 import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.util.List;
@@ -14,7 +15,6 @@ public class StudentService {
 
     private final StudentRepository studentRepository;
 
-
     @Autowired
     public StudentService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
@@ -24,18 +24,17 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
-    public Response getStudent(UUID studentUuid) {
-        Student student = studentRepository.findStudentByUuid(studentUuid).orElseThrow(() -> new IllegalStateException("student does not exist"));
-        return Response.ok(student).status(200).build();
+    public Student getStudent(UUID studentUuid) {
+        return studentRepository.findStudentByUuid(studentUuid).orElseThrow(() -> new IllegalArgumentException("student does not exist") {
+        });
     }
 
-    public Response addNewStudent(Student student) {
-        Optional<Student> studentsByEmail = studentRepository.findStudentsByEmail(student.getEmail());
-        if (studentsByEmail.isPresent()) {
-            return Response.status(400).build();
-        }
-        studentRepository.save(student);
-        return Response.ok(student).status(201).contentLocation(URI.create("http://localhost:8080/api/student/" + student.getUuid())).build();
+    public Student postStudent(Student student) {
+        studentRepository.findStudentsByEmail(student.getEmail()).ifPresent(student1 -> {
+            throw new EntityExistsException("invalid email address");
+        });
+        student.setUuid(UUID.randomUUID());
+        return studentRepository.save(student);
     }
 
     public Response deleteStudent(UUID studentUuid) {
