@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.util.Collection;
@@ -28,7 +29,7 @@ public class CourseService {
     }
 
     public Course getCourse(UUID courseUuid) {
-        return courseRepository.findByUuid(courseUuid).orElseThrow(() -> new IllegalStateException("course does not exist" + courseUuid));
+        return courseRepository.findByUuid(courseUuid).orElseThrow(() -> new EntityNotFoundException("invalid course"));
     }
 
     public Collection<Course> getCourses(int page, int size) {
