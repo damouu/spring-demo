@@ -9,7 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
-import java.util.List;
+import java.util.Collection;
 import java.util.UUID;
 
 @Validated
@@ -33,8 +33,8 @@ public class CourseController {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON_VALUE)
-    public List<Course> getCourses() {
-        return courseService.getCourses();
+    public Collection<Course> getCourses(@DefaultValue("0") @QueryParam("page") int page, @DefaultValue("5") @QueryParam("size") int size) {
+        return courseService.getCourses(page, size);
     }
 
     @POST
