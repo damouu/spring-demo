@@ -8,7 +8,7 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
-import java.util.List;
+import java.util.Collection;
 import java.util.UUID;
 
 @Validated
@@ -25,8 +25,8 @@ public class StudentController {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON_VALUE)
-    public List<Student> allStudents() {
-        return studentService.allStudents();
+    public Collection<Student> allStudents(@DefaultValue("0") @QueryParam("page") int page, @DefaultValue("5") @QueryParam("size") int sort) {
+        return studentService.allStudents(page, sort);
     }
 
     @GET
