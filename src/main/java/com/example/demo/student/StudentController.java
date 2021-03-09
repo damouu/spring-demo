@@ -32,7 +32,7 @@ public class StudentController {
     @GET
     @Path("/{studentUuid}")
     @Produces(MediaType.APPLICATION_JSON_VALUE)
-    public Student getStudent(@PathParam("studentUuid") UUID studentUuid) {
+    public Response getStudent(@PathParam("studentUuid") UUID studentUuid) {
         return studentService.getStudent(studentUuid);
     }
 
