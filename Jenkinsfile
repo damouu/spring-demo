@@ -46,16 +46,8 @@ pipeline {
             }
             post {
                 failure {
-                    emailext subject: '$DEFAULT_SUBJECT',
-                            body: '$DEFAULT_CONTENT',
-                            recipientProviders:
-                    [
-                            [$class: 'CulpritsRecipientProvider'],
-                            [$class: 'DevelopersRecipientProvider'],
-                            [$class: 'RequesterRecipientProvider']
-                    ] ,
-                    replyTo: '$DEFAULT_REPLYTO' ,
-                    to: '$DEFAULT_RECIPIENTS'
+                    echo: "send email again" ,
+                    emailext body: 'A Test EMail', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Test'
                 }
             }
         }
