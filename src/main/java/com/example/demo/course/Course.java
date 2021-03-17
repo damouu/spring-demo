@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -20,22 +22,31 @@ public class Course {
     @SequenceGenerator(name = "course_sequence", allocationSize = 1, sequenceName = "course_sequence")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "course_sequence")
     @Column(updatable = false)
+    @Getter(onMethod = @__(@JsonIgnore)) // generate the getter with the specific annotation.
+    @Setter
     private Integer id;
 
     @Column(name = "uuid", nullable = false, columnDefinition = "UUID")
+    @Getter
+    @Setter
     private UUID uuid;
 
     @Column(nullable = false, name = "name", columnDefinition = "TEXT")
     @NotNull
+    @Getter
+    @Setter
     private String name;
-
 
     @Column(nullable = false, name = "campus", columnDefinition = "TEXT")
     @NotNull
+    @Getter
+    @Setter
     private String campus;
 
     @Column(nullable = false, name = "university", columnDefinition = "TEXT")
     @NotNull
+    @Getter
+    @Setter
     private String university;
 
     @ManyToMany(fetch = FetchType.EAGER,
@@ -44,6 +55,8 @@ public class Course {
                     CascadeType.ALL
             },
             mappedBy = "courses")
+    @Getter(onMethod = @__(@JsonIgnore)) // generate the getter with the specific annotation.
+    @Setter
     protected Set<Student> students = new HashSet<>();
 
     @JsonCreator
@@ -56,51 +69,5 @@ public class Course {
     }
 
     public Course() {
-    }
-
-    @JsonIgnore
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public UUID getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getcampus() {
-        return campus;
-    }
-
-    public void setcampus(String campus) {
-        this.campus = campus;
-    }
-
-    public String getuniversity() { return university; }
-
-    public void setuniversity(String university) { this.university = university; }
-
-    @JsonIgnore
-    public Set<Student> getStudents() {
-        return students;
-    }
-
-    public void setStudents(Set<Student> students) {
-        this.students = students;
     }
 }
