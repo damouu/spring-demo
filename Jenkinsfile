@@ -58,7 +58,7 @@ pipeline {
             }
             post {
                 success {
-                    emailext body: 'Test failed', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Test'
+                    emailext body: 'A Test EMail', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Test'
                     script {
                         groovy.deleteJarFile()
                     }
