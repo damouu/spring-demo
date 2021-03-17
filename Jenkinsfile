@@ -44,6 +44,11 @@ pipeline {
                     groovy.test()
                 }
             }
+            post {
+                failure {
+                    emailext body: 'A Test EMail', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Test'
+                }
+            }
         }
         stage('Deploy') {
             when {
@@ -57,8 +62,10 @@ pipeline {
                 }
             }
             post {
+                always {
+                    emailext body: 'A DEDE EMail', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Test'
+                }
                 success {
-                    emailext body: 'A Test EMail', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Test'
                     script {
                         groovy.deleteJarFile()
                     }
