@@ -9,6 +9,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -23,35 +25,53 @@ public class Book {
     @SequenceGenerator(name = "book_sequence", allocationSize = 1, sequenceName = "book_sequence")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_sequence")
     @Column(updatable = false, nullable = false)
+    @Getter(onMethod = @__(@JsonIgnore)) // generate the getter with the specific annotation.
+    @Setter
     private Integer id;
 
     @Column(nullable = false, columnDefinition = "UUID", name = "uuid")
     @NotNull
+    @Getter
+    @Setter
     private UUID uuid;
 
     @Column(name = "title", nullable = false)
+    @Getter
+    @Setter
     private String title;
 
     @Column(name = "genre", nullable = false)
+    @Getter
+    @Setter
     private String genre;
 
     @Column(name = "totalPages", nullable = false)
+    @Getter
+    @Setter
     private Integer totalPages;
 
     @Column(name = "publisher", nullable = false)
+    @Getter
+    @Setter
     private String publisher;
 
     @Column(name = "author", nullable = false)
+    @Getter
+    @Setter
     private String author;
 
     @Column(name = "created_at", nullable = false, columnDefinition = "Date")
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
     @NotNull
+    @Getter(onMethod = @__(@JsonIgnore)) // generate the getter with the specific annotation.
+    @Setter
     private LocalDate created_at;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "studentUuidCard", referencedColumnName = "uuid")
+    @Getter(onMethod = @__(@JsonIgnore)) // generate the getter with the specific annotation.
+    @Setter
     private StudentIdCard studentIdCard;
 
     @JsonCreator
@@ -74,80 +94,5 @@ public class Book {
     }
 
     public Book() {
-
-    }
-
-    @JsonIgnore
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public UUID getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getGenre() {
-        return genre;
-    }
-
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
-
-    public Integer getTotalPages() {
-        return totalPages;
-    }
-
-    public void setTotalPages(Integer totalPages) {
-        this.totalPages = totalPages;
-    }
-
-    public String getPublisher() {
-        return publisher;
-    }
-
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    @JsonIgnore
-    public StudentIdCard getStudentIdCard() {
-        return studentIdCard;
-    }
-
-    public void setStudentIdCard(StudentIdCard studentIdCard) {
-        this.studentIdCard = studentIdCard;
-    }
-
-    public LocalDate getCreated_at() {
-        return created_at;
-    }
-
-    public void setCreated_at(LocalDate created_at) {
-        this.created_at = created_at;
     }
 }
