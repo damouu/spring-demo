@@ -31,9 +31,11 @@ class StudentServiceTest {
     void getStudent() {
         Student student = new Student(1, UUID.randomUUID(), "dede", LocalDate.of(2020, 12, 12),
                 "dede@fdp.com");
+        Student student1 = new Student(1, UUID.randomUUID(), "dede", LocalDate.of(2020, 12, 12),
+                "dede@fdp.com");
         Mockito.when(studentRepository.findStudentByUuid(student.getUuid())).thenReturn(Optional.of(student));
         Mockito.when(studentRepository.findById(student.getId())).thenReturn(Optional.of(student));
-        Assertions.assertEquals(student, studentService.getStudent(student.getUuid()));
+        Assertions.assertEquals(student1, studentService.getStudent(student.getUuid()));
     }
 
     @Test
