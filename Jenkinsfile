@@ -47,7 +47,7 @@ pipeline {
             post {
                 failure {
                     echo "send email again"
-                    emailext body: 'A Test EMail', recipientProviders: [['mouadsehbaoui@gmail.com']], subject: 'Test', to: 'mouadsehbaoui@gmail.com'
+                    emailext body: 'Test Message', subject: 'Test Subject', to: 'mouadsehbaoui@gmail.com'
                 }
             }
         }
