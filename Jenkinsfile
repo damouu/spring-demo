@@ -46,8 +46,16 @@ pipeline {
             }
             post {
                 failure {
-                    echo 'Send Email Again'
-                    mail bcc: '', body: "<b>Example</b><br>\n\<br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> URL de build: ${env.BUILD_URL}", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "ERROR CI: Project name -> ${env.JOB_NAME}", to: "mouadsehbaoui@gmail.com";
+                    emailext subject: '$DEFAULT_SUBJECT',
+                            body: '$DEFAULT_CONTENT',
+                            recipientProviders:
+                    [
+                            [$class: 'CulpritsRecipientProvider'],
+                            [$class: 'DevelopersRecipientProvider'],
+                            [$class: 'RequesterRecipientProvider']
+                    ] ,
+                    replyTo: '$DEFAULT_REPLYTO' ,
+                    to: '$DEFAULT_RECIPIENTS'
                 }
             }
         }
