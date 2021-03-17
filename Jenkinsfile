@@ -46,7 +46,7 @@ pipeline {
             }
             post {
                 failure {
-                    echo: "send email again" ,
+                    echo "send email again"
                     emailext body: 'A Test EMail', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Test'
                 }
             }
