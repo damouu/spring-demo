@@ -43,10 +43,6 @@ pipeline {
                 script {
                     groovy.test()
                 }
-            } post {
-                failure {
-                    emailext body: 'Test failed', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Test'
-                }
             }
         }
         stage('Deploy') {
