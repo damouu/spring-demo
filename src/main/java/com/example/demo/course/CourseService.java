@@ -52,7 +52,7 @@ public class CourseService {
     public Response updateCourse(UUID courseUuid, Course course) {
         Course optionalCourse = courseRepository.findByUuid(courseUuid).orElseThrow(() -> new IllegalStateException("course does not exist"));
         optionalCourse.setName(course.getName());
-        optionalCourse.setcampus(course.getcampus());
+        optionalCourse.setCampus(course.getCampus());
         courseRepository.save(optionalCourse);
         return Response.ok(course).status(204).location(URI.create("http://localhost:8083/api/course/" + course.getUuid())).build();
     }
