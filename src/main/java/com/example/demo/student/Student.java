@@ -89,8 +89,7 @@ public class Student {
 
 
     @JsonCreator
-    public Student(@JsonProperty("id") Integer id, @JsonProperty("uuid") UUID uuid, @JsonProperty("name") String name, @JsonProperty("dob") LocalDate dob, @JsonProperty("email") String email) {
-        this.id = id;
+    public Student(@JsonProperty("uuid") UUID uuid, @JsonProperty("name") String name, @JsonProperty("dob") LocalDate dob, @JsonProperty("email") String email) {
         this.uuid = uuid;
         this.name = name;
         this.dob = dob;
