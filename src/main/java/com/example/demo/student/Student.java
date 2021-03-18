@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -27,7 +28,7 @@ import java.util.UUID;
         @UniqueConstraint(columnNames = {"email", "email"}, name = "student_email_unique"),
         @UniqueConstraint(columnNames = {"uuid", "uuid"}, name = "student_uuid_unique")
 })
-
+@NoArgsConstructor
 public class Student {
     @Id
     @SequenceGenerator(name = "student_sequence", allocationSize = 1, sequenceName = "student_sequence")
@@ -94,8 +95,5 @@ public class Student {
         this.name = name;
         this.dob = dob;
         this.email = email;
-    }
-
-    public Student() {
     }
 }
