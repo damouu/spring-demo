@@ -16,7 +16,6 @@ public class CourseConfiguration {
             Faker faker = new Faker();
             for (int i = 1; i < 50; i++) {
                 Course course = new Course(
-                        i,
                         UUID.randomUUID(),
                         faker.educator().course(),
                         faker.educator().campus(),
