@@ -1,7 +1,6 @@
 package com.example.demo.course;
 
 import com.example.demo.student.StudentRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -10,9 +9,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 
 class CourseServiceTest {
@@ -34,7 +30,7 @@ class CourseServiceTest {
     @Test
     void getCourse() {
         UUID uuid = UUID.randomUUID();
-        Course course = new Course(1, uuid, "dede", "campus", "dede_univ");
+        Course course = new Course(uuid, "dede", "campus", "dede_univ");
      /*   Mockito.when(courseService.getCourse(course.getUuid())).thenReturn(course);
         Mockito.when(courseRepository.findByUuid(course.getUuid())).thenReturn(Optional.of(course));
         Mockito.verify(courseRepository).findByUuid(courseArgumentCaptor.capture().getUuid());
@@ -43,12 +39,11 @@ class CourseServiceTest {
     }
 
 
-
     @Test
     void createCourse() {
-        Course course = new Course(1, UUID.randomUUID(), "dede", "campus", "dede_univ");
+        Course course = new Course(UUID.randomUUID(), "dede", "campus", "dede_univ");
         ArgumentCaptor<Course> courseArgumentCaptor = ArgumentCaptor.forClass(Course.class);
-        Mockito.when(courseService.createCourse(course)).thenReturn(Response.accepted().build());
+        Mockito.when(courseService.postCourse(course)).thenReturn(Response.accepted().build());
     }
 
     @Test
