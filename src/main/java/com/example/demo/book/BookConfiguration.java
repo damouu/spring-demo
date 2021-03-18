@@ -19,7 +19,6 @@ public class BookConfiguration {
             Faker faker = new Faker();
             for (int i = 1; i < 100; i++) {
                 Book book = new Book(
-                        i,
                         UUID.randomUUID(),
                         faker.book().title(),
                         faker.book().genre(),
