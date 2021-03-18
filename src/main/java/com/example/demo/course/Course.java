@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @JsonInclude(JsonInclude.Include.NON_NULL)    //  ignore all null fields
 @Entity(name = "course")
 @Table(name = "course", uniqueConstraints = {@UniqueConstraint(columnNames = {"uuid", "uuid"}, name = "uuid")})
+@NoArgsConstructor
 public class Course {
     @Id
     @SequenceGenerator(name = "course_sequence", allocationSize = 1, sequenceName = "course_sequence")
@@ -66,8 +68,5 @@ public class Course {
         this.name = name;
         this.campus = campus;
         this.university = university;
-    }
-
-    public Course() {
     }
 }
