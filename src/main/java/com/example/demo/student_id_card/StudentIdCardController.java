@@ -1,7 +1,7 @@
 package com.example.demo.student_id_card;
 
+import lombok.Data;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -12,15 +12,11 @@ import java.util.UUID;
 
 @Validated
 @Controller
+@Data
 @Path("api/studentCard")
 public class StudentIdCardController {
 
     private final StudentIdCardService studentIdCardService;
-
-    @Autowired
-    public StudentIdCardController(StudentIdCardService studentIdCardService) {
-        this.studentIdCardService = studentIdCardService;
-    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON_VALUE)
