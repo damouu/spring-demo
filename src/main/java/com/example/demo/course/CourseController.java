@@ -40,15 +40,15 @@ public class CourseController {
     @POST
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @Produces(MediaType.APPLICATION_JSON_VALUE)
-    public Response createCourse(@Valid Course course) {
-        return courseService.createCourse(course);
+    public Response postCourse(@Valid Course course) {
+        return courseService.postCourse(course);
     }
 
     @DELETE
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     @Path("/{courseUuid}")
     public Response deleteCourse(@PathParam("courseUuid") UUID courseUuid) {
-        return courseService.removeCourse(courseUuid);
+        return courseService.deleteCourse(courseUuid);
     }
 
     @PUT
