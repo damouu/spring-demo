@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -20,6 +21,7 @@ import java.util.UUID;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity(name = "book")
 @Table(name = "book", uniqueConstraints = {@UniqueConstraint(name = "book_uuid", columnNames = "uuid")})
+@NoArgsConstructor
 public class Book {
     @Id
     @SequenceGenerator(name = "book_sequence", allocationSize = 1, sequenceName = "book_sequence")
@@ -91,8 +93,5 @@ public class Book {
         this.publisher = publisher;
         this.author = author;
         this.created_at = created_at;
-    }
-
-    public Book() {
     }
 }
