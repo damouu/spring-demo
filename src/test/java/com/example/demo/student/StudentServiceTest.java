@@ -29,7 +29,7 @@ class StudentServiceTest {
 
     @Test
     void getStudent() {
-        Student student = new Student(1, UUID.randomUUID(), "dede", LocalDate.of(2020, 12, 12),
+        Student student = new Student(UUID.randomUUID(), "dede", LocalDate.of(2020, 12, 12),
                 "dede@fdp.com");
         Mockito.when(studentRepository.findStudentByUuid(student.getUuid())).thenReturn(Optional.of(student));
         Mockito.when(studentRepository.findById(student.getId())).thenReturn(Optional.of(student));
@@ -38,7 +38,7 @@ class StudentServiceTest {
 
     @Test
     void deleteStudent() {
-        Student student = new Student(1, UUID.randomUUID(), "dede", LocalDate.of(2020, 12, 12),
+        Student student = new Student(UUID.randomUUID(), "dede", LocalDate.of(2020, 12, 12),
                 "dede@fdp.com");
         ArgumentCaptor<Student> captor = ArgumentCaptor.forClass(Student.class);
     }
