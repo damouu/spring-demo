@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -18,6 +19,7 @@ import java.util.UUID;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity(name = "Student_id_card")
 @Table(name = "Student_id_card", uniqueConstraints = @UniqueConstraint(columnNames = {"uuid", "uuid"}, name = "student_card_uuid_unique"))
+@NoArgsConstructor
 public class StudentIdCard implements Serializable {
     @Id
     @Column(unique = true, updatable = false, nullable = false)
@@ -48,9 +50,5 @@ public class StudentIdCard implements Serializable {
     public StudentIdCard(@JsonProperty("id") Integer id, @JsonProperty("uuid") UUID uuid) {
         this.id = id;
         this.uuid = uuid;
-    }
-
-    public StudentIdCard() {
-
     }
 }
