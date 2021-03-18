@@ -62,8 +62,7 @@ public class Course {
     protected Set<Student> students = new HashSet<>();
 
     @JsonCreator
-    public Course(@JsonProperty("id") Integer id, @JsonProperty("uuid") UUID uuid, @JsonProperty("name") String name, @JsonProperty("campus") String campus, @JsonProperty("university") String university) {
-        this.id = id;
+    public Course(@JsonProperty("uuid") UUID uuid, @JsonProperty("name") String name, @JsonProperty("campus") String campus, @JsonProperty("university") String university) {
         this.uuid = uuid;
         this.name = name;
         this.campus = campus;
