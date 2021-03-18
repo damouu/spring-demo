@@ -2,7 +2,7 @@ package com.example.demo.student_id_card;
 
 import com.example.demo.student.Student;
 import com.example.demo.student.StudentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.Data;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,17 +14,12 @@ import java.net.URI;
 import java.util.UUID;
 
 @Service
+@Data
 public class StudentIdCardService {
 
     private final StudentIdCardRepository studentIdCardRepository;
 
     private final StudentRepository studentRepository;
-
-    @Autowired
-    public StudentIdCardService(StudentIdCardRepository studentIdCardRepository, StudentRepository studentRepository) {
-        this.studentIdCardRepository = studentIdCardRepository;
-        this.studentRepository = studentRepository;
-    }
 
     public Response getStudentIdCards(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
