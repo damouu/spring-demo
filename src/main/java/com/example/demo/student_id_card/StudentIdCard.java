@@ -47,8 +47,7 @@ public class StudentIdCard implements Serializable {
     private Set<Book> books;
 
     @JsonCreator
-    public StudentIdCard(@JsonProperty("id") Integer id, @JsonProperty("uuid") UUID uuid) {
-        this.id = id;
+    public StudentIdCard(@JsonProperty("uuid") UUID uuid) {
         this.uuid = uuid;
     }
 }
