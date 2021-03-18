@@ -2,7 +2,7 @@ package com.example.demo.book;
 
 import com.example.demo.student_id_card.StudentIdCard;
 import com.example.demo.student_id_card.StudentIdCardRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.Data;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,17 +16,12 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Data
 public class BookService {
 
     private final BookRepository bookRepository;
 
     private final StudentIdCardRepository studentIdCardRepository;
-
-    @Autowired
-    public BookService(BookRepository bookRepository, StudentIdCardRepository studentIdCardRepository) {
-        this.bookRepository = bookRepository;
-        this.studentIdCardRepository = studentIdCardRepository;
-    }
 
     public Collection<Book> getBooks(int page, int size, Optional<Integer> totalPages, @QueryParam("genre") Optional<String> genre) {
         Pageable pageable = PageRequest.of(page, size);
