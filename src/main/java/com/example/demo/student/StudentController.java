@@ -1,6 +1,6 @@
 package com.example.demo.student;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.Data;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -13,15 +13,11 @@ import java.util.UUID;
 
 @Validated
 @Controller
+@Data
 @Path("api/student")
 public class StudentController {
 
     private final StudentService studentService;
-
-    @Autowired
-    public StudentController(StudentService studentService) {
-        this.studentService = studentService;
-    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON_VALUE)
