@@ -38,12 +38,13 @@ public class CourseService {
         return courses.toList();
     }
 
-    public Response createCourse(Course course) {
+    public Response postCourse(Course course) {
+        course.setUuid(UUID.randomUUID());
         courseRepository.save(course);
-        return Response.ok(course).status(201).contentLocation(URI.create("http://localhost:8080/api/course/" + course.getUuid())).build();
+        return Response.ok(course).status(201).contentLocation(URI.create("http://localhost:8083/api/course/" + course.getUuid())).build();
     }
 
-    public Response removeCourse(UUID courseUuid) {
+    public Response deleteCourse(UUID courseUuid) {
         Course course = courseRepository.findByUuid(courseUuid).orElseThrow(() -> new IllegalStateException("course does not exist"));
         courseRepository.delete(course);
         return Response.ok(course).status(204).build();
