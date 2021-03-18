@@ -2,7 +2,7 @@ package com.example.demo.course;
 
 import com.example.demo.student.Student;
 import com.example.demo.student.StudentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.Data;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,17 +16,12 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Data
 public class CourseService {
 
     private final CourseRepository courseRepository;
 
     private final StudentRepository studentRepository;
-
-    @Autowired
-    public CourseService(CourseRepository courseRepository, StudentRepository studentRepository) {
-        this.courseRepository = courseRepository;
-        this.studentRepository = studentRepository;
-    }
 
     public Course getCourse(UUID courseUuid) {
         return courseRepository.findByUuid(courseUuid).orElseThrow(() -> new EntityNotFoundException("invalid course"));
