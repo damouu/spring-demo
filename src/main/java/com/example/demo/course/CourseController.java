@@ -1,7 +1,7 @@
 package com.example.demo.course;
 
+import lombok.Data;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -14,15 +14,11 @@ import java.util.UUID;
 
 @Validated
 @Controller
+@Data
 @Path("api/course")
 public class CourseController {
 
     private final CourseService courseService;
-
-    @Autowired
-    public CourseController(CourseService courseService) {
-        this.courseService = courseService;
-    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON_VALUE)
