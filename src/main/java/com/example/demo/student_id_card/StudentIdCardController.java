@@ -1,47 +1,39 @@
 package com.example.demo.student_id_card;
 
 import lombok.Data;
-import org.jboss.resteasy.annotations.jaxrs.PathParam;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.Response;
+import java.util.List;
 import java.util.UUID;
 
-@Validated
-@Controller
 @Data
-@Path("api/studentCard")
+@Validated
+@RestController
+@RequestMapping("api/studentCard")
 public class StudentIdCardController {
 
     private final StudentIdCardService studentIdCardService;
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON_VALUE)
-    public Response getStudentIdCards(@DefaultValue("0") @QueryParam("page") int page, @DefaultValue("5") @QueryParam("size") int size) {
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<StudentIdCard> getStudentIdCards(@RequestParam(name = "page", required = false, defaultValue = "0") Integer page, @RequestParam(name = "size", required = false, defaultValue = "5") Integer size) {
         return studentIdCardService.getStudentIdCards(page, size);
     }
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON_VALUE)
-    @Path("/{studentCardNumber}")
-    public Response getStudentIdCard(@PathParam("studentCardNumber") UUID studentCardNumber) {
-        return studentIdCardService.getStudentIdCard(studentCardNumber);
+    @GetMapping(path = "{studentCardUuid}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public StudentIdCard getStudentIdCard(@PathVariable("studentCardUuid") UUID studentCardUuid) {
+        return studentIdCardService.getStudentIdCard(studentCardUuid);
     }
 
-    @DELETE
-    @Produces(MediaType.APPLICATION_JSON_VALUE)
-    @Path("/{studentCardNumber}")
-    public Response deleteStudentIdCard(@PathParam("studentCardNumber") UUID studentCardNumber) {
-        return studentIdCardService.deleteStudentIdCard(studentCardNumber);
+    @DeleteMapping(value = "/{studentCardUuid}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> deleteStudentIdCard(@PathVariable("studentCardUuid") UUID studentCardUuid) {
+        return studentIdCardService.deleteStudentIdCard(studentCardUuid);
     }
 
-    @POST
-    @Produces(MediaType.APPLICATION_JSON_VALUE)
-    @Path("/student/{studentUuid}")
-    public Response createStudentIdCard(@PathParam("studentUuid") UUID studentUuid) {
+    @PostMapping(path = "/student/{studentUuid}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> createStudentIdCard(@PathVariable("studentUuid") UUID studentUuid) {
         return studentIdCardService.postStudentIdCard(studentUuid);
     }
 
