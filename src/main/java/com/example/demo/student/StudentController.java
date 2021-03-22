@@ -19,7 +19,7 @@ public class StudentController {
 
     @GetMapping
     public List<Student> allStudents(@RequestParam(name = "age") Optional<Integer> queryParam) {
-        return studentService.allStudents(queryParam);
+        return studentService.getStudents();
     }
 
     @GetMapping(path = "{studentId}")
