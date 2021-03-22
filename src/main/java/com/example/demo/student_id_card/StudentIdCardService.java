@@ -6,11 +6,13 @@ import lombok.Data;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
-import javax.persistence.EntityNotFoundException;
-import javax.ws.rs.core.Response;
 import java.net.URI;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -21,28 +23,27 @@ public class StudentIdCardService {
 
     private final StudentRepository studentRepository;
 
-    public Response getStudentIdCards(int page, int size) {
+    public List<StudentIdCard> getStudentIdCards(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<StudentIdCard> pagedResult = studentIdCardRepository.findAll(pageable);
-        return Response.ok(pagedResult.toList()).status(200).build();
+        Page<StudentIdCard> pages = studentIdCardRepository.findAll(pageable);
+        return pages.toList();
     }
 
-    public Response getStudentIdCard(UUID studentCardNumber) {
-        StudentIdCard studentIdCard = this.studentIdCardRepository.findStudentIdCardByUuid(studentCardNumber).orElseThrow(() -> new IllegalStateException("student card does not exist"));
-        return Response.ok(studentIdCard.getStudent()).status(200).build();
+    public StudentIdCard getStudentIdCard(UUID studentCardNumber) throws ResponseStatusException {
+        return this.studentIdCardRepository.findStudentIdCardByUuid(studentCardNumber).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "student card does not exist"));
     }
 
-    public Response deleteStudentIdCard(UUID studentCardNumber) {
-        StudentIdCard studentIdCard = this.studentIdCardRepository.findStudentIdCardByUuid(studentCardNumber).orElseThrow(() -> new IllegalStateException("student card does not exist"));
+    public ResponseEntity<?> deleteStudentIdCard(UUID studentCardUuid) throws ResponseStatusException {
+        StudentIdCard studentIdCard = this.studentIdCardRepository.findStudentIdCardByUuid(studentCardUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "student card does not exist"));
         studentIdCardRepository.delete(studentIdCard);
-        return Response.ok().status(204).build();
+        return ResponseEntity.status(204).body(studentIdCard);
     }
 
-    public Response postStudentIdCard(UUID studentUuid) {
-        Student student = this.studentRepository.findStudentByUuid(studentUuid).orElseThrow(() -> new EntityNotFoundException("student does not exist"));
+    public ResponseEntity<?> postStudentIdCard(UUID studentUuid) throws ResponseStatusException {
+        Student student = this.studentRepository.findStudentByUuid(studentUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "student Uuid does not exist"));
         StudentIdCard studentIdCard = new StudentIdCard(UUID.randomUUID());
         studentIdCard.setStudent(student);
         studentIdCardRepository.save(studentIdCard);
-        return Response.ok().status(202).contentLocation(URI.create("http://localhost:8083/api/studentCard/" + studentIdCard.getUuid())).build();
+        return ResponseEntity.status(202).location(URI.create("http://localhost:8083/api/studentCard/" + studentIdCard.getUuid())).body(studentIdCard);
     }
 }
