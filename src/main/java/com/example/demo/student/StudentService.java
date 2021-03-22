@@ -4,11 +4,12 @@ import lombok.Data;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityNotFoundException;
-import javax.ws.rs.core.Response;
+import java.net.URI;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -25,34 +26,34 @@ public class StudentService {
     }
 
     public Student getStudent(UUID studentUuid) {
-        return studentRepository.findStudentByUuid(studentUuid).orElseThrow(() -> new IllegalArgumentException("student does not exist") {
-        });
+        return studentRepository.findStudentByUuid(studentUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "student card does not exist"));
     }
 
-    public Student postStudent(Student student) {
+    public ResponseEntity<?> postStudent(Student student) {
         studentRepository.findStudentsByEmail(student.getEmail()).ifPresent(student1 -> {
-            throw new EntityExistsException("invalid email address");
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "invalid email address");
         });
         student.setUuid(UUID.randomUUID());
-        return studentRepository.save(student);
+        studentRepository.save(student);
+        return ResponseEntity.created(URI.create("http://localhost:8083/api/student/" + student.getUuid())).body(student);
     }
 
-    public Response deleteStudent(UUID studentUuid) {
-        Student student = studentRepository.findStudentByUuid(studentUuid).orElseThrow(() -> new EntityNotFoundException("student does not exist"));
+    public ResponseEntity<?> deleteStudent(UUID studentUuid) {
+        Student student = studentRepository.findStudentByUuid(studentUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "student does not exist"));
         studentRepository.delete(student);
-        return Response.accepted().status(204).build();
+        return ResponseEntity.status(204).build();
     }
 
     public Student updateStudent(UUID studentUuid, Student student) {
-        Student student1 = studentRepository.findStudentByUuid(studentUuid).orElseThrow(() -> new EntityNotFoundException("invalid uuid"));
+        Student student1 = studentRepository.findStudentByUuid(studentUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "student does not exist"));
         student1.setName(student.getName());
         student1.setDob(student.getDob());
         student1.setEmail(student.getEmail());
         return studentRepository.save(student1);
     }
 
-    public Response getCourseStudent(UUID studentUuid) {
-        Student student = studentRepository.findStudentByUuid(studentUuid).orElseThrow(() -> new IllegalStateException("provided studentUuid does not exist"));
-        return Response.ok(student.getCourses()).status(200).build();
+    public ResponseEntity<?> getCourseStudent(UUID studentUuid) {
+        Student student = studentRepository.findStudentByUuid(studentUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "student card does not exist"));
+        return ResponseEntity.status(200).body(student.getCourses());
     }
 }
