@@ -52,6 +52,7 @@ public class BookService {
     }
 
     public Response insertBook(Book book) {
+        book.setUuid(UUID.randomUUID());
         bookRepository.save(book);
         return Response.accepted(book).status(201).entity(book).location(URI.create("http://localhost:8083/api/book/" + book.getUuid())).build();
     }
