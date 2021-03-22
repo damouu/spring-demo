@@ -39,7 +39,7 @@ public class Student {
     private Integer id;
 
     @Column(nullable = false, columnDefinition = "UUID", name = "uuid")
-    @Getter
+    @Getter(onMethod = @__(@JsonIgnore)) // generate the getter with the specific annotation.
     @Setter
     private UUID uuid;
 
