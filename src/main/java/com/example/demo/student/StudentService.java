@@ -4,8 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.LocalDate;
-import java.time.Period;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,14 +17,8 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
-    public List<Student> allStudents(Optional<Integer> queryParam) {
-        List<Student> students = studentRepository.findAll();
-        if (queryParam.isEmpty()) {
-            return students;
-        }
-        students.stream().iterator().forEachRemaining(student -> student.setAge(Period.between(student.getDob(), LocalDate.now()).getYears()));
-        students.removeIf(student -> !queryParam.get().equals(student.getAge()));
-        return students;
+    public List<Student> getStudents() {
+        return studentRepository.findAll();
     }
 
     public void addNewStudent(Student student) {
