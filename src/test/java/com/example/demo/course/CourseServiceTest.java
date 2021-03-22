@@ -7,8 +7,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.ResponseEntity;
 
-import javax.ws.rs.core.Response;
 import java.util.UUID;
 
 class CourseServiceTest {
@@ -43,7 +43,7 @@ class CourseServiceTest {
     void createCourse() {
         Course course = new Course(UUID.randomUUID(), "dede", "campus", "dede_univ");
         ArgumentCaptor<Course> courseArgumentCaptor = ArgumentCaptor.forClass(Course.class);
-        Mockito.when(courseService.postCourse(course)).thenReturn(Response.accepted().build());
+        Mockito.when(courseService.postCourse(course)).thenReturn(ResponseEntity.ok().build());
     }
 
     @Test
