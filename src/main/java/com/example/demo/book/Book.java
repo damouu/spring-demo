@@ -32,7 +32,7 @@ public class Book {
     private Integer id;
 
     @Column(nullable = false, columnDefinition = "UUID", name = "uuid")
-    @Getter(onMethod = @__(@JsonIgnore)) // generate the getter with the specific annotation.
+    @Getter
     @Setter
     private UUID uuid;
 
