@@ -1,85 +1,65 @@
 package com.example.demo.course;
 
 import lombok.Data;
-import org.jboss.resteasy.annotations.jaxrs.PathParam;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Response;
 import java.util.Collection;
 import java.util.UUID;
 
-@Validated
-@Controller
 @Data
-@Path("api/course")
+@Validated
+@RestController
+@RequestMapping("api/course")
 public class CourseController {
 
     private final CourseService courseService;
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON_VALUE)
-    @Path("/{courseUuid}")
-    public Course getCourse(@PathParam("courseUuid") UUID courseUuid) {
-        return courseService.getCourse(courseUuid);
-    }
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON_VALUE)
-    public Collection<Course> getCourses(@DefaultValue("0") @QueryParam("page") int page, @DefaultValue("5") @QueryParam("size") int size) {
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public Collection<Course> getCourses(@RequestParam(name = "page", required = false, defaultValue = "0") Integer page, @RequestParam(name = "size", required = false, defaultValue = "5") Integer size) {
         return courseService.getCourses(page, size);
     }
 
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON_VALUE)
-    @Produces(MediaType.APPLICATION_JSON_VALUE)
-    public Response postCourse(@Valid Course course) {
+    @GetMapping(path = "/{courseUuid}")
+    public Course getCourse(@PathVariable("courseUuid") UUID courseUuid) {
+        return courseService.getCourse(courseUuid);
+    }
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> postCourse(@Valid @RequestBody Course course) {
         return courseService.postCourse(course);
     }
 
-    @DELETE
-    @Produces(MediaType.APPLICATION_JSON_VALUE)
-    @Path("/{courseUuid}")
-    public Response deleteCourse(@PathParam("courseUuid") UUID courseUuid) {
+    @DeleteMapping(path = "/{courseUuid}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> deleteCourse(@PathVariable("courseUuid") UUID courseUuid) {
         return courseService.deleteCourse(courseUuid);
     }
 
-    @PUT
-    @Produces(MediaType.APPLICATION_JSON_VALUE)
-    @Consumes(MediaType.APPLICATION_JSON_VALUE)
-    @Path("/{courseUuid}")
-    public Response updateCourse(@PathParam("courseUuid") UUID courseUuid, @Valid Course course) {
+    @PutMapping(path = "/{courseUuid}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateCourse(@PathVariable("courseUuid") UUID courseUuid, @Valid @RequestBody Course course) {
         return courseService.updateCourse(courseUuid, course);
     }
 
-    @POST
-    @Produces(MediaType.APPLICATION_JSON_VALUE)
-    @Path("/{courseUuid}/student/{studentUuid}")
-    public Response postStudentCourse(@PathParam("courseUuid") UUID courseUuid, @PathParam("studentUuid") UUID studentUuid) {
+    @PostMapping(path = "/{courseUuid}/student/{studentUuid}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> postStudentCourse(@PathVariable("courseUuid") UUID courseUuid, @PathVariable("studentUuid") UUID studentUuid) {
         return courseService.postStudentCourse(courseUuid, studentUuid);
     }
 
-    @DELETE
-    @Produces(MediaType.APPLICATION_JSON_VALUE)
-    @Path("/{courseUuid}/student/{studentUuid}")
-    public Response deleteStudentCourse(@PathParam("courseUuid") UUID courseUuid, @PathParam("studentUuid") UUID studentUuid) {
+    @DeleteMapping(path = "/{courseUuid}/student/{studentUuid}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> deleteStudentCourse(@PathVariable("courseUuid") UUID courseUuid, @PathVariable("studentUuid") UUID studentUuid) {
         return courseService.deleteStudentCourse(courseUuid, studentUuid);
     }
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON_VALUE)
-    @Path("/{courseUuid}/student")
-    public Response getStudentsCourse(@PathParam("courseUuid") UUID courseUuid) {
+    @GetMapping(path = "/{courseUuid}/student", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getStudentsCourse(@PathVariable("courseUuid") UUID courseUuid) {
         return courseService.getStudentsCourse(courseUuid);
     }
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON_VALUE)
-    @Path("/search")
-    public Response getCourseSearchQueryParam(@QueryParam("university") String university, @QueryParam("campus") String campus, @QueryParam("name") String name) {
+    @GetMapping(path = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getCourseSearchQueryParam(@RequestParam(name = "university", required = false, defaultValue = "") String university, @RequestParam(name = "campus", required = false, defaultValue = "") String campus, @RequestParam(name = "name", required = false, defaultValue = "") String name) {
         return courseService.getCourseSearchQueryParam(university, campus, name);
     }
 }
