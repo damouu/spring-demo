@@ -1,6 +1,7 @@
 package com.example.demo.student_id_card;
 
 import com.example.demo.book.Book;
+import com.example.demo.course.Course;
 import com.example.demo.student.Student;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,6 +14,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -42,9 +44,21 @@ public class StudentIdCard implements Serializable {
     private Student student;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "studentIdCard", fetch = FetchType.EAGER)
-    @Getter(onMethod = @__(@JsonIgnore)) // generate the getter with the specific annotation.
+    @Getter(onMethod = @__(@JsonIgnore))
     @Setter
     private Set<Book> books;
+
+    @ManyToMany(fetch = FetchType.EAGER,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.ALL
+            })
+    @JoinTable(name = "course_student",
+            joinColumns = {@JoinColumn(name = "student_id_card")},
+            inverseJoinColumns = {@JoinColumn(name = "course")})
+    @Getter(onMethod = @__(@JsonIgnore))
+    @Setter
+    protected Set<Course> courses = new HashSet<>();
 
     @JsonCreator
     public StudentIdCard(@JsonProperty("uuid") UUID uuid) {
