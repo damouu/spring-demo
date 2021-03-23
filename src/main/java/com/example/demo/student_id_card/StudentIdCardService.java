@@ -14,6 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.net.URI;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -24,10 +25,10 @@ public class StudentIdCardService {
 
     private final StudentRepository studentRepository;
 
-    public ResponseEntity<?> getStudentIdCards(int page, int size) {
+    public List<StudentIdCard> getStudentIdCards(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<StudentIdCard> pages = studentIdCardRepository.findAll(pageable);
-        return (ResponseEntity<?>) pages.toList();
+        return pages.toList();
     }
 
     public StudentIdCard getStudentIdCard(UUID studentCardNumber) throws ResponseStatusException {
