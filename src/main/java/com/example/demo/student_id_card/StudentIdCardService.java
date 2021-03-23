@@ -1,5 +1,6 @@
 package com.example.demo.student_id_card;
 
+import com.example.demo.course.Course;
 import com.example.demo.student.Student;
 import com.example.demo.student.StudentRepository;
 import lombok.Data;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.net.URI;
-import java.util.List;
+import java.util.Collection;
 import java.util.UUID;
 
 @Service
@@ -23,10 +24,10 @@ public class StudentIdCardService {
 
     private final StudentRepository studentRepository;
 
-    public List<StudentIdCard> getStudentIdCards(int page, int size) {
+    public ResponseEntity<?> getStudentIdCards(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<StudentIdCard> pages = studentIdCardRepository.findAll(pageable);
-        return pages.toList();
+        return (ResponseEntity<?>) pages.toList();
     }
 
     public StudentIdCard getStudentIdCard(UUID studentCardNumber) throws ResponseStatusException {
@@ -45,5 +46,11 @@ public class StudentIdCardService {
         studentIdCard.setStudent(student);
         studentIdCardRepository.save(studentIdCard);
         return ResponseEntity.status(202).location(URI.create("http://localhost:8083/api/studentCard/" + studentIdCard.getUuid())).body(studentIdCard);
+    }
+
+    public ResponseEntity<?> getStudentIdCardCourse(UUID studentCardUuid) throws ResponseStatusException {
+        StudentIdCard studentIdCard = studentIdCardRepository.findStudentIdCardByUuid(studentCardUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "student card does not exist"));
+        Collection<Course> courses = studentIdCard.getCourses();
+        return ResponseEntity.ok(courses);
     }
 }
