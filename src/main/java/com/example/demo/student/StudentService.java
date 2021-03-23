@@ -51,9 +51,4 @@ public class StudentService {
         student1.setEmail(student.getEmail());
         return studentRepository.save(student1);
     }
-
-    public ResponseEntity<?> getCourseStudent(UUID studentUuid) {
-        Student student = studentRepository.findStudentByUuid(studentUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "student card does not exist"));
-        return ResponseEntity.status(200).body(student.getCourses());
-    }
 }
