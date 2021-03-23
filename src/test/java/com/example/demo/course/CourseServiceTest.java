@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
 
 import java.util.UUID;
@@ -23,8 +22,8 @@ class CourseServiceTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
-        courseService = new CourseService(courseRepository, studentRepository);
+//        MockitoAnnotations.initMocks(this);
+//        courseService = new CourseService(courseRepository, studentRepository);
     }
 
     @Test
