@@ -42,9 +42,4 @@ public class StudentController {
     public Student updateStudent(@PathVariable("studentUuid") UUID studentUuid, @RequestBody Student student) {
         return studentService.updateStudent(studentUuid, student);
     }
-
-    @GetMapping(path = "/{studentUuid}/course", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getCourseStudent(@PathVariable("studentUuid") UUID studentUuid) {
-        return studentService.getCourseStudent(studentUuid);
-    }
 }
