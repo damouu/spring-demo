@@ -1,6 +1,6 @@
 package com.example.demo.course;
 
-import com.example.demo.student.Student;
+import com.example.demo.student_id_card.StudentIdCard;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -57,9 +57,9 @@ public class Course {
                     CascadeType.ALL
             },
             mappedBy = "courses")
-    @Getter(onMethod = @__(@JsonIgnore)) // generate the getter with the specific annotation.
+    @Getter(onMethod = @__(@JsonIgnore))
     @Setter
-    protected Set<Student> students = new HashSet<>();
+    protected Set<StudentIdCard> studentIdCards = new HashSet<>();
 
     @JsonCreator
     public Course(@JsonProperty("uuid") UUID uuid, @JsonProperty("name") String name, @JsonProperty("campus") String campus, @JsonProperty("university") String university) {
