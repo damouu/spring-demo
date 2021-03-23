@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -18,7 +17,7 @@ public class StudentIdCardController {
     private final StudentIdCardService studentIdCardService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<StudentIdCard> getStudentIdCards(@RequestParam(name = "page", required = false, defaultValue = "0") Integer page, @RequestParam(name = "size", required = false, defaultValue = "5") Integer size) {
+    public ResponseEntity<?> getStudentIdCards(@RequestParam(name = "page", required = false, defaultValue = "0") Integer page, @RequestParam(name = "size", required = false, defaultValue = "5") Integer size) {
         return studentIdCardService.getStudentIdCards(page, size);
     }
 
@@ -35,6 +34,11 @@ public class StudentIdCardController {
     @PostMapping(path = "/student/{studentUuid}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createStudentIdCard(@PathVariable("studentUuid") UUID studentUuid) {
         return studentIdCardService.postStudentIdCard(studentUuid);
+    }
+
+    @GetMapping(path = "/{studentUuid}/course", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getStudentIdCardCourse(@PathVariable("studentUuid") UUID studentCardUuid) {
+        return studentIdCardService.getStudentIdCardCourse(studentCardUuid);
     }
 
 }
