@@ -74,20 +74,6 @@ public class Student {
     @Setter
     private StudentIdCard studentIdCard;
 
-
-    @ManyToMany(fetch = FetchType.EAGER,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.ALL
-            })
-    @JoinTable(name = "course_student",
-            joinColumns = {@JoinColumn(name = "student_id")},
-            inverseJoinColumns = {@JoinColumn(name = "course_id")})
-    @Getter(onMethod = @__(@JsonIgnore)) // generate the getter with the specific annotation.
-    @Setter
-    protected Set<Course> courses = new HashSet<>();
-
-
     @JsonCreator
     public Student(@JsonProperty("uuid") UUID uuid, @JsonProperty("name") String name, @JsonProperty("dob") LocalDate dob, @JsonProperty("email") String email) {
         this.uuid = uuid;
