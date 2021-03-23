@@ -1,7 +1,7 @@
 package com.example.demo.course;
 
-import com.example.demo.student.Student;
-import com.example.demo.student.StudentRepository;
+import com.example.demo.student_id_card.StudentIdCard;
+import com.example.demo.student_id_card.StudentIdCardRepository;
 import lombok.Data;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,7 +22,7 @@ public class CourseService {
 
     private final CourseRepository courseRepository;
 
-    private final StudentRepository studentRepository;
+    private final StudentIdCardRepository studentIdCardRepository;
 
     public Course getCourse(UUID courseUuid) {
         return courseRepository.findByUuid(courseUuid).orElseThrow(() -> new EntityNotFoundException("invalid course"));
@@ -55,24 +55,24 @@ public class CourseService {
         return ResponseEntity.status(204).location(URI.create("http://localhost:8083/api/course/" + course.getUuid())).build();
     }
 
-    public ResponseEntity<?> postStudentCourse(UUID courseUuid, UUID studentUuid) {
+    public ResponseEntity<?> postStudentCourse(UUID courseUuid, UUID studentCardUuid) {
         Course course = courseRepository.findByUuid(courseUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "course does not exist"));
-        Student student = studentRepository.findStudentByUuid(studentUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "student does not exist"));
-        if (course.getStudents().stream().anyMatch(student1 -> student1.getUuid().equals(student.getUuid()))) {
+        StudentIdCard studentIdCard = studentIdCardRepository.findStudentIdCardByUuid(studentCardUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "student card does not exist"));
+        if (course.getStudentIdCards().stream().anyMatch(studentIdCard1 -> studentIdCard1.getUuid().equals(studentIdCard.getUuid()))) {
             return ResponseEntity.noContent().build();
         } else {
-            student.getCourses().add(course);
-            this.studentRepository.save(student);
+            studentIdCard.getCourses().add(course);
+            this.studentIdCardRepository.save(studentIdCard);
             return ResponseEntity.status(201).build();
         }
     }
 
-    public ResponseEntity<?> deleteStudentCourse(UUID courseUuid, UUID studentUuid) {
+    public ResponseEntity<?> deleteStudentCourse(UUID courseUuid, UUID studentCardUuid) {
         Course course = courseRepository.findByUuid(courseUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "course does not exist"));
-        Student student = studentRepository.findStudentByUuid(studentUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "student does not exist"));
-        if (course.getStudents().stream().anyMatch(student1 -> student1.getUuid().equals(student.getUuid()))) {
-            student.getCourses().removeIf(course1 -> course1.getUuid().equals(course.getUuid()));
-            this.studentRepository.save(student);
+        StudentIdCard studentIdCard = studentIdCardRepository.findStudentIdCardByUuid(studentCardUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "student card does not exist"));
+        if (course.getStudentIdCards().stream().anyMatch(studentIdCard1 -> studentIdCard1.getUuid().equals(studentIdCard.getUuid()))) {
+            studentIdCard.getCourses().removeIf(course1 -> course1.getUuid().equals(course.getUuid()));
+            this.studentIdCardRepository.save(studentIdCard);
             return ResponseEntity.status(204).build();
         }
         return ResponseEntity.noContent().build();
@@ -80,7 +80,7 @@ public class CourseService {
 
     public ResponseEntity<?> getStudentsCourse(UUID courseUuid) {
         Course course = courseRepository.findByUuid(courseUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "course does not exist"));
-        return ResponseEntity.ok(course.getStudents());
+        return ResponseEntity.ok(course.getStudentIdCards());
     }
 
 
