@@ -32,8 +32,8 @@ public class StudentIdCardController {
         return studentIdCardService.deleteStudentIdCard(studentCardUuid);
     }
 
-    @PostMapping(path = "/student/{studentUuid}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> createStudentIdCard(@PathVariable("studentUuid") UUID studentUuid) {
+    @PostMapping(path = "/student/{studentUuid}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<StudentIdCard> postStudentIdCard(@PathVariable("studentUuid") UUID studentUuid) {
         return studentIdCardService.postStudentIdCard(studentUuid);
     }
 
