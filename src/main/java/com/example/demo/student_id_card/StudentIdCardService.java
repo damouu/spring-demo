@@ -41,12 +41,12 @@ public class StudentIdCardService {
         return ResponseEntity.status(204).body("student card" + studentIdCard.getUuid() + "deleted");
     }
 
-    public ResponseEntity<?> postStudentIdCard(UUID studentUuid) throws ResponseStatusException {
+    public ResponseEntity<StudentIdCard> postStudentIdCard(UUID studentUuid) throws ResponseStatusException {
         Student student = this.studentRepository.findStudentByUuid(studentUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "student Uuid does not exist"));
         StudentIdCard studentIdCard = new StudentIdCard(UUID.randomUUID());
         studentIdCard.setStudent(student);
         studentIdCardRepository.save(studentIdCard);
-        return ResponseEntity.status(202).location(URI.create("http://localhost:8083/api/studentCard/" + studentIdCard.getUuid())).body(studentIdCard);
+        return ResponseEntity.status(HttpStatus.CREATED).location(URI.create("http://localhost:8083/api/studentCard/" + studentIdCard.getUuid())).body(studentIdCard);
     }
 
     public ResponseEntity<?> getStudentIdCardCourse(UUID studentCardUuid) throws ResponseStatusException {
