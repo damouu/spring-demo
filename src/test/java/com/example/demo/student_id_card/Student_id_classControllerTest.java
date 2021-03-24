@@ -5,13 +5,16 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -53,5 +56,15 @@ class Student_id_classControllerTest {
         Mockito.verify(studentIdCardService, Mockito.times(1)).getStudentIdCard(studentIdCard.getUuid());
     }
 
-
+    @Test
+    public void deleteStudentIdCard() throws Exception {
+        StudentIdCard studentIdCard = new StudentIdCard(UUID.randomUUID());
+        ResponseEntity<String> responseEntity = new ResponseEntity<String>("student card" + studentIdCard.getUuid() + "deleted", HttpStatus.valueOf(204));
+        Mockito.when(studentIdCardService.deleteStudentIdCard(studentIdCard.getUuid())).thenReturn(responseEntity);
+        mockMvc.perform(delete("/api/studentCard/" + studentIdCard.getUuid()))
+                .andExpect(status().is(204))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().string("student card" + studentIdCard.getUuid() + "deleted"));
+        Mockito.verify(studentIdCardService, Mockito.times(1)).deleteStudentIdCard(studentIdCard.getUuid());
+    }
 }
