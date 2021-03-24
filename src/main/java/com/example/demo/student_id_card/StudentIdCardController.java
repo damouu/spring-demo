@@ -1,11 +1,13 @@
 package com.example.demo.student_id_card;
 
+import com.example.demo.course.Course;
 import lombok.Data;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,8 +39,8 @@ public class StudentIdCardController {
         return studentIdCardService.postStudentIdCard(studentUuid);
     }
 
-    @GetMapping(path = "/{studentUuid}/course", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getStudentIdCardCourse(@PathVariable("studentUuid") UUID studentCardUuid) {
+    @GetMapping(path = "/{studentCardUuid}/course", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<Course>> getStudentIdCardCourse(@PathVariable("studentCardUuid") UUID studentCardUuid) {
         return studentIdCardService.getStudentIdCardCourse(studentCardUuid);
     }
 
