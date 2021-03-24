@@ -1,5 +1,6 @@
 package com.example.demo.student_id_card;
 
+import com.example.demo.course.Course;
 import com.example.demo.student.Student;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -16,6 +17,7 @@ import java.net.URI;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -86,4 +88,22 @@ class Student_id_classControllerTest {
                 .andExpect(content().json("{\"uuid\":" + studentIdCard.getUuid() + "}"));
         Mockito.verify(studentIdCardService, Mockito.times(1)).postStudentIdCard(student.getUuid());
     }
+
+    @Test
+    public void getStudentIdCardCourse() throws Exception {
+        Course course = new Course(UUID.randomUUID(), "Test", "Test", "Test");
+        Course course1 = new Course(UUID.randomUUID(), "Test1", "Test1", "Test1");
+        StudentIdCard studentIdCard = new StudentIdCard(UUID.randomUUID());
+        Collection<Course> courseCollection = new ArrayList<>();
+        courseCollection.add(course);
+        courseCollection.add(course1);
+        ResponseEntity<Collection<Course>> responseEntity = new ResponseEntity<>(courseCollection, HttpStatus.OK);
+        Mockito.when(studentIdCardService.getStudentIdCardCourse(studentIdCard.getUuid())).thenReturn(responseEntity);
+        mockMvc.perform(get("/api/studentCard/" + studentIdCard.getUuid() + "/course"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json("[{\"uuid\":\"" + course.getUuid() + "\"},{\"uuid\":\"" + course1.getUuid() + "\"}]"));
+        Mockito.verify(studentIdCardService, Mockito.times(1)).getStudentIdCardCourse(studentIdCard.getUuid());
+    }
+
 }
