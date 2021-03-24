@@ -49,7 +49,7 @@ public class StudentIdCardService {
         return ResponseEntity.status(HttpStatus.CREATED).location(URI.create("http://localhost:8083/api/studentCard/" + studentIdCard.getUuid())).body(studentIdCard);
     }
 
-    public ResponseEntity<?> getStudentIdCardCourse(UUID studentCardUuid) throws ResponseStatusException {
+    public ResponseEntity<Collection<Course>> getStudentIdCardCourse(UUID studentCardUuid) throws ResponseStatusException {
         StudentIdCard studentIdCard = studentIdCardRepository.findStudentIdCardByUuid(studentCardUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "student card does not exist"));
         Collection<Course> courses = studentIdCard.getCourses();
         return ResponseEntity.ok(courses);
