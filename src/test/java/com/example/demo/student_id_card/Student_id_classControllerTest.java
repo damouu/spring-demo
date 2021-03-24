@@ -42,5 +42,16 @@ class Student_id_classControllerTest {
         Mockito.verify(studentIdCardService, Mockito.times(1)).getStudentIdCards(0, 5);
     }
 
+    @Test
+    public void getStudentIdCard() throws Exception {
+        StudentIdCard studentIdCard = new StudentIdCard(UUID.randomUUID());
+        Mockito.when(studentIdCardService.getStudentIdCard(studentIdCard.getUuid())).thenReturn(studentIdCard);
+        mockMvc.perform(get("/api/studentCard/" + studentIdCard.getUuid()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json("{\"uuid\":\"" + studentIdCard.getUuid() + "\"}"));
+        Mockito.verify(studentIdCardService, Mockito.times(1)).getStudentIdCard(studentIdCard.getUuid());
+    }
+
 
 }
