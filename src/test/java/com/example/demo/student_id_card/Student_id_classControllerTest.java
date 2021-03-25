@@ -2,6 +2,7 @@ package com.example.demo.student_id_card;
 
 import com.example.demo.course.Course;
 import com.example.demo.student.Student;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,11 @@ class Student_id_classControllerTest {
 
     @MockBean
     private StudentIdCardService studentIdCardService;
+
+    @AfterEach
+    void tearDown() {
+
+    }
 
     @Test
     public void getStudentIdCards() throws Exception {
