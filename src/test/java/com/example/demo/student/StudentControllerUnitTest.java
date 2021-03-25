@@ -47,10 +47,10 @@ class StudentControllerUnitTest {
         UUID uuid = UUID.randomUUID();
         Student student = new Student(uuid, "student", LocalDate.of(2000, Month.NOVEMBER, 1), "student@email.com");
         Mockito.when(studentService.getStudent(uuid)).thenReturn(student);
-        mockMvc.perform(get("/api/student/1"))
+        mockMvc.perform(get("/api/student/" + student.getUuid()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json("{\"id\":1,\"name\":\"student\",\"dob\":\"2000-11-01\",\"age\":20,\"email\":\"student@email.com\"}"));
+                .andExpect(content().json("{\"name\":\"student\",\"dob\":\"2000-11-01\",\"email\":\"student@email.com\"}"));
         Mockito.verify(studentService, Mockito.times(1)).getStudent(uuid);
     }
 
