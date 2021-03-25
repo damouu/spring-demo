@@ -1,6 +1,7 @@
 package com.example.demo.course;
 
 import com.example.demo.student.StudentRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -24,6 +25,11 @@ class CourseServiceTest {
     void setUp() {
 //        MockitoAnnotations.initMocks(this);
 //        courseService = new CourseService(courseRepository, studentRepository);
+    }
+
+    @AfterEach
+    void tearDown() {
+
     }
 
     @Test
