@@ -45,6 +45,7 @@ class StudentControllerIntegrationTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+
     @Test
     void allStudents() {
         ResponseEntity<?> responseEntity =
@@ -73,13 +74,14 @@ class StudentControllerIntegrationTest {
 
     @Test
     void registrationWorksThroughAllLayers() throws Exception {
-        Student student = new Student(UUID.randomUUID(), "pacman", LocalDate.of(2000, Month.APRIL, 21), "pacman@hotmail.com");
+        Student student = new Student(UUID.randomUUID(), "tidus", LocalDate.of(2000, Month.APRIL, 21), "tidus@hotmail.com");
         mockMvc.perform(post("/api/student")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(student)))
                 .andExpect(status().isCreated());
 
         Optional<Student> student1 = studentRepository.findStudentsByEmail(student.getEmail());
-        assertThat(student1.get().getEmail()).isEqualTo("pacman@hotmail.com");
+        assertThat(student1.get().getEmail()).isEqualTo("tidus@hotmail.com");
+        studentRepository.deleteByUuid(student.getUuid());
     }
 }
