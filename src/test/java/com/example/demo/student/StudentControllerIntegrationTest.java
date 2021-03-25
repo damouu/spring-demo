@@ -1,6 +1,8 @@
 package com.example.demo.student;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -46,17 +48,25 @@ class StudentControllerIntegrationTest {
     private ObjectMapper objectMapper;
 
 
-    @Test
-    void allStudents() {
-        ResponseEntity<?> responseEntity =
-                this.restTemplate.getForEntity("http://localhost:" + port + "/api/student", List.class);
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+    @AfterEach
+    void tearDown() {
+
     }
 
     @Test
-    void findById() {
-        ResponseEntity<?> responseEntity =
-                this.restTemplate.getForEntity("http://localhost:" + port + "/api/student/1", List.class);
+    void allStudents() {
+        ResponseEntity<List> responseEntity =
+                this.restTemplate.getForEntity("http://localhost:" + port + "/api/student", List.class);
+        Assertions.assertTrue(responseEntity.getStatusCode().is2xxSuccessful());
+        Assertions.assertTrue(responseEntity.getHeaders().getContentType().includes(MediaType.APPLICATION_JSON));
+        Assertions.assertTrue(responseEntity.getHeaders().getContentType().includes(MediaType.APPLICATION_JSON));
+        Assertions.assertFalse(responseEntity.getBody().isEmpty());
+    }
+
+    @Test
+    void findByUuid() {
+        ResponseEntity<Student> responseEntity =
+                this.restTemplate.getForEntity("http://localhost:" + port + "/api/student/216972d3-27fd-4ebc-8e00-57c7cbfe4e93", Student.class);
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
