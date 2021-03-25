@@ -34,12 +34,12 @@ class StudentControllerUnitTest {
         Student student1 = new Student(UUID.randomUUID(), "student1", LocalDate.of(2000, Month.NOVEMBER, 1), "student1@email.com");
         studentList.add(student);
         studentList.add(student1);
-        Mockito.when(studentService.allStudents(0, 2)).thenReturn(studentList);
+        Mockito.when(studentService.allStudents(0, 5)).thenReturn(studentList);
         mockMvc.perform(get("/api/student"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json("[{\"id\":1,\"name\":\"student\",\"dob\":\"2000-11-01\",\"age\":20,\"email\":\"student@email.com\"},{\"id\":2,\"name\":\"student1\",\"dob\":\"2000-11-01\",\"age\":20,\"email\":\"student1@email.com\"}]"));
-        Mockito.verify(studentService, Mockito.times(1)).allStudents(0, 2);
+                .andExpect(content().json("[{\"name\":\"student\",\"dob\":\"2000-11-01\",\"email\":\"student@email.com\"},{\"name\":\"student1\",\"dob\":\"2000-11-01\",\"email\":\"student1@email.com\"}]"));
+        Mockito.verify(studentService, Mockito.times(1)).allStudents(0, 5);
     }
 
     @Test
