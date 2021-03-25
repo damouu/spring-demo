@@ -1,6 +1,7 @@
 package com.example.demo.student_id_card;
 
 import com.example.demo.student.Student;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,6 +25,11 @@ class StudentIdCardServiceTest {
     @InjectMocks
     // what does this annotation mean ?
     private StudentIdCardService studentIdCardService;
+
+    @AfterEach
+    void tearDown() {
+
+    }
 
     @Test
     void getStudentIdCards() {
