@@ -108,4 +108,18 @@ class Student_id_classControllerTest {
         Mockito.verify(studentIdCardService, Mockito.times(1)).getStudentIdCardCourse(studentIdCard.getUuid());
     }
 
+    @Test
+    void getStudentStudentIdCard() throws Exception {
+        Student student = new Student(UUID.randomUUID(), "dede", LocalDate.of(2000, Month.AUGUST, 11), "dedeUnit@msn.com");
+        StudentIdCard studentIdCard = new StudentIdCard(UUID.randomUUID());
+        studentIdCard.setStudent(student);
+        ResponseEntity<Student> studentResponseEntity = new ResponseEntity<>(studentIdCard.getStudent(), HttpStatus.OK);
+        Mockito.when(studentIdCardService.getStudentStudentIdCard(studentIdCard.getUuid())).thenReturn(studentResponseEntity);
+        mockMvc.perform(get("/api/studentCard/" + studentIdCard.getUuid() + "/student"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json("{\"name\":\"dede\",\"dob\":\"2000-08-11\",\"email\":\"dedeUnit@msn.com\"}"));
+        Mockito.verify(studentIdCardService, Mockito.times(1)).getStudentStudentIdCard(studentIdCard.getUuid());
+    }
+
 }
