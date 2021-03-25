@@ -1,5 +1,6 @@
 package com.example.demo.student;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,11 @@ class StudentControllerUnitTest {
 
     @MockBean
     private StudentService studentService;
+
+    @AfterEach
+    void tearDown() {
+
+    }
 
     @Test
     void allStudents() throws Exception {
