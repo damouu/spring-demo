@@ -54,4 +54,10 @@ public class StudentIdCardService {
         Collection<Course> courses = studentIdCard.getCourses();
         return ResponseEntity.ok(courses);
     }
+
+    public ResponseEntity<Student> getStudentStudentIdCard(UUID studentCardUuid) throws ResponseStatusException {
+        StudentIdCard studentIdCard = studentIdCardRepository.findStudentIdCardByUuid(studentCardUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "student card does not exist"));
+        return ResponseEntity.ok(studentIdCard.getStudent());
+    }
+
 }
