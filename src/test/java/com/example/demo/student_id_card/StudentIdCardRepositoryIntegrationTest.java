@@ -11,7 +11,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 @DataJpaTest
+// Testing Jpa queries with this annotation
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+// tells springboot to not use an embedded database instead to use the current default database source.
 public class StudentIdCardRepositoryIntegrationTest {
 
     @Autowired
