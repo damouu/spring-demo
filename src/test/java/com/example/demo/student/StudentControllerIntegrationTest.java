@@ -1,7 +1,6 @@
 package com.example.demo.student;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,11 +47,6 @@ class StudentControllerIntegrationTest {
     private ObjectMapper objectMapper;
 
 
-    @AfterEach
-    void tearDown() {
-
-    }
-
     @Test
     void allStudents() {
         ResponseEntity<List> responseEntity =
@@ -92,6 +86,5 @@ class StudentControllerIntegrationTest {
 
         Optional<Student> student1 = studentRepository.findStudentsByEmail(student.getEmail());
         assertThat(student1.get().getEmail()).isEqualTo("tidus@hotmail.com");
-        studentRepository.deleteByUuid(student.getUuid());
     }
 }
