@@ -1,54 +1,28 @@
 package com.example.demo.course;
 
 import com.example.demo.student.StudentRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.springframework.http.ResponseEntity;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.util.UUID;
-
+@ExtendWith(MockitoExtension.class)
 class CourseServiceTest {
 
-    private CourseService courseService;
 
-    @Mock
+    @MockBean
     private CourseRepository courseRepository;
 
-    @Mock
+    @MockBean
     private StudentRepository studentRepository;
 
-    @BeforeEach
-    void setUp() {
-//        MockitoAnnotations.initMocks(this);
-//        courseService = new CourseService(courseRepository, studentRepository);
-    }
-
-    @AfterEach
-    void tearDown() {
-
-    }
 
     @Test
     void getCourse() {
-        UUID uuid = UUID.randomUUID();
-        Course course = new Course(uuid, "dede", "campus", "dede_univ");
-     /*   Mockito.when(courseService.getCourse(course.getUuid())).thenReturn(course);
-        Mockito.when(courseRepository.findByUuid(course.getUuid())).thenReturn(Optional.of(course));
-        Mockito.verify(courseRepository).findByUuid(courseArgumentCaptor.capture().getUuid());
-        Course course1 = courseService.getCourse(uuid);
-        Assertions.assertEquals(course1, course);*/
     }
-
-
+    
     @Test
     void createCourse() {
-        Course course = new Course(UUID.randomUUID(), "dede", "campus", "dede_univ");
-        ArgumentCaptor<Course> courseArgumentCaptor = ArgumentCaptor.forClass(Course.class);
-        Mockito.when(courseService.postCourse(course)).thenReturn(ResponseEntity.ok().build());
     }
 
     @Test
