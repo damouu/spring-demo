@@ -1,6 +1,5 @@
 package com.example.demo.student;
 
-import com.example.demo.course.Course;
 import com.example.demo.student_id_card.StudentIdCard;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -18,8 +17,6 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)    //  ignore all null fields
