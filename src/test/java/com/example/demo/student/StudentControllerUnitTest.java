@@ -28,11 +28,6 @@ class StudentControllerUnitTest {
     @MockBean
     private StudentService studentService;
 
-    @AfterEach
-    void tearDown() {
-
-    }
-
     @Test
     void allStudents() throws Exception {
         List<Student> studentList = new ArrayList<>();
