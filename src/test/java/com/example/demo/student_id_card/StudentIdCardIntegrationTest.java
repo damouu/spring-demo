@@ -15,6 +15,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.UUID;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -27,15 +28,23 @@ class StudentIdCardIntegrationTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
+    @Autowired
+    private StudentIdCardRepository studentIdCardRepository;
+
     @Test
     void getStudentStudentIdCard() {
+        Student student = new Student(UUID.randomUUID(), "Tidus",
+                LocalDate.of(2000, Month.JANUARY, 21), "tidus.finalfantasy@hotmail.com");
+        StudentIdCard studentIdCard = new StudentIdCard(UUID.randomUUID());
+        studentIdCard.setStudent(student);
+        studentIdCardRepository.save(studentIdCard);
         ResponseEntity<Student> responseEntity =
-                this.restTemplate.getForEntity("http://localhost:" + port + "/api/studentCard/" + "e59c3f4e-46a6-4cd3-8a82-7198e6d940a9" + "/student", Student.class);
+                this.restTemplate.getForEntity("http://localhost:" + port + "/api/studentCard/" + studentIdCard.getUuid() + "/student", Student.class);
         Assertions.assertTrue(responseEntity.getStatusCode().is2xxSuccessful());
         Assertions.assertTrue(responseEntity.getHeaders().getContentType().includes(MediaType.APPLICATION_JSON));
-        Assertions.assertEquals(responseEntity.getBody().getEmail(), "hubert.schmeler@hotmail.com");
-        Assertions.assertEquals(responseEntity.getBody().getName(), "Thomasina Stokes");
-        Assertions.assertEquals(responseEntity.getBody().getDob(), LocalDate.of(1909, Month.NOVEMBER, 07));
+        Assertions.assertEquals(responseEntity.getBody().getEmail(), "tidus.finalfantasy@hotmail.com");
+        Assertions.assertEquals(responseEntity.getBody().getName(), "Tidus");
+        Assertions.assertEquals(responseEntity.getBody().getDob(), LocalDate.of(2000, Month.JANUARY, 21));
     }
 
 }
