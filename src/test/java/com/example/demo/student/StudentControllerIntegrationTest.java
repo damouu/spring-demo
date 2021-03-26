@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -33,7 +34,6 @@ class StudentControllerIntegrationTest {
     @LocalServerPort
     private int port;
 
-    // to make HTTP requests, like MockMVC for Unit tests
     @Autowired
     private TestRestTemplate restTemplate;
 
@@ -52,16 +52,24 @@ class StudentControllerIntegrationTest {
         ResponseEntity<List> responseEntity =
                 this.restTemplate.getForEntity("http://localhost:" + port + "/api/student", List.class);
         Assertions.assertTrue(responseEntity.getStatusCode().is2xxSuccessful());
-        Assertions.assertTrue(responseEntity.getHeaders().getContentType().includes(MediaType.APPLICATION_JSON));
-        Assertions.assertTrue(responseEntity.getHeaders().getContentType().includes(MediaType.APPLICATION_JSON));
-        Assertions.assertFalse(responseEntity.getBody().isEmpty());
+        Assertions.assertTrue(Objects.requireNonNull(responseEntity.getHeaders().getContentType()).includes(MediaType.APPLICATION_JSON));
+        Assertions.assertFalse(Objects.requireNonNull(responseEntity.getBody()).isEmpty());
     }
 
     @Test
-    void findByUuid() {
+    void getStudent() {
+        Student student = new Student(UUID.randomUUID(), "Tidus",
+                LocalDate.of(2000, Month.JANUARY, 21), "tidus.finalfantasy@hotmail.com");
+        studentRepository.save(student);
+        Optional<Student> student1 = studentRepository.findStudentsByEmail(student.getEmail());
         ResponseEntity<Student> responseEntity =
-                this.restTemplate.getForEntity("http://localhost:" + port + "/api/student/216972d3-27fd-4ebc-8e00-57c7cbfe4e93", Student.class);
+                this.restTemplate.getForEntity("http://localhost:" + port + "/api/student/" + student1.get().getUuid(), Student.class);
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        Assertions.assertTrue(Objects.requireNonNull(responseEntity.getHeaders().getContentType()).includes(MediaType.APPLICATION_JSON));
+        Assertions.assertEquals(student1.get().getUuid(), Objects.requireNonNull(responseEntity.getBody()).getUuid());
+        Assertions.assertEquals(student1.get().getName(), Objects.requireNonNull(responseEntity.getBody()).getName());
+        Assertions.assertEquals(student1.get().getDob(), Objects.requireNonNull(responseEntity.getBody()).getDob());
+        Assertions.assertEquals(student1.get().getEmail(), Objects.requireNonNull(responseEntity.getBody()).getEmail());
     }
 
     @Test
