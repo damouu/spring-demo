@@ -29,7 +29,7 @@ public class StudentService {
         return studentRepository.findStudentByUuid(studentUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "student card does not exist"));
     }
 
-    public ResponseEntity<?> postStudent(Student student) {
+    public ResponseEntity<Student> postStudent(Student student) {
         studentRepository.findStudentsByEmail(student.getEmail()).ifPresent(student1 -> {
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "invalid email address");
         });
