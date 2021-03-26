@@ -26,10 +26,6 @@ class StudentIdCardServiceTest {
     // what does this annotation mean ?
     private StudentIdCardService studentIdCardService;
 
-    @AfterEach
-    void tearDown() {
-
-    }
 
     @Test
     void getStudentIdCards() {
