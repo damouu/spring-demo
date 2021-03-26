@@ -36,10 +36,6 @@ class Student_id_classControllerTest {
     @MockBean
     private StudentIdCardService studentIdCardService;
 
-    @AfterEach
-    void tearDown() {
-
-    }
 
     @Test
     public void getStudentIdCards() throws Exception {
