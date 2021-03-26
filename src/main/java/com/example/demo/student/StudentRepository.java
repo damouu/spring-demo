@@ -15,6 +15,4 @@ public interface StudentRepository extends JpaRepository<Student, Integer> {
     Optional<Student> findStudentsByEmail(@NotNull String email);
 
     Optional<Student> findStudentByUuid(@NotNull UUID uuid);
-
-    void deleteByUuid(@NotNull UUID uuid);
 }
