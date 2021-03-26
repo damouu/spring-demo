@@ -58,8 +58,8 @@ class StudentControllerIntegrationTest {
 
     @Test
     void getStudent() {
-        Student student = new Student(UUID.randomUUID(), "Tidus",
-                LocalDate.of(2000, Month.JANUARY, 21), "tidus.finalfantasy@hotmail.com");
+        Student student = new Student(UUID.randomUUID(), "test",
+                LocalDate.of(2000, Month.JANUARY, 21), "test.finalfantasy@hotmail.com");
         studentRepository.save(student);
         Optional<Student> student1 = studentRepository.findStudentsByEmail(student.getEmail());
         ResponseEntity<Student> responseEntity =
