@@ -22,6 +22,12 @@ class StudentRepositoryTest {
 
     @Test
     void findStudentsByEmail() {
+        Student student = new Student(UUID.randomUUID(), "test", LocalDate.of(2000, Month.APRIL, 21), "test@hotmail.com");
+        entityManager.persist(student);
+        entityManager.flush();
+        Optional<Student> optional = studentRepository.findStudentsByEmail(student.getEmail());
+        Assertions.assertFalse(optional.isEmpty());
+        Assertions.assertEquals(student.getEmail(), optional.get().getEmail());
     }
 
     @Test
