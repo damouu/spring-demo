@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -30,12 +31,12 @@ public class StudentService {
     }
 
     public ResponseEntity<Student> postStudent(Student student) {
-        studentRepository.findStudentsByEmail(student.getEmail()).ifPresent(student1 -> {
-            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "invalid email address");
-        });
-        student.setUuid(UUID.randomUUID());
-        studentRepository.save(student);
-        return ResponseEntity.created(URI.create("http://localhost:8083/api/student/" + student.getUuid())).body(student);
+        Optional<Student> student2 = studentRepository.findStudentsByEmail(student.getEmail());
+        if (student2.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "student email already exist");
+        }
+        Student student1 = studentRepository.save(student);
+        return ResponseEntity.created(URI.create("http://localhost:8083/api/student/" + student1.getUuid())).body(student1);
     }
 
     public ResponseEntity<String> deleteStudent(UUID studentUuid) {
