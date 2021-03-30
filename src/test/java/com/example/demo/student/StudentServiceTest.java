@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -41,6 +42,12 @@ class StudentServiceTest {
 
     @Test
     void deleteStudent() {
+        Student student = new Student(UUID.randomUUID(), "test", LocalDate.now(), "email@ok.com");
+        Mockito.when(studentRepository.findStudentByUuid(student.getUuid())).thenReturn(java.util.Optional.of(student));
+        ResponseEntity<String> dede = studentService.deleteStudent(student.getUuid());
+        Assertions.assertEquals(dede.getBody(), "student successfully deleted");
+        Assertions.assertTrue(dede.getStatusCode().is2xxSuccessful());
+        Mockito.verify(studentRepository, Mockito.times(1)).delete(student);
     }
 
     @Test
