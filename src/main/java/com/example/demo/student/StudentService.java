@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.net.URI;
-import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -19,7 +19,7 @@ public class StudentService {
 
     private final StudentRepository studentRepository;
 
-    public Collection<Student> allStudents(int page, int size) {
+    public List<Student> allStudents(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Student> pages = studentRepository.findAll(pageable);
         return pages.toList();
