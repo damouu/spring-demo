@@ -38,10 +38,10 @@ public class StudentService {
         return ResponseEntity.created(URI.create("http://localhost:8083/api/student/" + student.getUuid())).body(student);
     }
 
-    public ResponseEntity<?> deleteStudent(UUID studentUuid) {
+    public ResponseEntity<String> deleteStudent(UUID studentUuid) {
         Student student = studentRepository.findStudentByUuid(studentUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "student does not exist"));
         studentRepository.delete(student);
-        return ResponseEntity.status(204).build();
+        return ResponseEntity.status(204).body("student successfully deleted");
     }
 
     public Student updateStudent(UUID studentUuid, Student student) {
