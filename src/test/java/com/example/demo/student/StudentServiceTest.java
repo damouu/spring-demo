@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 @ExtendWith(MockitoExtension.class)
@@ -38,6 +40,14 @@ class StudentServiceTest {
 
     @Test
     void postStudent() {
+        Student student = new Student(UUID.randomUUID(), "pokemon", LocalDate.now(), "son.wiza@hotmail.com");
+        Mockito.when(studentRepository.save(student)).thenReturn(student);
+        Mockito.when(studentRepository.findStudentsByEmail(student.getEmail())).thenReturn(Optional.empty());
+        var student3 = studentService.postStudent(student);
+        Assertions.assertNotNull(student3);
+        Assertions.assertEquals(student.getName(), Objects.requireNonNull(student3.getBody()).getName());
+        Mockito.verify(studentRepository, Mockito.times(1)).save(student);
+        Mockito.verify(studentRepository, Mockito.times(1)).findStudentsByEmail(student.getEmail());
     }
 
     @Test
