@@ -33,8 +33,8 @@ public class StudentController {
         return studentService.postStudent(student);
     }
 
-    @DeleteMapping(path = "/{studentUuid}")
-    public ResponseEntity<?> deleteStudent(@PathVariable("studentUuid") UUID studentUuid) {
+    @DeleteMapping(path = "/{studentUuid}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> deleteStudent(@PathVariable("studentUuid") UUID studentUuid) {
         return studentService.deleteStudent(studentUuid);
     }
 
