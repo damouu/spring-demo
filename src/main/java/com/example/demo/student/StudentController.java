@@ -29,7 +29,7 @@ public class StudentController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> postStudent(@Valid @RequestBody Student student) {
+    public ResponseEntity<Student> postStudent(@Valid @RequestBody Student student) {
         return studentService.postStudent(student);
     }
 
