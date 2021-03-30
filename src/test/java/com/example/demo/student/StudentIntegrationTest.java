@@ -23,7 +23,8 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 // the SpringBootTest annotation is for Integration test purposes.
@@ -75,13 +76,12 @@ class StudentIntegrationTest {
 
     @Test
     void inertNewStudent() throws Exception {
-        Student student = new Student(UUID.randomUUID(), "tidus", LocalDate.of(2000, Month.APRIL, 21), "tidus@hotmail.com");
+        Student student = new Student(UUID.randomUUID(), "test", LocalDate.of(2000, Month.APRIL, 21), "test@hotmail.com");
         mockMvc.perform(post("/api/student/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(student)))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(header().string("Location", "http://localhost:8083/api/student/" + student.getUuid()))
                 .andExpect(content().json("{\"uuid\":\"" + student.getUuid() + "\",\"name\":\"" + student.getName() + "\",\"dob\":\"" + student.getDob() + "\",\"email\":\"" + student.getEmail() + "\"}"));
     }
 
