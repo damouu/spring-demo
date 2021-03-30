@@ -1,12 +1,12 @@
 package com.example.demo.student;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
@@ -15,12 +15,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(StudentController.class)
-class StudentControllerUnitTest {
+class StudentControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -60,7 +61,13 @@ class StudentControllerUnitTest {
     }
 
     @Test
-    void deleteStudent() {
+    void deleteStudent() throws Exception {
+        Mockito.when(studentService.deleteStudent(UUID.fromString("da37914b-d612-4903-b833-5ed83f1a1dc0"))).thenReturn(ResponseEntity.status(204).body("student successfully deleted"));
+        mockMvc.perform(delete("/api/student/" + "da37914b-d612-4903-b833-5ed83f1a1dc0"))
+                .andExpect(status().is(204))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().string("student successfully deleted"));
+        Mockito.verify(studentService, Mockito.times(1)).deleteStudent(UUID.fromString("da37914b-d612-4903-b833-5ed83f1a1dc0"));
     }
 
     @Test
