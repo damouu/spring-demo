@@ -21,7 +21,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -29,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 // Integration test will launch the whole program, and simulate HTTP request and assert the result.
 // and because it will run the whole program we must define a random port to run on it.
 @AutoConfigureMockMvc
-class StudentControllerIntegrationTest {
+class StudentIntegrationTest {
 
     @LocalServerPort
     private int port;
@@ -77,7 +79,14 @@ class StudentControllerIntegrationTest {
     }
 
     @Test
-    void deleteStudent() {
+    void deleteStudent() throws Exception {
+        Student student = new Student(UUID.randomUUID(), "tidus", LocalDate.of(2000, Month.APRIL, 21), "tidus@hotmail.com");
+        studentRepository.save(student);
+        Optional<Student> student1 = studentRepository.findStudentByUuid(student.getUuid());
+        mockMvc.perform(delete("/api/student/" + student1.get().getUuid())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(content().string("student successfully deleted"));
     }
 
     @Test
