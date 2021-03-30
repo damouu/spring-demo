@@ -1,0 +1,53 @@
+package com.example.demo.student;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.UUID;
+
+@ExtendWith(MockitoExtension.class)
+class StudentServiceTest {
+
+    @Mock
+    private StudentRepository studentRepository;
+
+    @InjectMocks
+    private StudentService studentService;
+
+    @Test
+    void allStudents() {
+
+    }
+
+    @Test
+    void getStudent() {
+        Mockito.when(studentRepository.findStudentByUuid(UUID.fromString("a505e6fd-8504-47c7-876d-03947e3bbcaf"))).thenReturn(java.util.Optional.of(new Student(UUID.fromString("a505e6fd-8504-47c7-876d-03947e3bbcaf"), "student", LocalDate.of(2000, Month.JULY, 11), "student@msn.com")));
+        Student student3 = studentService.getStudent(UUID.fromString("a505e6fd-8504-47c7-876d-03947e3bbcaf"));
+        Mockito.verify(studentRepository, Mockito.times(1)).findStudentByUuid(UUID.fromString("a505e6fd-8504-47c7-876d-03947e3bbcaf"));
+        Assertions.assertNotNull(student3);
+        Assertions.assertEquals(student3.getUuid(), UUID.fromString("a505e6fd-8504-47c7-876d-03947e3bbcaf"));
+    }
+
+    @Test
+    void postStudent() {
+    }
+
+    @Test
+    void deleteStudent() {
+    }
+
+    @Test
+    void updateStudent() {
+    }
+
+    @Test
+    void getStudentRepository() {
+    }
+}
