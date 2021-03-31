@@ -30,7 +30,7 @@ class CourseIntegrationTest {
     private CourseRepository courseRepository;
 
     @Test
-    void getStudent() {
+    void getCourse() {
         Course course = new Course(UUID.randomUUID(), "course_test", "campus_test", "university_test");
         courseRepository.save(course);
         ResponseEntity<Course> responseEntity =
@@ -41,6 +41,17 @@ class CourseIntegrationTest {
         Assertions.assertEquals(course.getName(), Objects.requireNonNull(responseEntity.getBody()).getName());
         Assertions.assertEquals(course.getCampus(), Objects.requireNonNull(responseEntity.getBody()).getCampus());
         Assertions.assertEquals(course.getUniversity(), Objects.requireNonNull(responseEntity.getBody()).getUniversity());
+    }
+
+    @Test
+    void deleteCourse() {
+        Course course = new Course(UUID.randomUUID(), "course_test", "campus_test", "university_test");
+        courseRepository.save(course);
+        var dede = courseRepository.findByUuid(course.getUuid());
+        Assertions.assertTrue(dede.isPresent());
+        restTemplate.delete("http://localhost:" + port + "/api/course/" + course.getUuid());
+        var o = courseRepository.findByUuid(course.getUuid());
+        Assertions.assertTrue(o.isEmpty());
     }
 
 }
