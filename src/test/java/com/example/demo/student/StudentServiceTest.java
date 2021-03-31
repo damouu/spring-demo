@@ -76,8 +76,4 @@ class StudentServiceTest {
         Assertions.assertNotEquals(studentRetrieved.getEmail(), "first_iteration@hotmail.com");
         Mockito.verify(studentRepository, Mockito.times(1)).save(studentRetrieved);
     }
-
-    @Test
-    void getStudentRepository() {
-    }
 }
