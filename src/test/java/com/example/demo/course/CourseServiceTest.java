@@ -1,32 +1,45 @@
 package com.example.demo.course;
 
-import com.example.demo.student.StudentRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.ResponseEntity;
+
+import java.util.UUID;
 
 @ExtendWith(MockitoExtension.class)
 class CourseServiceTest {
 
-
-    @MockBean
+    @Mock
     private CourseRepository courseRepository;
 
-    @MockBean
-    private StudentRepository studentRepository;
-
+    @InjectMocks
+    private CourseService courseService;
 
     @Test
     void getCourse() {
-    }
-    
-    @Test
-    void createCourse() {
+        Course course = new Course(UUID.randomUUID(), "course_test", "campus_test", "university_test");
+        Mockito.when(courseRepository.findByUuid(course.getUuid())).thenReturn(java.util.Optional.of(course));
+        ResponseEntity<Course> responseEntity = courseService.getCourse(course.getUuid());
+        Assertions.assertTrue(responseEntity.getStatusCode().is2xxSuccessful());
+        Assertions.assertEquals(responseEntity.getBody(), course);
+        Mockito.verify(courseRepository, Mockito.times(1)).findByUuid(course.getUuid());
     }
 
     @Test
-    void removeCourse() {
+    void getCourses() {
+    }
+
+    @Test
+    void postCourse() {
+    }
+
+    @Test
+    void deleteCourse() {
     }
 
     @Test
@@ -43,9 +56,5 @@ class CourseServiceTest {
 
     @Test
     void getStudentsCourse() {
-    }
-
-    @Test
-    void getCourseDepartment() {
     }
 }
