@@ -62,6 +62,19 @@ class StudentServiceTest {
 
     @Test
     void updateStudent() {
+        var uuid = UUID.randomUUID();
+        var studentRetrieved = new Student(uuid, "first_iteration", LocalDate.now(), "first_iteration@hotmail.com");
+        var studentUpdates = new Student(uuid, "second_iteration", LocalDate.now(), "second_iteration@hotmail.com");
+        Mockito.when(studentRepository.findStudentByUuid(studentRetrieved.getUuid())).thenReturn(java.util.Optional.of(studentRetrieved));
+        ResponseEntity<Student> responseEntity = studentService.updateStudent(studentRetrieved.getUuid(), studentUpdates);
+        Assertions.assertTrue(responseEntity.getStatusCode().is2xxSuccessful());
+        Assertions.assertSame(responseEntity.getBody(), studentRetrieved);
+        Assertions.assertEquals(responseEntity.getBody(), studentRetrieved);
+        Assertions.assertEquals(studentRetrieved.getName(), studentUpdates.getName());
+        Assertions.assertEquals(studentRetrieved.getEmail(), studentUpdates.getEmail());
+        Assertions.assertNotEquals(studentRetrieved.getName(), "first_iteration");
+        Assertions.assertNotEquals(studentRetrieved.getEmail(), "first_iteration@hotmail.com");
+        Mockito.verify(studentRepository, Mockito.times(1)).save(studentRetrieved);
     }
 
     @Test
