@@ -9,6 +9,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @ExtendWith(MockitoExtension.class)
@@ -40,6 +41,12 @@ class CourseServiceTest {
 
     @Test
     void deleteCourse() {
+        Course course = new Course(UUID.randomUUID(), "course_test", "campus_test", "university_test");
+        Mockito.when(courseRepository.findByUuid(course.getUuid())).thenReturn(java.util.Optional.of(course));
+        var responseEntity = this.courseService.deleteCourse(course.getUuid());
+        Assertions.assertEquals(responseEntity.getStatusCode().value(), 204);
+        Assertions.assertTrue(Objects.requireNonNull(responseEntity.getBody()).contains("course successfully deleted"));
+        Mockito.verify(courseRepository, Mockito.times(1)).delete(course);
     }
 
     @Test
