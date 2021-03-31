@@ -24,8 +24,9 @@ public class CourseService {
 
     private final StudentIdCardRepository studentIdCardRepository;
 
-    public Course getCourse(UUID courseUuid) {
-        return courseRepository.findByUuid(courseUuid).orElseThrow(() -> new EntityNotFoundException("invalid course"));
+    public ResponseEntity<Course> getCourse(UUID courseUuid) {
+         Course course = courseRepository.findByUuid(courseUuid).orElseThrow(() -> new EntityNotFoundException("invalid course"));
+         return ResponseEntity.ok(course);
     }
 
     public Collection<Course> getCourses(int page, int size) {
