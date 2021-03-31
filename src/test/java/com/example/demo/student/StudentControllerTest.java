@@ -82,6 +82,12 @@ class StudentControllerTest {
     }
 
     @Test
-    void updateStudent() {
+    void updateStudent() throws Exception {
+        Student student = new Student(UUID.randomUUID(), "student", LocalDate.of(2000, Month.NOVEMBER, 1), "student@email.com");
+        Mockito.when(studentService.updateStudent(student.getUuid(), student)).thenReturn(ResponseEntity.status(HttpStatus.valueOf(204)).body(student));
+        mockMvc.perform(put("/api/student/" + student.getUuid())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(student)))
+                .andExpect(status().is2xxSuccessful());
     }
 }
