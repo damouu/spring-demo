@@ -21,8 +21,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -97,7 +96,17 @@ class StudentIntegrationTest {
     }
 
     @Test
-    void updateStudent() {
+    void updateStudent() throws Exception {
+        var uuid = UUID.randomUUID();
+        var studentRetrieved = new Student(uuid, "first_iteration", LocalDate.now(), "first_iteration@hotmail.com");
+        studentRepository.save(studentRetrieved);
+        var studentUpdates = new Student(uuid, "second_iteration", LocalDate.now(), "second_iteration@hotmail.com");
+        mockMvc.perform(put("/api/student/" + studentRetrieved.getUuid())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(studentUpdates)))
+                .andExpect(status().is(204))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json("{\"uuid\":\"" + studentUpdates.getUuid() + "\",\"name\":\"" + studentUpdates.getName() + "\",\"dob\":\"" + studentUpdates.getDob() + "\",\"email\":\"" + studentUpdates.getEmail() + "\"}"));
     }
 
     @Test
