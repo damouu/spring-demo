@@ -45,11 +45,12 @@ public class StudentService {
         return ResponseEntity.status(204).body("student successfully deleted");
     }
 
-    public Student updateStudent(UUID studentUuid, Student student) {
+    public ResponseEntity<Student> updateStudent(UUID studentUuid, Student student) {
         Student student1 = studentRepository.findStudentByUuid(studentUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "student does not exist"));
         student1.setName(student.getName());
         student1.setDob(student.getDob());
         student1.setEmail(student.getEmail());
-        return studentRepository.save(student1);
+        studentRepository.save(student1);
+        return ResponseEntity.status(204).body(student1);
     }
 }
