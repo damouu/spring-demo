@@ -11,6 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -43,7 +44,13 @@ class CourseControllerTest {
     }
 
     @Test
-    void deleteCourse() {
+    void deleteCourse() throws Exception {
+        Course course = new Course(UUID.randomUUID(), "course_test", "campus_test", "university_test");
+        Mockito.when(courseService.deleteCourse(course.getUuid())).thenReturn(ResponseEntity.status(204).body("course successfully deleted"));
+        mockMvc.perform(delete("/api/course/" + course.getUuid()))
+                .andExpect(status().is(204))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().string("course successfully deleted"));
     }
 
     @Test
