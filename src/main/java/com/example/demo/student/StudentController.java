@@ -39,7 +39,7 @@ public class StudentController {
     }
 
     @PutMapping(path = "/{studentUuid}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Student updateStudent(@PathVariable("studentUuid") UUID studentUuid, @RequestBody Student student) {
+    public ResponseEntity<Student> updateStudent(@PathVariable("studentUuid") UUID studentUuid, @RequestBody Student student) {
         return studentService.updateStudent(studentUuid, student);
     }
 }
