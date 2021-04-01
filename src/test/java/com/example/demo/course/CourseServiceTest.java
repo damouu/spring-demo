@@ -61,6 +61,15 @@ class CourseServiceTest {
 
     @Test
     void updateCourse() {
+        var courseRetrieved = new Course(UUID.randomUUID(), "first_iteration", "first_iteration@campus", "first_iteration@university");
+        var courseUpdates = new Course(null, "second_iteration", "second_iteration@campus", "second_iteration@university");
+        Mockito.when(courseRepository.findByUuid(courseRetrieved.getUuid())).thenReturn(java.util.Optional.of(courseRetrieved));
+        ResponseEntity<Course> responseEntity = courseService.updateCourse(courseRetrieved.getUuid(), courseUpdates);
+        Assertions.assertTrue(responseEntity.getStatusCode().is2xxSuccessful());
+        Assertions.assertTrue(responseEntity.getHeaders().containsKey("Location"));
+        Assertions.assertEquals(responseEntity.getHeaders().get("Location"), List.of("http://localhost:8083/api/course/" + courseRetrieved.getUuid()));
+        Mockito.verify(courseRepository, Mockito.times(1)).save(courseRetrieved);
+
     }
 
     @Test
