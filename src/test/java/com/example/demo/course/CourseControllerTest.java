@@ -63,7 +63,13 @@ class CourseControllerTest {
     }
 
     @Test
-    void updateCourse() {
+    void updateCourse() throws Exception {
+        Course course = new Course(UUID.randomUUID(), "course_test", "campus_test", "university_test");
+        Mockito.when(courseService.updateCourse(course.getUuid(), course)).thenReturn(ResponseEntity.status(204).body(course));
+        mockMvc.perform(put("/api/course/" + course.getUuid())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsBytes(course)))
+                .andExpect(status().is(200));
     }
 
     @Test
