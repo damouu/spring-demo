@@ -1,5 +1,6 @@
 package com.example.demo.course;
 
+import com.example.demo.student_id_card.StudentIdCard;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -82,5 +83,15 @@ class CourseServiceTest {
 
     @Test
     void getStudentsCourse() {
+        Course course = new Course(UUID.randomUUID(), "course_test", "campus_test", "university_test");
+        StudentIdCard studentIdCard = new StudentIdCard(UUID.randomUUID());
+        StudentIdCard studentIdCard1 = new StudentIdCard(UUID.randomUUID());
+        course.getStudentIdCards().add(studentIdCard);
+        course.getStudentIdCards().add(studentIdCard1);
+        Mockito.when(courseRepository.findByUuid(course.getUuid())).thenReturn(java.util.Optional.of(course));
+        var responseEntity = courseService.getStudentsCourse(course.getUuid());
+        Assertions.assertTrue(responseEntity.getStatusCode().is2xxSuccessful());
+        Assertions.assertTrue(Objects.requireNonNull(responseEntity.getBody()).contains(studentIdCard));
+        Assertions.assertTrue(Objects.requireNonNull(responseEntity.getBody()).contains(studentIdCard1));
     }
 }
