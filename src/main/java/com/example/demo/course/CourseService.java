@@ -35,10 +35,10 @@ public class CourseService {
         return courses.toList();
     }
 
-    public ResponseEntity<?> postCourse(Course course) {
+    public ResponseEntity<Course> postCourse(Course course) {
         course.setUuid(UUID.randomUUID());
         courseRepository.save(course);
-        return ResponseEntity.status(201).location(URI.create("http://localhost:8083/api/course/" + course.getUuid())).build();
+        return ResponseEntity.status(201).location(URI.create("http://localhost:8083/api/course/" + course.getUuid())).body(course);
     }
 
     public ResponseEntity<String> deleteCourse(UUID courseUuid) {
