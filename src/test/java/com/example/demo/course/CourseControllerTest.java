@@ -1,5 +1,6 @@
 package com.example.demo.course;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -24,6 +24,9 @@ class CourseControllerTest {
 
     @MockBean
     private CourseService courseService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Test
     void getCourses() {
@@ -40,7 +43,13 @@ class CourseControllerTest {
     }
 
     @Test
-    void postCourse() {
+    void postCourse() throws Exception {
+        Course course = new Course(null, "course_test", "campus_test", "university_test");
+        Mockito.when(courseService.postCourse(course)).thenReturn(ResponseEntity.status(201).body(course));
+        mockMvc.perform(post("/api/course")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(course)))
+                .andExpect(status().is2xxSuccessful());
     }
 
     @Test
