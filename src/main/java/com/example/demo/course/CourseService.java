@@ -79,7 +79,7 @@ public class CourseService {
         return ResponseEntity.noContent().build();
     }
 
-    public ResponseEntity<?> getStudentsCourse(UUID courseUuid) {
+    public ResponseEntity<Collection<StudentIdCard>> getStudentsCourse(UUID courseUuid) {
         Course course = courseRepository.findByUuid(courseUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "course does not exist"));
         return ResponseEntity.ok(course.getStudentIdCards());
     }
