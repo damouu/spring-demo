@@ -47,13 +47,13 @@ public class CourseService {
         return ResponseEntity.status(204).body("course successfully deleted");
     }
 
-    public ResponseEntity<?> updateCourse(UUID courseUuid, Course course) {
+    public ResponseEntity updateCourse(UUID courseUuid, Course course) {
         Course optionalCourse = courseRepository.findByUuid(courseUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "course does not exist"));
         optionalCourse.setName(course.getName());
         optionalCourse.setCampus(course.getCampus());
         optionalCourse.setUniversity(course.getUniversity());
         courseRepository.save(optionalCourse);
-        return ResponseEntity.status(204).location(URI.create("http://localhost:8083/api/course/" + course.getUuid())).build();
+        return ResponseEntity.status(204).location(URI.create("http://localhost:8083/api/course/" + optionalCourse.getUuid())).build();
     }
 
     public ResponseEntity<?> postStudentCourse(UUID courseUuid, UUID studentCardUuid) {
