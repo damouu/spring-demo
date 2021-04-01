@@ -7,8 +7,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -37,6 +39,14 @@ class CourseServiceTest {
 
     @Test
     void postCourse() {
+        Course course = new Course(null, "course_test", "campus_test", "university_test");
+        var responseEntity = courseService.postCourse(course);
+        Assertions.assertNotNull(responseEntity);
+        Assertions.assertEquals(responseEntity.getStatusCode(), HttpStatus.CREATED);
+        Assertions.assertTrue(responseEntity.getHeaders().containsKey("Location"));
+        Assertions.assertEquals(responseEntity.getHeaders().get("Location"), List.of("http://localhost:8083/api/course/" + course.getUuid()));
+        Assertions.assertEquals(course, responseEntity.getBody());
+        Mockito.verify(courseRepository, Mockito.times(1)).save(course);
     }
 
     @Test
