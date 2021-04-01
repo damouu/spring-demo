@@ -1,5 +1,7 @@
 package com.example.demo.course;
 
+import com.example.demo.student_id_card.StudentIdCard;
+import com.example.demo.student_id_card.StudentIdCardRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.*;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -57,7 +60,7 @@ class CourseIntegrationTest {
     void postCourse() {
         Course course = new Course(null, "course_test", "campus_test", "university_test");
         var responseEntity = restTemplate.postForEntity("http://localhost:" + port + "/api/course", course, Course.class);
-        var courseRetrieved = courseRepository.findByUuid(responseEntity.getBody().getUuid());
+        var courseRetrieved = courseRepository.findByUuid(Objects.requireNonNull(responseEntity.getBody()).getUuid());
         Assertions.assertNotNull(responseEntity);
         Assertions.assertEquals(MediaType.APPLICATION_JSON, responseEntity.getHeaders().getContentType());
         Assertions.assertEquals(responseEntity.getStatusCode(), HttpStatus.CREATED);
@@ -79,6 +82,23 @@ class CourseIntegrationTest {
         Assertions.assertTrue(responseEntity.getStatusCode().is2xxSuccessful());
         Assertions.assertTrue(responseEntity.getHeaders().containsKey("Location"));
         Assertions.assertEquals(responseEntity.getHeaders().get("Location"), List.of("http://localhost:8083/api/course/" + courseRetrieved.getUuid()));
+    }
+
+    @Test
+    void getStudentsCourse() {
+        Course course = new Course(UUID.randomUUID(), "course_test", "campus_test", "university_test");
+        StudentIdCard studentIdCard = new StudentIdCard(UUID.randomUUID());
+        StudentIdCard studentIdCard1 = new StudentIdCard(UUID.randomUUID());
+        course.getStudentIdCards().add(studentIdCard);
+        course.getStudentIdCards().add(studentIdCard1);
+        studentIdCard.getCourses().add(course);
+        studentIdCard1.getCourses().add(course);
+        courseRepository.save(course);
+        ResponseEntity<StudentIdCard[]> responseEntity = restTemplate.getForEntity
+                ("http://localhost:" + port + "/api/course/" + course.getUuid() + "/student", StudentIdCard[].class);
+        Assertions.assertTrue(responseEntity.getStatusCode().is2xxSuccessful());
+        Assertions.assertEquals(MediaType.APPLICATION_JSON, responseEntity.getHeaders().getContentType());
+        Assertions.assertTrue(Arrays.stream(Objects.requireNonNull(responseEntity.getBody())).count() > 0);
     }
 
 }
