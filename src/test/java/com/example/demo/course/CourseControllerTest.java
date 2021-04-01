@@ -1,5 +1,6 @@
 package com.example.demo.course;
 
+import com.example.demo.student_id_card.StudentIdCard;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -10,6 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -81,7 +84,17 @@ class CourseControllerTest {
     }
 
     @Test
-    void getStudentsCourse() {
+    void getStudentsCourse() throws Exception {
+        Course course = new Course(UUID.randomUUID(), "course_test", "campus_test", "university_test");
+        StudentIdCard studentIdCard = new StudentIdCard(UUID.randomUUID());
+        StudentIdCard studentIdCard1 = new StudentIdCard(UUID.randomUUID());
+        List<StudentIdCard> studentIdCardCollection = Arrays.asList(studentIdCard, studentIdCard1);
+        Mockito.when(courseService.getStudentsCourse(course.getUuid())).thenReturn(ResponseEntity.ok(studentIdCardCollection));
+        mockMvc.perform(get("/api/course/" + course.getUuid() + "/student")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(200))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json("[{\"uuid\":\"" + studentIdCard.getUuid() + "\"},{\"uuid\":\"" + studentIdCard1.getUuid() + "\"}]"));
     }
 
     @Test
