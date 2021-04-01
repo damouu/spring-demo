@@ -1,5 +1,6 @@
 package com.example.demo.course;
 
+import com.example.demo.student_id_card.StudentIdCard;
 import lombok.Data;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -54,7 +55,7 @@ public class CourseController {
     }
 
     @GetMapping(path = "/{courseUuid}/student", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getStudentsCourse(@PathVariable("courseUuid") UUID courseUuid) {
+    public ResponseEntity<Collection<StudentIdCard>> getStudentsCourse(@PathVariable("courseUuid") UUID courseUuid) {
         return courseService.getStudentsCourse(courseUuid);
     }
 
