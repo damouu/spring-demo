@@ -38,8 +38,8 @@ public class CourseController {
         return courseService.deleteCourse(courseUuid);
     }
 
-    @PutMapping(path = "/{courseUuid}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updateCourse(@PathVariable("courseUuid") UUID courseUuid, @Valid @RequestBody Course course) {
+    @PutMapping(path = "/{courseUuid}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity updateCourse(@PathVariable("courseUuid") UUID courseUuid, @Valid @RequestBody Course course) {
         return courseService.updateCourse(courseUuid, course);
     }
 
