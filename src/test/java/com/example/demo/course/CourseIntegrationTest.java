@@ -7,10 +7,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -67,6 +66,19 @@ class CourseIntegrationTest {
         Assertions.assertEquals(course.getCampus(), responseEntity.getBody().getCampus());
         Assertions.assertEquals(course.getUniversity(), responseEntity.getBody().getUniversity());
         Assertions.assertNotNull(courseRetrieved.get());
+    }
+
+    @Test
+    void updateCourse() {
+        var courseRetrieved = new Course(UUID.randomUUID(), "first_iteration", "first_iteration@campus", "first_iteration@university");
+        var courseUpdates = new Course(UUID.randomUUID(), "second_iteration", "second_iteration@campus", "second_iteration@university");
+        courseRepository.save(courseRetrieved);
+        HttpEntity<Course> entity = new HttpEntity<Course>(courseUpdates);
+        ResponseEntity<String> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/course/" + courseRetrieved.getUuid(),
+                HttpMethod.PUT, entity, String.class);
+        Assertions.assertTrue(responseEntity.getStatusCode().is2xxSuccessful());
+        Assertions.assertTrue(responseEntity.getHeaders().containsKey("Location"));
+        Assertions.assertEquals(responseEntity.getHeaders().get("Location"), List.of("http://localhost:8083/api/course/" + courseRetrieved.getUuid()));
     }
 
 }
