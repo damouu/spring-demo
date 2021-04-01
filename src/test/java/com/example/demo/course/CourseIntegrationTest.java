@@ -54,4 +54,19 @@ class CourseIntegrationTest {
         Assertions.assertTrue(o.isEmpty());
     }
 
+    @Test
+    void postCourse() {
+        Course course = new Course(null, "course_test", "campus_test", "university_test");
+        var responseEntity = restTemplate.postForEntity("http://localhost:" + port + "/api/course", course, Course.class);
+        var courseRetrieved = courseRepository.findByUuid(responseEntity.getBody().getUuid());
+        Assertions.assertNotNull(responseEntity);
+        Assertions.assertEquals(MediaType.APPLICATION_JSON, responseEntity.getHeaders().getContentType());
+        Assertions.assertEquals(responseEntity.getStatusCode(), HttpStatus.CREATED);
+        Assertions.assertTrue(responseEntity.getHeaders().containsKey("Location"));
+        Assertions.assertEquals(course.getName(), Objects.requireNonNull(responseEntity.getBody()).getName());
+        Assertions.assertEquals(course.getCampus(), responseEntity.getBody().getCampus());
+        Assertions.assertEquals(course.getUniversity(), responseEntity.getBody().getUniversity());
+        Assertions.assertNotNull(courseRetrieved.get());
+    }
+
 }
