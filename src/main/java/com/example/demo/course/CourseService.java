@@ -68,7 +68,7 @@ public class CourseService {
         }
     }
 
-    public ResponseEntity<?> deleteStudentCourse(UUID courseUuid, UUID studentCardUuid) {
+    public ResponseEntity deleteStudentCourse(UUID courseUuid, UUID studentCardUuid) {
         Course course = courseRepository.findByUuid(courseUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "course does not exist"));
         StudentIdCard studentIdCard = studentIdCardRepository.findStudentIdCardByUuid(studentCardUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "student card does not exist"));
         if (course.getStudentIdCards().stream().anyMatch(studentIdCard1 -> studentIdCard1.getUuid().equals(studentIdCard.getUuid()))) {
@@ -76,7 +76,7 @@ public class CourseService {
             this.studentIdCardRepository.save(studentIdCard);
             return ResponseEntity.status(204).build();
         }
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(204).build();
     }
 
     public ResponseEntity<Collection<StudentIdCard>> getStudentsCourse(UUID courseUuid) {
