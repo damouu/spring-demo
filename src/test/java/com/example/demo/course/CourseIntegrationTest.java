@@ -11,10 +11,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.*;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -30,6 +27,9 @@ class CourseIntegrationTest {
 
     @Autowired
     private CourseRepository courseRepository;
+
+    @Autowired
+    private StudentIdCardRepository studentIdCardRepository;
 
     @Test
     void getCourse() {
@@ -99,6 +99,24 @@ class CourseIntegrationTest {
         Assertions.assertTrue(responseEntity.getStatusCode().is2xxSuccessful());
         Assertions.assertEquals(MediaType.APPLICATION_JSON, responseEntity.getHeaders().getContentType());
         Assertions.assertTrue(Arrays.stream(Objects.requireNonNull(responseEntity.getBody())).count() > 0);
+    }
+
+    @Test
+    void deleteStudentCourse() {
+        Course course = new Course(UUID.randomUUID(), "course_test", "campus_test", "university_test");
+        StudentIdCard studentIdCard = new StudentIdCard(UUID.randomUUID());
+        course.getStudentIdCards().add(studentIdCard);
+        studentIdCard.getCourses().add(course);
+        courseRepository.save(course);
+        studentIdCardRepository.save(studentIdCard);
+        Optional<Course> course1 = courseRepository.findByUuid(course.getUuid());
+        Assertions.assertFalse(course1.get().getStudentIdCards().isEmpty());
+        Assertions.assertTrue(course1.get().getStudentIdCards().stream().anyMatch(card -> card.getUuid().equals(studentIdCard.getUuid())));
+        restTemplate.delete("http://localhost:" + port + "/api/course/" + course.getUuid() + "/student/" + studentIdCard.getUuid());
+        var optionalCourse = courseRepository.findByUuid(course.getUuid());
+        var optionalStudentIdCard = studentIdCardRepository.findStudentIdCardByUuid(studentIdCard.getUuid());
+        Assertions.assertTrue(optionalCourse.get().getStudentIdCards().isEmpty());
+        Assertions.assertTrue(optionalStudentIdCard.get().getCourses().isEmpty());
     }
 
 }
