@@ -76,11 +76,19 @@ class CourseControllerTest {
     }
 
     @Test
-    void postStudentCourse() {
+    void postStudentCourse() throws Exception {
     }
 
     @Test
-    void deleteStudentCourse() {
+    void deleteStudentCourse() throws Exception {
+        Course course = new Course(UUID.randomUUID(), "course_test", "campus_test", "university_test");
+        StudentIdCard studentIdCard = new StudentIdCard(UUID.randomUUID());
+        course.getStudentIdCards().add(studentIdCard);
+        studentIdCard.getCourses().add(course);
+        Mockito.when(courseService.deleteStudentCourse(course.getUuid(), studentIdCard.getUuid())).thenReturn(ResponseEntity.status(204).body(course));
+        mockMvc.perform(delete("/api/course/" + course.getUuid() + "/student/" + studentIdCard.getUuid()))
+                .andExpect(status().is(204))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test
