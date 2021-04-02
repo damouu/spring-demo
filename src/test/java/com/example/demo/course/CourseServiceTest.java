@@ -1,6 +1,7 @@
 package com.example.demo.course;
 
 import com.example.demo.student_id_card.StudentIdCard;
+import com.example.demo.student_id_card.StudentIdCardRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,6 +21,9 @@ class CourseServiceTest {
 
     @Mock
     private CourseRepository courseRepository;
+
+    @Mock
+    private StudentIdCardRepository studentIdCardRepository;
 
     @InjectMocks
     private CourseService courseService;
@@ -79,6 +83,15 @@ class CourseServiceTest {
 
     @Test
     void deleteStudentCourse() {
+        Course course = new Course(UUID.randomUUID(), "course_test", "campus_test", "university_test");
+        StudentIdCard studentIdCard = new StudentIdCard(UUID.randomUUID());
+        course.getStudentIdCards().add(studentIdCard);
+        studentIdCard.getCourses().add(course);
+        Mockito.when(courseRepository.findByUuid(course.getUuid())).thenReturn(java.util.Optional.of(course));
+        Mockito.when(studentIdCardRepository.findStudentIdCardByUuid(studentIdCard.getUuid())).thenReturn(java.util.Optional.of(studentIdCard));
+        ResponseEntity responseEntity = courseService.deleteStudentCourse(course.getUuid(), studentIdCard.getUuid());
+        Assertions.assertTrue(responseEntity.getStatusCode().is2xxSuccessful());
+        Mockito.verify(studentIdCardRepository, Mockito.times(1)).save(studentIdCard);
     }
 
     @Test
