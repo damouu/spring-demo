@@ -50,7 +50,7 @@ public class CourseController {
     }
 
     @DeleteMapping(path = "/{courseUuid}/student/{studentUuid}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> deleteStudentCourse(@PathVariable("courseUuid") UUID courseUuid, @PathVariable("studentUuid") UUID studentUuid) {
+    public ResponseEntity deleteStudentCourse(@PathVariable("courseUuid") UUID courseUuid, @PathVariable("studentUuid") UUID studentUuid) {
         return courseService.deleteStudentCourse(courseUuid, studentUuid);
     }
 
