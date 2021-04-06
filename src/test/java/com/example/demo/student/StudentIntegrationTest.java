@@ -26,9 +26,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-// the SpringBootTest annotation is for Integration test purposes.
-// Integration test will launch the whole program, and simulate HTTP request and assert the result.
-// and because it will run the whole program we must define a random port to run on it.
 @AutoConfigureMockMvc
 class StudentIntegrationTest {
 
@@ -107,17 +104,5 @@ class StudentIntegrationTest {
                 .andExpect(status().is(204))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json("{\"uuid\":\"" + studentUpdates.getUuid() + "\",\"name\":\"" + studentUpdates.getName() + "\",\"dob\":\"" + studentUpdates.getDob() + "\",\"email\":\"" + studentUpdates.getEmail() + "\"}"));
-    }
-
-    @Test
-    void registrationWorksThroughAllLayers() throws Exception {
-        Student student = new Student(UUID.randomUUID(), "tidus", LocalDate.of(2000, Month.APRIL, 21), "tidus@hotmail.com");
-        mockMvc.perform(post("/api/student")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(student)))
-                .andExpect(status().isCreated());
-
-        Optional<Student> student1 = studentRepository.findStudentsByEmail(student.getEmail());
-        assertThat(student1.get().getEmail()).isEqualTo("tidus@hotmail.com");
     }
 }
