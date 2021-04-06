@@ -2,7 +2,6 @@ package com.example.demo.student_id_card;
 
 import com.example.demo.course.Course;
 import com.example.demo.student.Student;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(StudentIdCardController.class)
 @AutoConfigureMockMvc
-class Student_id_classControllerTest {
+class StudentIdClassControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -68,12 +67,10 @@ class Student_id_classControllerTest {
     @Test
     public void deleteStudentIdCard() throws Exception {
         StudentIdCard studentIdCard = new StudentIdCard(UUID.randomUUID());
-        ResponseEntity<String> responseEntity = new ResponseEntity<String>("student card" + studentIdCard.getUuid() + "deleted", HttpStatus.valueOf(204));
+        ResponseEntity responseEntity = new ResponseEntity(HttpStatus.valueOf(204));
         Mockito.when(studentIdCardService.deleteStudentIdCard(studentIdCard.getUuid())).thenReturn(responseEntity);
         mockMvc.perform(delete("/api/studentCard/" + studentIdCard.getUuid()))
-                .andExpect(status().is(204))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().string("student card" + studentIdCard.getUuid() + "deleted"));
+                .andExpect(status().is(204));
         Mockito.verify(studentIdCardService, Mockito.times(1)).deleteStudentIdCard(studentIdCard.getUuid());
     }
 
