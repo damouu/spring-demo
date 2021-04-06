@@ -9,9 +9,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -28,6 +31,7 @@ class CourseServiceTest {
     @InjectMocks
     private CourseService courseService;
 
+
     @Test
     void getCourse() {
         Course course = new Course(UUID.randomUUID(), "course_test", "campus_test", "university_test");
@@ -40,6 +44,12 @@ class CourseServiceTest {
 
     @Test
     void getCourses() {
+        List<Course> courseCollection = Collections.singletonList(new Course(UUID.randomUUID(), "test", "test", "test"));
+        Page courses = Mockito.mock(Page.class);
+        Mockito.when(this.courseRepository.findAll(org.mockito.ArgumentMatchers.isA(Pageable.class))).thenReturn(courses);
+        ResponseEntity<List<Course>> responseEntity = courseService.getCourses(0, 5);
+        Assertions.assertTrue(responseEntity.getStatusCode().is2xxSuccessful());
+        Assertions.assertTrue(Objects.requireNonNull(responseEntity.getBody()).isEmpty());
     }
 
     @Test
