@@ -35,10 +35,10 @@ public class StudentIdCardService {
         return this.studentIdCardRepository.findStudentIdCardByUuid(studentCardNumber).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "student card does not exist"));
     }
 
-    public ResponseEntity<String> deleteStudentIdCard(UUID studentCardUuid) throws ResponseStatusException {
+    public ResponseEntity deleteStudentIdCard(UUID studentCardUuid) throws ResponseStatusException {
         StudentIdCard studentIdCard = this.studentIdCardRepository.findStudentIdCardByUuid(studentCardUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "student card does not exist"));
         studentIdCardRepository.delete(studentIdCard);
-        return ResponseEntity.status(204).body("student card" + studentIdCard.getUuid() + "deleted");
+        return ResponseEntity.status(204).build();
     }
 
     public ResponseEntity<StudentIdCard> postStudentIdCard(UUID studentUuid) throws ResponseStatusException {
