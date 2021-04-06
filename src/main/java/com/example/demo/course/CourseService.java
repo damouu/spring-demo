@@ -56,15 +56,17 @@ public class CourseService {
         return ResponseEntity.status(204).location(URI.create("http://localhost:8083/api/course/" + optionalCourse.getUuid())).build();
     }
 
-    public ResponseEntity<?> postStudentCourse(UUID courseUuid, UUID studentCardUuid) {
+    public ResponseEntity<String> postStudentCourse(UUID courseUuid, UUID studentCardUuid) {
         Course course = courseRepository.findByUuid(courseUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "course does not exist"));
         StudentIdCard studentIdCard = studentIdCardRepository.findStudentIdCardByUuid(studentCardUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "student card does not exist"));
         if (course.getStudentIdCards().stream().anyMatch(studentIdCard1 -> studentIdCard1.getUuid().equals(studentIdCard.getUuid()))) {
             return ResponseEntity.noContent().build();
         } else {
             studentIdCard.getCourses().add(course);
+            course.getStudentIdCards().add(studentIdCard);
             this.studentIdCardRepository.save(studentIdCard);
-            return ResponseEntity.status(201).build();
+            this.courseRepository.save(course);
+            return ResponseEntity.status(201).body("student card" + " " + studentIdCard.getUuid() + " " + "added to the course" + " " + course.getUuid());
         }
     }
 
