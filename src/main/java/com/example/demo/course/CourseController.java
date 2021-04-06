@@ -45,7 +45,7 @@ public class CourseController {
     }
 
     @PostMapping(path = "/{courseUuid}/student/{studentUuid}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> postStudentCourse(@PathVariable("courseUuid") UUID courseUuid, @PathVariable("studentUuid") UUID studentUuid) {
+    public ResponseEntity<String> postStudentCourse(@PathVariable("courseUuid") UUID courseUuid, @PathVariable("studentUuid") UUID studentUuid) {
         return courseService.postStudentCourse(courseUuid, studentUuid);
     }
 
