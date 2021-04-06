@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -20,7 +21,7 @@ public class CourseController {
     private final CourseService courseService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Collection<Course> getCourses(@RequestParam(name = "page", required = false, defaultValue = "0") Integer page, @RequestParam(name = "size", required = false, defaultValue = "5") Integer size) {
+    public ResponseEntity<List<Course>> getCourses(@RequestParam(name = "page", required = false, defaultValue = "0") Integer page, @RequestParam(name = "size", required = false, defaultValue = "5") Integer size) {
         return courseService.getCourses(page, size);
     }
 
