@@ -47,4 +47,15 @@ class StudentIdCardIntegrationTest {
         Assertions.assertEquals(responseEntity.getBody().getDob(), LocalDate.of(2000, Month.JANUARY, 21));
     }
 
+    @Test
+    void deleteStudentIdCard() {
+        Student student = new Student(UUID.randomUUID(), "Tidus",
+                LocalDate.of(2000, Month.JANUARY, 21), "tidus.finalfantasy@hotmail.com");
+        StudentIdCard studentIdCard = new StudentIdCard(UUID.randomUUID());
+        studentIdCard.setStudent(student);
+        studentIdCardRepository.save(studentIdCard);
+        restTemplate.delete("http://localhost:" + port + "/api/studentCard/" + studentIdCard.getUuid());
+        Assertions.assertTrue(studentIdCardRepository.findStudentIdCardByUuid(studentIdCard.getUuid()).isEmpty());
+    }
+
 }
