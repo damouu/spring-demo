@@ -119,4 +119,20 @@ class CourseIntegrationTest {
         Assertions.assertTrue(optionalStudentIdCard.get().getCourses().isEmpty());
     }
 
+    @Test
+    void postStudentCourse() {
+        Course course = new Course(UUID.randomUUID(), "course_test", "campus_test", "university_test");
+        StudentIdCard studentIdCard = new StudentIdCard(UUID.randomUUID());
+        courseRepository.save(course);
+        studentIdCardRepository.save(studentIdCard);
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity("http://localhost:" + port + "/api/course/" + course.getUuid() + "/student/" + studentIdCard.getUuid(), null, String.class);
+        Assertions.assertNotNull(responseEntity);
+        Assertions.assertTrue(responseEntity.getStatusCode().is2xxSuccessful());
+        Assertions.assertEquals(responseEntity.getBody(), "student card" + " " + studentIdCard.getUuid() + " " + "added to the course" + " " + course.getUuid());
+        var optionalCourse = courseRepository.findByUuid(course.getUuid());
+        var optionalStudentIdCard = studentIdCardRepository.findStudentIdCardByUuid(studentIdCard.getUuid());
+        Assertions.assertEquals(optionalCourse.get().getStudentIdCards().stream().findFirst().get().getUuid(), studentIdCard.getUuid());
+        Assertions.assertEquals(optionalStudentIdCard.get().getCourses().stream().findFirst().get().getUuid(), course.getUuid());
+    }
+
 }
