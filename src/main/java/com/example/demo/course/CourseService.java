@@ -14,6 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.persistence.EntityNotFoundException;
 import java.net.URI;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -29,10 +30,10 @@ public class CourseService {
         return ResponseEntity.ok(course);
     }
 
-    public Collection<Course> getCourses(int page, int size) {
+    public ResponseEntity<List<Course>> getCourses(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Course> courses = courseRepository.findAll(pageable);
-        return courses.toList();
+        return ResponseEntity.ok(courses.toList());
     }
 
     public ResponseEntity<Course> postCourse(Course course) {
