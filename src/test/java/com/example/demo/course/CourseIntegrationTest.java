@@ -31,6 +31,17 @@ class CourseIntegrationTest {
     @Autowired
     private StudentIdCardRepository studentIdCardRepository;
 
+
+    @Test
+    void getCourses() {
+        ResponseEntity<List> responseEntity = this.restTemplate.getForEntity("http://localhost:" + port + "/api/course?size=5&page=1", List.class);
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        Assertions.assertTrue(Objects.requireNonNull(responseEntity.getHeaders().getContentType()).includes(MediaType.APPLICATION_JSON));
+        Assertions.assertFalse(Objects.requireNonNull(responseEntity.getBody()).isEmpty());
+        Assertions.assertEquals((long) Objects.requireNonNull(responseEntity.getBody()).size(), 5);
+    }
+
+
     @Test
     void getCourse() {
         Course course = new Course(UUID.randomUUID(), "course_test", "campus_test", "university_test");
