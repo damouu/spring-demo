@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,7 +34,13 @@ class CourseControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
-    void getCourses() {
+    void getCourses() throws Exception {
+        List<Course> courseCollection = Collections.singletonList(new Course(UUID.randomUUID(), "test", "test", "test"));
+        Mockito.when(courseService.getCourses(0, 5)).thenReturn(ResponseEntity.ok(courseCollection));
+        mockMvc.perform(get("/api/course/"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json("[{\"uuid\":\"" + courseCollection.get(0).getUuid() + "\",\"campus\":\"" + courseCollection.get(0).getCampus() + "\",\"university\":\"" + courseCollection.get(0).getUniversity() + "\"}]"));
     }
 
     @Test
