@@ -31,7 +31,7 @@ public class StudentIdCardController {
     }
 
     @DeleteMapping(value = "/{studentCardUuid}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> deleteStudentIdCard(@PathVariable("studentCardUuid") UUID studentCardUuid) {
+     public ResponseEntity deleteStudentIdCard(@PathVariable("studentCardUuid") UUID studentCardUuid) {
         return studentIdCardService.deleteStudentIdCard(studentCardUuid);
     }
 
