@@ -69,7 +69,7 @@ class CourseServiceTest {
         var courseRetrieved = new Course(UUID.randomUUID(), "first_iteration", "first_iteration@campus", "first_iteration@university");
         var courseUpdates = new Course(null, "second_iteration", "second_iteration@campus", "second_iteration@university");
         Mockito.when(courseRepository.findByUuid(courseRetrieved.getUuid())).thenReturn(java.util.Optional.of(courseRetrieved));
-        ResponseEntity<Course> responseEntity = courseService.updateCourse(courseRetrieved.getUuid(), courseUpdates);
+        ResponseEntity responseEntity = courseService.updateCourse(courseRetrieved.getUuid(), courseUpdates);
         Assertions.assertTrue(responseEntity.getStatusCode().is2xxSuccessful());
         Assertions.assertTrue(responseEntity.getHeaders().containsKey("Location"));
         Assertions.assertEquals(responseEntity.getHeaders().get("Location"), List.of("http://localhost:8083/api/course/" + courseRetrieved.getUuid()));
@@ -79,6 +79,17 @@ class CourseServiceTest {
 
     @Test
     void postStudentCourse() {
+        StudentIdCard studentIdCard = new StudentIdCard(UUID.randomUUID());
+        Course course = new Course(UUID.randomUUID(), "course_test", "campus_test", "university_test");
+        Mockito.when(courseRepository.findByUuid(course.getUuid())).thenReturn(java.util.Optional.of(course));
+        Mockito.when(studentIdCardRepository.findStudentIdCardByUuid(studentIdCard.getUuid())).thenReturn(java.util.Optional.of(studentIdCard));
+        ResponseEntity<String> responseEntity = courseService.postStudentCourse(course.getUuid(), studentIdCard.getUuid());
+        Assertions.assertNotNull(responseEntity);
+        Assertions.assertTrue(responseEntity.getStatusCode().is2xxSuccessful());
+        Assertions.assertEquals(course.getStudentIdCards().stream().findFirst().get(), studentIdCard);
+        Assertions.assertEquals(studentIdCard.getCourses().stream().findFirst().get(), course);
+        Mockito.verify(courseRepository, Mockito.times(1)).save(course);
+        Mockito.verify(studentIdCardRepository, Mockito.times(1)).save(studentIdCard);
     }
 
     @Test
