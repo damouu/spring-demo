@@ -58,13 +58,8 @@ class CourseIntegrationTest {
 
     @Test
     void deleteCourse() {
-        Course course = new Course(UUID.randomUUID(), "course_test", "campus_test", "university_test");
-        courseRepository.save(course);
-        var dede = courseRepository.findByUuid(course.getUuid());
-        Assertions.assertTrue(dede.isPresent());
-        restTemplate.delete("http://localhost:" + port + "/api/course/" + course.getUuid());
-        var o = courseRepository.findByUuid(course.getUuid());
-        Assertions.assertTrue(o.isEmpty());
+        restTemplate.delete("http://localhost:" + port + "/api/course/" + courseRepository.findById(26).get().getUuid());
+        Assertions.assertTrue(courseRepository.findById(26).isEmpty());
     }
 
     @Test
