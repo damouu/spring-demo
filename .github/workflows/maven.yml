@@ -24,7 +24,7 @@ jobs:
       - name: Build with Maven
         run: mvn -B package --file pom.xml
 
-      - name: Docker Build & Push Action
+      - name: Docker Build and Push Action
         uses: mr-smithers-excellent/docker-build-push@v5
         with:
           image: damou/springdemo
