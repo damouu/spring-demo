@@ -1,6 +1,7 @@
 package com.example.demo.student_id_card;
 
 import com.example.demo.student.Student;
+import com.example.demo.student.StudentRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,10 +14,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.net.URI;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 @ExtendWith(SpringExtension.class)
@@ -32,6 +35,9 @@ class StudentIdCardIntegrationTest {
 
     @Autowired
     private StudentIdCardRepository studentIdCardRepository;
+
+    @Autowired
+    private StudentRepository studentRepository;
 
     @Test
     void getStudentStudentIdCard() {
@@ -67,6 +73,15 @@ class StudentIdCardIntegrationTest {
         Assertions.assertTrue(Objects.requireNonNull(responseEntity.getHeaders().getContentType()).isCompatibleWith(MediaType.APPLICATION_JSON));
         Assertions.assertFalse(Objects.requireNonNull(responseEntity.getBody()).isEmpty());
         Assertions.assertTrue((long) responseEntity.getBody().size() > 0);
+    }
+
+    @Test
+    void postStudentIdCard() {
+        Optional<Student> student = studentRepository.findById(7);
+        ResponseEntity<StudentIdCard> responseEntity = restTemplate.postForEntity("http://localhost:" + port + "/api/studentCard/student/" + student.get().getUuid(), null, StudentIdCard.class);
+        Assertions.assertEquals(responseEntity.getStatusCodeValue(), 201);
+        Assertions.assertTrue(Objects.requireNonNull(responseEntity.getHeaders().getContentType()).isCompatibleWith(MediaType.APPLICATION_JSON));
+        Assertions.assertEquals(responseEntity.getHeaders().getLocation(), URI.create("http://localhost:8083/api/studentCard/" + Objects.requireNonNull(responseEntity.getBody()).getUuid()));
     }
 
 }
