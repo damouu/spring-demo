@@ -72,13 +72,10 @@ class StudentIntegrationTest {
 
     @Test
     void deleteStudent() throws Exception {
-        Student student = new Student(UUID.randomUUID(), "tidus", LocalDate.of(2000, Month.APRIL, 21), "tidus@hotmail.com");
-        studentRepository.save(student);
-        Optional<Student> student1 = studentRepository.findStudentByUuid(student.getUuid());
-//        mockMvc.perform(delete("/api/student/" + student1.get().getUuid())
-//                .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().is2xxSuccessful())
-//                .andExpect(content().string("student successfully deleted"));
+        Optional<Student> student = studentRepository.findById(1);
+        restTemplate.delete("http://localhost:" + port + "/api/student/" + student.get().getUuid());
+        Optional<Student> optionalStudent = studentRepository.findById(1);
+        Assertions.assertTrue(optionalStudent.isEmpty());
     }
 
     @Test
