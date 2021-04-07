@@ -15,6 +15,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @ExtendWith(SpringExtension.class)
@@ -56,6 +58,15 @@ class StudentIdCardIntegrationTest {
         studentIdCardRepository.save(studentIdCard);
         restTemplate.delete("http://localhost:" + port + "/api/studentCard/" + studentIdCard.getUuid());
         Assertions.assertTrue(studentIdCardRepository.findStudentIdCardByUuid(studentIdCard.getUuid()).isEmpty());
+    }
+
+    @Test
+    void getStudentIdCards() {
+        ResponseEntity<List> responseEntity = restTemplate.getForEntity("http://localhost:" + port + "/api/studentCard/", List.class);
+        Assertions.assertTrue(responseEntity.getStatusCode().is2xxSuccessful());
+        Assertions.assertTrue(Objects.requireNonNull(responseEntity.getHeaders().getContentType()).isCompatibleWith(MediaType.APPLICATION_JSON));
+        Assertions.assertFalse(Objects.requireNonNull(responseEntity.getBody()).isEmpty());
+        Assertions.assertTrue((long) responseEntity.getBody().size() > 0);
     }
 
 }
