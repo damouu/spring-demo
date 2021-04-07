@@ -7,9 +7,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 
 import java.net.URI;
 import java.time.LocalDate;
@@ -80,15 +78,11 @@ class StudentIntegrationTest {
 
     @Test
     void updateStudent() throws Exception {
-        var uuid = UUID.randomUUID();
-        var studentRetrieved = new Student(uuid, "first_iteration", LocalDate.now(), "first_iteration@hotmail.com");
-        studentRepository.save(studentRetrieved);
-        var studentUpdates = new Student(uuid, "second_iteration", LocalDate.now(), "second_iteration@hotmail.com");
-//        mockMvc.perform(put("/api/student/" + studentRetrieved.getUuid())
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(objectMapper.writeValueAsString(studentUpdates)))
-//                .andExpect(status().is(204))
-//                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(content().json("{\"uuid\":\"" + studentUpdates.getUuid() + "\",\"name\":\"" + studentUpdates.getName() + "\",\"dob\":\"" + studentUpdates.getDob() + "\",\"email\":\"" + studentUpdates.getEmail() + "\"}"));
+        var student = studentRepository.findById(1);
+        var studentUpdates = new Student(null, "second_iteration", LocalDate.now(), "second_iteration@hotmail.com");
+        HttpEntity<Student> entity = new HttpEntity<Student>(studentUpdates);
+        ResponseEntity<String> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/student/" + student.get().getUuid(),
+                HttpMethod.PUT, entity, String.class);
+        Assertions.assertTrue(responseEntity.getStatusCode().is2xxSuccessful());
     }
 }
