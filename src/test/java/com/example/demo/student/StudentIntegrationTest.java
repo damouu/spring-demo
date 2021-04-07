@@ -78,10 +78,9 @@ class StudentIntegrationTest {
 
     @Test
     void updateStudent() throws Exception {
-        var student = studentRepository.findById(1);
         var studentUpdates = new Student(null, "second_iteration", LocalDate.now(), "second_iteration@hotmail.com");
         HttpEntity<Student> entity = new HttpEntity<Student>(studentUpdates);
-        ResponseEntity<String> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/student/" + student.get().getUuid(),
+        ResponseEntity<String> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/student/" + studentRepository.findById(2).get().getUuid(),
                 HttpMethod.PUT, entity, String.class);
         Assertions.assertTrue(responseEntity.getStatusCode().is2xxSuccessful());
     }
