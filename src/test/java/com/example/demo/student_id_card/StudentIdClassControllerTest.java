@@ -17,10 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -38,18 +35,12 @@ class StudentIdClassControllerTest {
 
     @Test
     public void getStudentIdCards() throws Exception {
-        StudentIdCard studentIdCard = new StudentIdCard(UUID.randomUUID());
-        StudentIdCard studentIdCard1 = new StudentIdCard(UUID.randomUUID());
-        StudentIdCard studentIdCard2 = new StudentIdCard(UUID.randomUUID());
-        List<StudentIdCard> studentIdCardCollection = new ArrayList<>();
-        studentIdCardCollection.add(studentIdCard);
-        studentIdCardCollection.add(studentIdCard1);
-        studentIdCardCollection.add(studentIdCard2);
-        Mockito.when(studentIdCardService.getStudentIdCards(0, 5)).thenReturn(studentIdCardCollection);
+        List<StudentIdCard> studentIdCardCollection = Arrays.asList(new StudentIdCard(UUID.randomUUID()), new StudentIdCard(UUID.randomUUID()), new StudentIdCard(UUID.randomUUID()));
+        Mockito.when(studentIdCardService.getStudentIdCards(0, 5)).thenReturn(ResponseEntity.ok(studentIdCardCollection));
         mockMvc.perform(get("/api/studentCard"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json("[{\"uuid\":\"" + studentIdCard.getUuid() + "\"},{\"uuid\":\"" + studentIdCard1.getUuid() + "\"},{\"uuid\":\"" + studentIdCard2.getUuid() + "\"}]"));
+                .andExpect(content().json("[{\"uuid\":\"" + studentIdCardCollection.get(0).getUuid() + "\"},{\"uuid\":\"" + studentIdCardCollection.get(1).getUuid() + "\"},{\"uuid\":\"" + studentIdCardCollection.get(2).getUuid() + "\"}]"));
         Mockito.verify(studentIdCardService, Mockito.times(1)).getStudentIdCards(0, 5);
     }
 
