@@ -25,10 +25,10 @@ public class StudentIdCardService {
 
     private final StudentRepository studentRepository;
 
-    public List<StudentIdCard> getStudentIdCards(int page, int size) {
+    public ResponseEntity<List<StudentIdCard>> getStudentIdCards(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<StudentIdCard> pages = studentIdCardRepository.findAll(pageable);
-        return pages.toList();
+        return ResponseEntity.ok(pages.toList());
     }
 
     public StudentIdCard getStudentIdCard(UUID studentCardNumber) throws ResponseStatusException {
