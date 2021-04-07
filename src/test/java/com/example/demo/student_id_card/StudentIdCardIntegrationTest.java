@@ -100,5 +100,13 @@ class StudentIdCardIntegrationTest {
         Assertions.assertNotNull(responseEntity.getBody());
     }
 
+    @Test
+    void getStudentIdCard() {
+        Optional<StudentIdCard> studentIdCard = studentIdCardRepository.findById(1);
+        var responseEntity = restTemplate.getForEntity("http://localhost:" + port + "/api/studentCard/" + studentIdCard.get().getUuid(), StudentIdCard.class);
+        Assertions.assertTrue(Objects.requireNonNull(responseEntity.getHeaders().getContentType()).isCompatibleWith(MediaType.APPLICATION_JSON));
+        Assertions.assertTrue(responseEntity.getStatusCode().is2xxSuccessful());
+        Assertions.assertEquals(studentIdCard.get().getUuid(), Objects.requireNonNull(responseEntity.getBody()).getUuid());
+    }
 
 }
