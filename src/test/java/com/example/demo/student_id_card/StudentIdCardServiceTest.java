@@ -8,10 +8,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @ExtendWith(MockitoExtension.class)
@@ -26,7 +31,12 @@ class StudentIdCardServiceTest {
 
     @Test
     void getStudentIdCards() {
-
+        List<StudentIdCard> studentIdCards = Arrays.asList(new StudentIdCard(UUID.randomUUID()), new StudentIdCard(UUID.randomUUID()));
+        Page page = Mockito.mock(Page.class);
+        Mockito.when(this.studentIdCardRepository.findAll(org.mockito.ArgumentMatchers.isA(Pageable.class))).thenReturn(page);
+        ResponseEntity<List<StudentIdCard>> responseEntity = studentIdCardService.getStudentIdCards(0, 5);
+        Assertions.assertTrue(responseEntity.getStatusCode().is2xxSuccessful());
+        Assertions.assertTrue(Objects.requireNonNull(responseEntity.getBody()).isEmpty());
     }
 
     @Test
