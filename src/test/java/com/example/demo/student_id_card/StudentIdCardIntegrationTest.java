@@ -1,5 +1,7 @@
 package com.example.demo.student_id_card;
 
+import com.example.demo.course.Course;
+import com.example.demo.course.CourseRepository;
 import com.example.demo.student.Student;
 import com.example.demo.student.StudentRepository;
 import org.junit.jupiter.api.Assertions;
@@ -17,10 +19,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -38,6 +37,9 @@ class StudentIdCardIntegrationTest {
 
     @Autowired
     private StudentRepository studentRepository;
+
+    @Autowired
+    private CourseRepository courseRepository;
 
     @Test
     void getStudentStudentIdCard() {
@@ -83,5 +85,20 @@ class StudentIdCardIntegrationTest {
         Assertions.assertTrue(Objects.requireNonNull(responseEntity.getHeaders().getContentType()).isCompatibleWith(MediaType.APPLICATION_JSON));
         Assertions.assertEquals(responseEntity.getHeaders().getLocation(), URI.create("http://localhost:8083/api/studentCard/" + Objects.requireNonNull(responseEntity.getBody()).getUuid()));
     }
+
+    @Test
+    void getStudentIdCardCourse() {
+        Optional<StudentIdCard> studentIdCard = studentIdCardRepository.findById(12);
+        Optional<Course> course = courseRepository.findById(1);
+        Optional<Course> course1 = courseRepository.findById(2);
+        studentIdCard.get().getCourses().add(course.get());
+        studentIdCard.get().getCourses().add(course1.get());
+        studentIdCardRepository.save(studentIdCard.get());
+        var responseEntity = restTemplate.getForEntity("http://localhost:" + port + "/api/studentCard/" + studentIdCard.get().getUuid() + "/course", Collection.class);
+        Assertions.assertEquals(responseEntity.getStatusCodeValue(), 200);
+        Assertions.assertTrue(Objects.requireNonNull(responseEntity.getHeaders().getContentType()).isCompatibleWith(MediaType.APPLICATION_JSON));
+        Assertions.assertNotNull(responseEntity.getBody());
+    }
+
 
 }
