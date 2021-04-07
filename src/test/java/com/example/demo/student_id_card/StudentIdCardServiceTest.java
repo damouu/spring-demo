@@ -1,6 +1,7 @@
 package com.example.demo.student_id_card;
 
 import com.example.demo.student.Student;
+import com.example.demo.student.StudentRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
+import java.net.URI;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Arrays;
@@ -24,6 +26,9 @@ class StudentIdCardServiceTest {
 
     @Mock
     private StudentIdCardRepository studentIdCardRepository;
+
+    @Mock
+    private StudentRepository studentRepository;
 
     @InjectMocks
     private StudentIdCardService studentIdCardService;
@@ -60,6 +65,13 @@ class StudentIdCardServiceTest {
 
     @Test
     void postStudentIdCard() {
+        Student student = new Student(UUID.randomUUID(), "test_postStudentIdCard", LocalDate.of(2000, Month.APRIL, 7), "test_postStudentIdCard@yahoo.com");
+        Mockito.when(studentRepository.findStudentByUuid(student.getUuid())).thenReturn(java.util.Optional.of(student));
+        ResponseEntity<StudentIdCard> responseEntity = studentIdCardService.postStudentIdCard(student.getUuid());
+        Assertions.assertEquals(responseEntity.getStatusCodeValue(), 201);
+        Assertions.assertEquals(responseEntity.getHeaders().getLocation(), URI.create("http://localhost:8083/api/studentCard/" + Objects.requireNonNull(responseEntity.getBody()).getUuid()));
+        Assertions.assertEquals(student, responseEntity.getBody().getStudent());
+        Mockito.verify(studentIdCardRepository, Mockito.times(1)).save(Objects.requireNonNull(responseEntity.getBody()));
     }
 
     @Test
