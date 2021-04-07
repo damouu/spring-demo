@@ -1,5 +1,6 @@
 package com.example.demo.student_id_card;
 
+import com.example.demo.course.Course;
 import com.example.demo.student.Student;
 import com.example.demo.student.StudentRepository;
 import org.junit.jupiter.api.Assertions;
@@ -16,10 +17,7 @@ import org.springframework.http.ResponseEntity;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @ExtendWith(MockitoExtension.class)
 class StudentIdCardServiceTest {
@@ -76,6 +74,16 @@ class StudentIdCardServiceTest {
 
     @Test
     void getStudentIdCardCourse() {
+        StudentIdCard studentIdCard = new StudentIdCard(UUID.randomUUID());
+        Course course = new Course(UUID.randomUUID(), "course_test_name", "course_test_campus", "course_test_university");
+        Course course1 = new Course(UUID.randomUUID(), "course1_test_name", "course1_test_campus", "course1_test_university");
+        studentIdCard.getCourses().add(course);
+        studentIdCard.getCourses().add(course1);
+        Mockito.when(studentIdCardRepository.findStudentIdCardByUuid(studentIdCard.getUuid())).thenReturn(java.util.Optional.of(studentIdCard));
+        ResponseEntity<Collection<Course>> responseEntity = studentIdCardService.getStudentIdCardCourse(studentIdCard.getUuid());
+        Assertions.assertTrue(responseEntity.getStatusCode().is2xxSuccessful());
+        Assertions.assertFalse(Objects.requireNonNull(responseEntity.getBody()).isEmpty());
+        Mockito.verify(studentIdCardRepository, Mockito.times(1)).findStudentIdCardByUuid(studentIdCard.getUuid());
     }
 
     @Test
