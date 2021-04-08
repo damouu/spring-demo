@@ -2,7 +2,9 @@ name: Java CI with Maven
 
 on:
   pull_request:
-    branches: [ main ]
+    types: [ opened, closed ]
+    branches:
+      - main
 
 jobs:
   build:
