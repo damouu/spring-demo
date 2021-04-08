@@ -59,7 +59,7 @@ class StudentIntegrationTest {
 
     @Test
     void postStudent() throws Exception {
-        Student student = new Student(UUID.randomUUID(), "test1", LocalDate.of(2000, Month.APRIL, 21), "test@hotmail.com");
+        Student student = new Student(UUID.randomUUID(), "test", LocalDate.of(2000, Month.APRIL, 21), "test@hotmail.com");
         var responseEntity = restTemplate.postForEntity("http://localhost:" + port + "/api/student", student, Student.class);
         Assertions.assertTrue(Objects.requireNonNull(responseEntity.getHeaders().getContentType()).isCompatibleWith(MediaType.APPLICATION_JSON));
         Assertions.assertTrue(responseEntity.getStatusCode().is2xxSuccessful());
