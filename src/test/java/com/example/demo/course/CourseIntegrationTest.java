@@ -87,7 +87,7 @@ class CourseIntegrationTest {
 
     @Test
     void getStudentsCourse() {
-        Course course = new Course(UUID.randomUUID(), "course_test1", "campus_test", "university_test");
+        Course course = new Course(UUID.randomUUID(), "course_test", "campus_test", "university_test");
         StudentIdCard studentIdCard = new StudentIdCard(UUID.randomUUID());
         StudentIdCard studentIdCard1 = new StudentIdCard(UUID.randomUUID());
         course.getStudentIdCards().add(studentIdCard);
