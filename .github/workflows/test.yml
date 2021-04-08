@@ -23,10 +23,5 @@ jobs:
           distribution: 'adopt'
       - name: Build with Maven
         run: mvn -B package --file pom.xml
-      - name: Merge branch
-        uses: devmasx/merge-branch@v1.3.1
-        with:
-          type: now
-          from_branch: test
-          target_branch: main
-          github_token: ${{ github.token }}
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3.8.2
