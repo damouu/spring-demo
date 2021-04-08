@@ -99,7 +99,7 @@ class CourseIntegrationTest {
                 ("http://localhost:" + port + "/api/course/" + course.getUuid() + "/student", StudentIdCard[].class);
         Assertions.assertTrue(responseEntity.getStatusCode().is2xxSuccessful());
         Assertions.assertEquals(MediaType.APPLICATION_JSON, responseEntity.getHeaders().getContentType());
-        Assertions.assertTrue(Arrays.stream(Objects.requireNonNull(responseEntity.getBody())).count() > 0);
+        Assertions.assertTrue(Arrays.stream(Objects.requireNonNull(responseEntity.getBody())).count() == 0);
     }
 
     @Test
