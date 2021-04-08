@@ -88,7 +88,7 @@ class StudentIdCardIntegrationTest {
 
     @Test
     void getStudentIdCardCourse() {
-        Optional<StudentIdCard> studentIdCard = studentIdCardRepository.findById(12);
+        Optional<StudentIdCard> studentIdCard = studentIdCardRepository.findById(10);
         Optional<Course> course = courseRepository.findById(1);
         Optional<Course> course1 = courseRepository.findById(2);
         studentIdCard.get().getCourses().add(course.get());
