@@ -16,7 +16,7 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-      - name: Build with Maven
+      - name: Build and created with Maven
         run: mvn -B package --file pom.xml
       - name: pull-request
         uses: repo-sync/pull-request@v2
