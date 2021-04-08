@@ -1,16 +1,16 @@
 # This workflow will build a Java project with Maven
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
 
-name: Java CI with Maven
+name: Test
 
 on:
   push:
-    branches: [ main ]
+    branches: [ test ]
   pull_request:
-    branches: [ main ]
+    branches: [ test ]
 
 jobs:
-  build:
+  Test:
 
     runs-on: ubuntu-latest
 
@@ -23,12 +23,10 @@ jobs:
           distribution: 'adopt'
       - name: Build with Maven
         run: mvn -B package --file pom.xml
-
-      - name: Docker Build and Push Action
-        uses: mr-smithers-excellent/docker-build-push@v5
+      - name: Merge branch
+        uses: devmasx/merge-branch@v1.3.1
         with:
-          image: damou/springdemo
-          tags: latest
-          registry: docker.io
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          type: now
+          from_branch: test
+          target_branch: main
+          github_token: ${{ github.token }}
