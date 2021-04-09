@@ -1,5 +1,6 @@
 package com.example.demo.book;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +10,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.net.URI;
 import java.time.LocalDate;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -24,6 +27,9 @@ class BookControllerTest {
 
     @MockBean
     private BookService bookService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Test
     void getBooks() {
@@ -46,7 +52,13 @@ class BookControllerTest {
     }
 
     @Test
-    void inertBook() {
+    void postBook() throws Exception {
+        Book book = new Book(UUID.randomUUID(), "tittle", "genre", 200, "publisher", "author", LocalDate.now());
+        Mockito.when(bookService.postBook(book)).thenReturn(ResponseEntity.status(201).location(URI.create("http://localhost:8083/api/book/" + book.getUuid())).body(book));
+        mockMvc.perform(post("/api/book/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(book)))
+                .andExpect(status().is2xxSuccessful());
     }
 
     @Test

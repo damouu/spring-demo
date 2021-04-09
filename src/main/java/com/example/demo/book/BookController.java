@@ -30,8 +30,8 @@ public class BookController {
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> inertBook(@Valid @RequestBody Book book) {
-        return bookService.insertBook(book);
+    public ResponseEntity<Book> postBook(@Valid @RequestBody Book book) {
+        return bookService.postBook(book);
     }
 
     @DeleteMapping(path = "/{bookUuid}")

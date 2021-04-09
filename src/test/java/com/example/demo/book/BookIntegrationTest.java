@@ -9,8 +9,10 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
+import java.net.URI;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -34,6 +36,17 @@ public class BookIntegrationTest {
         Assertions.assertTrue(responseEntity.getStatusCode().is2xxSuccessful());
         Assertions.assertTrue(Objects.requireNonNull(responseEntity.getHeaders().getContentType()).isCompatibleWith(MediaType.APPLICATION_JSON));
         Assertions.assertEquals(Objects.requireNonNull(responseEntity.getBody()).getUuid(), book.getUuid());
+    }
+
+    @Test
+    void postBook() {
+        Book book = new Book(null, "tittle", "genre", 200, "publisher", "author", LocalDate.now());
+        ResponseEntity<Book> responseEntity = restTemplate.postForEntity
+                ("http://localhost:" + port + "/api/book", book, Book.class);
+        Optional<Book> book1 = bookRepository.findByUuid(Objects.requireNonNull(responseEntity.getBody()).getUuid());
+        Assertions.assertEquals(201, responseEntity.getStatusCodeValue());
+        Assertions.assertEquals(URI.create("http://localhost:8083/api/book/" + book1.get().getUuid()), responseEntity.getHeaders().getLocation());
+        Assertions.assertEquals(responseEntity.getBody().getUuid(), book1.get().getUuid());
     }
 
 }

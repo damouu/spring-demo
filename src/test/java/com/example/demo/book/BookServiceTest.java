@@ -9,6 +9,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
+import java.net.URI;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -39,7 +40,13 @@ class BookServiceTest {
     }
 
     @Test
-    void insertBook() {
+    void postBook() {
+        Book book = new Book(null, "tittle", "genre", 200, "publisher", "author", LocalDate.now());
+        ResponseEntity<Book> responseEntity = bookService.postBook(book);
+        Assertions.assertEquals(201, responseEntity.getStatusCodeValue());
+        Assertions.assertEquals(URI.create("http://localhost:8083/api/book/" + book.getUuid()), responseEntity.getHeaders().getLocation());
+        Assertions.assertEquals(responseEntity.getBody(), book);
+        Mockito.verify(bookRepository, Mockito.times(1)).save(book);
     }
 
     @Test
