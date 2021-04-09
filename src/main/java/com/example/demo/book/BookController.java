@@ -25,8 +25,8 @@ public class BookController {
     }
 
     @GetMapping(path = "/{bookUuid}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Book getBookById(@PathVariable("bookUuid") UUID bookUuid) {
-        return bookService.getBookById(bookUuid);
+    public ResponseEntity<Book> getBookUuid(@PathVariable("bookUuid") UUID bookUuid) {
+        return bookService.getBookUuid(bookUuid);
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
