@@ -29,8 +29,9 @@ public class BookService {
         return pages.toList();
     }
 
-    public Book getBookById(UUID bookUuid) throws ResponseStatusException {
-        return bookRepository.findByUuid(bookUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "book not found"));
+    public ResponseEntity<Book> getBookUuid(UUID bookUuid) throws ResponseStatusException {
+        Book book = bookRepository.findByUuid(bookUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "book not found"));
+        return ResponseEntity.ok(book);
     }
 
     public ResponseEntity<?> deleteBook(UUID bookUuid) throws ResponseStatusException {
