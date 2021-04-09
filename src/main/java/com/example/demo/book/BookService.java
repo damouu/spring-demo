@@ -40,7 +40,7 @@ public class BookService {
         return ResponseEntity.accepted().build();
     }
 
-    public ResponseEntity<?> insertBook(Book book) {
+    public ResponseEntity<Book> postBook(Book book) {
         book.setUuid(UUID.randomUUID());
         bookRepository.save(book);
         return ResponseEntity.status(201).location(URI.create("http://localhost:8083/api/book/" + book.getUuid())).body(book);
