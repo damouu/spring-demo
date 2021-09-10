@@ -6,6 +6,9 @@ metadata:
     app: mongo-express
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: mongo-express
   template:
     metadata:
       labels:
@@ -32,9 +35,6 @@ spec:
                 configMapKeyRef:
                   name: mongodb-configmap
                   key: database_url
-  selector:
-    matchLabels:
-      app: mongo-express
 ---
 apiVersion: v1
 kind: Service
@@ -43,7 +43,9 @@ metadata:
 spec:
   selector:
     app: mongo-express
+  #  type: LoadBalancer
   ports:
     - protocol: TCP
       port: 8081
       targetPort: 8081
+#      nodePort: 30000
