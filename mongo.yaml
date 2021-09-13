@@ -4,6 +4,7 @@ metadata:
   name: mongodb-deployment
   labels:
     app: mongodb
+    dede: bruits
 spec:
   replicas: 1
   selector:
