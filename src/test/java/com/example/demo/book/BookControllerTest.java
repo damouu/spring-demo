@@ -14,8 +14,7 @@ import java.net.URI;
 import java.time.LocalDate;
 import java.util.UUID;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -56,13 +55,17 @@ class BookControllerTest {
         Book book = new Book(UUID.randomUUID(), "tittle", "genre", 200, "publisher", "author", LocalDate.now());
         Mockito.when(bookService.postBook(book)).thenReturn(ResponseEntity.status(201).location(URI.create("http://localhost:8083/api/book/" + book.getUuid())).body(book));
         mockMvc.perform(post("/api/book/")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(book)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(book)))
                 .andExpect(status().is2xxSuccessful());
     }
 
     @Test
-    void deleteBook() {
+    void deleteBook() throws Exception {
+        Book book = new Book(UUID.randomUUID(), "tittle", "genre", 200, "publisher", "author", LocalDate.now());
+        Mockito.when(bookService.deleteBook(book.getUuid())).thenReturn(ResponseEntity.accepted().build());
+        mockMvc.perform(delete("/api/book/" + book.getUuid()))
+                .andExpect(status().is2xxSuccessful());
     }
 
     @Test
