@@ -37,6 +37,11 @@ class BookServiceTest {
 
     @Test
     void deleteBook() {
+        Book book = new Book(UUID.randomUUID(), "tittle", "genre", 200, "publisher", "author", LocalDate.now());
+        Mockito.when(bookRepository.findByUuid(book.getUuid())).thenReturn(java.util.Optional.of(book));
+        ResponseEntity<?> responseEntity = bookService.deleteBook(book.getUuid());
+        Assertions.assertTrue(responseEntity.getStatusCode().is2xxSuccessful());
+        Mockito.verify(bookRepository, Mockito.times(1)).delete(book);
     }
 
     @Test
