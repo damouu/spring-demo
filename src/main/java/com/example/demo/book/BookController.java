@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.UUID;
 
 @Data
@@ -17,10 +18,10 @@ import java.util.UUID;
 public class BookController {
 
     private final BookService bookService;
+    private UUID bookUuid;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Collection<Book> getBooks(@RequestParam(name = "page", required = false, defaultValue = "0") int page,
-                                     @RequestParam(name = "size", required = false, defaultValue = "5") int size) {
+    public Collection<Book> getBooks(@RequestParam(name = "page", required = false, defaultValue = "0") int page, @RequestParam(name = "size", required = false, defaultValue = "5") int size) {
         return bookService.getBooks(page, size);
     }
 
@@ -40,8 +41,8 @@ public class BookController {
     }
 
     @PutMapping(path = "/{bookUuid}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updateBook(@PathVariable("bookUuid") UUID bookUuid, @Valid Book book) {
-        return bookService.updateBook(bookUuid, book);
+    public ResponseEntity<Book> updateBook(@PathVariable("bookUuid") UUID bookUuid, @RequestBody HashMap<String, String> bookUpdates) {
+        return bookService.updateBook(bookUuid, bookUpdates);
     }
 
     @PostMapping(path = "/{book}/studentCard/{studentCard}", produces = MediaType.APPLICATION_JSON_VALUE)

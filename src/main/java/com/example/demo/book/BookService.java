@@ -2,6 +2,7 @@ package com.example.demo.book;
 
 import com.example.demo.student_id_card.StudentIdCard;
 import com.example.demo.student_id_card.StudentIdCardRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,6 +14,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.net.URI;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -46,16 +49,22 @@ public class BookService {
         return ResponseEntity.status(201).location(URI.create("http://localhost:8083/api/book/" + book.getUuid())).body(book);
     }
 
-    public ResponseEntity<?> updateBook(UUID bookUuid, Book book) {
-        Book optionalBook = bookRepository.findByUuid(bookUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "book does not exist"));
-        optionalBook.setAuthor(book.getAuthor());
-        optionalBook.setCreated_at(book.getCreated_at());
-        optionalBook.setGenre(book.getGenre());
-        optionalBook.setPublisher(book.getPublisher());
-        optionalBook.setTitle(book.getTitle());
-        optionalBook.setTotalPages(book.getTotalPages());
-        bookRepository.save(optionalBook);
-        return ResponseEntity.status(204).location(URI.create("http://localhost:8083/api/book/" + optionalBook.getUuid())).body(optionalBook);
+    public ResponseEntity<Book> updateBook(UUID bookUuid, HashMap<String, String> bookUpdates) {
+        Book book = bookRepository.findByUuid(bookUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "book not found"));
+        ObjectMapper oMapper = new ObjectMapper();
+        Map map = oMapper.convertValue(book, Map.class);
+        for (Object s : map.keySet()) {
+            for (String s1 : bookUpdates.keySet()) {
+                if (s.equals(s1)) {
+                    map.put(s, bookUpdates.get(s1));
+                }
+            }
+        }
+        Book book1 = oMapper.convertValue(map, Book.class);
+        book1.setId(book.getId());
+        bookRepository.save(book1);
+        Book book11 = bookRepository.findByUuid(book1.getUuid()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "book not found"));
+        return ResponseEntity.status(200).location(URI.create("http://localhost:8083/api/book/" + book11.getUuid())).body(book11);
     }
 
     public ResponseEntity<?> insertStudentBorrowBooks(UUID bookUuid, UUID studentUuidCard) {

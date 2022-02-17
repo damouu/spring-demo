@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 
 import java.net.URI;
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Objects;
 import java.util.UUID;
 
 @ExtendWith(MockitoExtension.class)
@@ -56,6 +58,21 @@ class BookServiceTest {
 
     @Test
     void updateBook() {
+        Book book = new Book(UUID.randomUUID(), "tittle", "genre", 200, "publisher", "author", LocalDate.now());
+        HashMap<String, String> bookUpdates = new HashMap<>();
+        bookUpdates.put("title", "UPDATED");
+        bookUpdates.put("genre", "UPDATED");
+        Book book1 = new Book(book.getUuid(), "UPDATED", "UPDATED", 200, "publisher", "author", LocalDate.now());
+        Mockito.when(bookRepository.findByUuid(book.getUuid())).thenReturn(java.util.Optional.of(book));
+        Mockito.when(bookRepository.findByUuid(book1.getUuid())).thenReturn(java.util.Optional.of(book1));
+        ResponseEntity<Book> responseEntity = bookService.updateBook(book.getUuid(), bookUpdates);
+        Assertions.assertEquals(200, responseEntity.getStatusCodeValue());
+        Mockito.verify(bookRepository, Mockito.times(2)).findByUuid(book.getUuid());
+        Assertions.assertEquals(Objects.requireNonNull(responseEntity.getBody()).getUuid(), book.getUuid());
+        Assertions.assertEquals(Objects.requireNonNull(responseEntity.getBody()).getTitle(), bookUpdates.get("title"));
+        Assertions.assertEquals(Objects.requireNonNull(responseEntity.getBody()).getGenre(), bookUpdates.get("genre"));
+        Assertions.assertNotEquals(Objects.requireNonNull(responseEntity.getBody()).getTitle(), book.getTitle());
+        Assertions.assertEquals(URI.create("http://localhost:8083/api/book/" + book.getUuid()), responseEntity.getHeaders().getLocation());
     }
 
     @Test
