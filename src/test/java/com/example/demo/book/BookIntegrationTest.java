@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.net.URI;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -55,6 +56,23 @@ public class BookIntegrationTest {
         ResponseEntity<Book> responseEntity = restTemplate.getForEntity("http://localhost:" + port + "/api/book/" + book.getUuid(), Book.class);
         Assertions.assertEquals(404, responseEntity.getStatusCodeValue());
         Assertions.assertNotEquals(book.getUuid(), responseEntity.getBody().getUuid());
+    }
+
+    @Test
+    void updateBook() {
+        Book book = new Book(UUID.randomUUID(), "title", "genre", 200, "publisher", "author", LocalDate.now());
+        bookRepository.save(book);
+        HashMap<String, String> bookUpdates = new HashMap<>();
+        bookUpdates.put("title", "UPDATED");
+        bookUpdates.put("genre", "UPDATED");
+        restTemplate.put("http://localhost:" + port + "/api/book/" + book.getUuid(), bookUpdates);
+        ResponseEntity<Book> responseEntity = restTemplate.getForEntity("http://localhost:" + port + "/api/book/" + book.getUuid(), Book.class);
+        Assertions.assertEquals(200, responseEntity.getStatusCodeValue());
+        Assertions.assertEquals(book.getUuid(), responseEntity.getBody().getUuid());
+        Assertions.assertEquals(bookUpdates.get("title"), Objects.requireNonNull(responseEntity.getBody()).getTitle());
+        Assertions.assertEquals(bookUpdates.get("genre"), Objects.requireNonNull(responseEntity.getBody()).getGenre());
+        Assertions.assertNotEquals(book.getTitle(), Objects.requireNonNull(responseEntity.getBody()).getTitle());
+        Assertions.assertNotEquals(book.getGenre(), Objects.requireNonNull(responseEntity.getBody()).getGenre());
     }
 
 }
