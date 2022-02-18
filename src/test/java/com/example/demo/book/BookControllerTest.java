@@ -64,7 +64,7 @@ class BookControllerTest {
         bookUpdates.put("genre", bookUpdate.getGenre());
         Mockito.when(bookService.updateBook(book.getUuid(), bookUpdates)).thenReturn(ResponseEntity.status(200).location(URI.create("http://localhost:8083/api/book/" + book.getUuid())).contentType(MediaType.APPLICATION_JSON).body(bookUpdate));
         mockMvc.perform(put("/api/book/" + book.getUuid()).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsBytes(bookUpdates)))
-                .andExpect(status().is(200))
+                .andExpect(status().is(201))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(header().string("Location", "http://localhost:8083/api/book/" + bookUpdate.getUuid()))
