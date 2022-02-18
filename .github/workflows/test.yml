@@ -30,6 +30,7 @@ jobs:
 
       - name: pull-request
         if: ${{ success() }}
+        run: echo | "${{ github.event.head_commit.message }}"
         uses: repo-sync/pull-request@v2
         with:
           destination_branch: "main"
