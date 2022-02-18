@@ -13,6 +13,3 @@ jobs:
           yt-url: ${{ secrets.YOUTRACK_URL }}
           yt-token: ${{ secrets.YOUTRACK_TOKEN }}
           yt-project-id: "SD"
-          yt-column-field: "Test"
-          yt-column-triggers: "Test"
-          yt-column-target: "Done"
