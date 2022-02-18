@@ -17,16 +17,19 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
+
       - name: Build and created with Maven
         run: mvn -B package --file pom.xml
+
+      - uses: actions/checkout@v2
       - name: Create an issue
         if: ${{ failure() }}
-      - uses: actions/checkout@v2.1.0
-      - uses: JasonEtco/create-an-issue@v2.6.0
+        uses: JasonEtco/create-an-issue@v2.6.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           filename: ISSUE_TEMPLATE.md
+
       - name: pull-request
         if: ${{ success() }}
         uses: repo-sync/pull-request@v2
