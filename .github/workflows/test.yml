@@ -18,8 +18,8 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
 
-      - name: Build and created with Maven
-        run: mvn -B package --file pom.xml
+      - name: Runing Unit/ Integration Tests
+        run: mvn test
 
       - uses: actions/checkout@v2
       - name: Create an issue
