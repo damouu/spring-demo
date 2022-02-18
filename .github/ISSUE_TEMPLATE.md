@@ -1,1 +1,5 @@
-title: Weekly Radar {{ date | date('dddd, MMMM Do') }} labels: bug, enhancement, KETUR_DEDE
+---
+title: DEDE_KETUR
+assignees: damou
+labels: bug, enhancement
+---
