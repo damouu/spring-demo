@@ -1,6 +1,6 @@
 ---
 title: Tests Failed
-assignees: {{ payload.sender.login }}
+assignees: damouu
 labels: TestFailed, bug, fixCode 
 ---
 Here's who did it: {{ payload.sender.login }}
