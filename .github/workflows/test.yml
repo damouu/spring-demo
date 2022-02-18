@@ -34,3 +34,8 @@ jobs:
         with:
           destination_branch: "main"
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          title: '[Example] Update report'
+          body: |
+            ${{ github.event.head_commit.message }}
+          labels: |
+            automated pr
