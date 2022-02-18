@@ -19,7 +19,17 @@ jobs:
           distribution: 'adopt'
       - name: Build and created with Maven
         run: mvn -B package --file pom.xml
+      - name: Create an issue
+        if: ${{ failure() }}
+      - uses: actions/checkout@v2
+      - uses: JasonEtco/create-an-issue@v2.6.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
       - name: pull-request
+        if: ${{ success() }}
         uses: repo-sync/pull-request@v2
         with:
           destination_branch: "main"
