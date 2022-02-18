@@ -30,7 +30,7 @@ jobs:
 
       - name: Youtrack update
         if: ${{ success() }}
-        uses: bloobirds-it/action-youtrack-sync@v1.0.0
+        uses: bloobirds-it/action-youtrack-move@v1.0.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           yt-url: ${{ secrets.YOUTRACK_URL }}
