@@ -1,6 +1,9 @@
 ---
 title: Tests Failed
-assignees: damouu
-labels: bug, enhancement
+assignees: {{ payload.sender.login }}
+labels: TestFailed, bug, fixCode 
 ---
-Someone just pushed, oh no! Here's who did it: {{ payload.sender.login }}.
+Here's who did it: {{ payload.sender.login }}
+{{ tools.context.action }}.
+{{ tools.context.ref }}.
+{{ tools.context.workflow }}.
