@@ -28,6 +28,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: pull-request
+        if: ${{ success() }}
+        uses: repo-sync/pull-request@v2
+        with:
+          destination_branch: "main"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Youtrack updates
         if: ${{ success() }}
         uses: bloobirds-it/action-youtrack-move@v1.0.0
@@ -39,10 +46,3 @@ jobs:
           yt-column-field: "Test"
           yt-column-triggers: "Test"
           yt-column-target: "Done"
-
-      - name: pull-request
-        if: ${{ success() }}
-        uses: repo-sync/pull-request@v2
-        with:
-          destination_branch: "main"
-          github_token: ${{ secrets.GITHUB_TOKEN }}
