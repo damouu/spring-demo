@@ -28,8 +28,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: ECHO COMMIT MESSAGES
-        run: echo "${{ github.event.head_commit.message }}"
+      - name: Youtrack update
+        if: ${{ success() }}
+        uses: bloobirds-it/action-youtrack-sync@v1.0.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          yt-url: ${{ secrets.YOUTRACK_URL }}
+          yt-token: ${{ secrets.YOUTRACK_TOKEN }}
+          yt-project-id: "SD"
+          yt-column-target: "Done"
 
       - name: pull-request
         if: ${{ success() }}
