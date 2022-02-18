@@ -28,7 +28,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: ECHO COMMIT
+      - name: ECHO COMMIT MESSAGE
         run: echo "${{ github.event.head_commit.message }}"
 
       - name: pull-request
