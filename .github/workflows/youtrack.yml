@@ -1,4 +1,4 @@
-name: YouTrack Issue Sync
+name: YouTrack Issue
 
 on:
   - pull_request
