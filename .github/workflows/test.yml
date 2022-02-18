@@ -21,10 +21,10 @@ jobs:
       - name: Build and created with Maven
         run: mvn -B package --file pom.xml
 
+      - uses: actions/checkout@v2
       - name: Create an issue
         if: ${{ failure() }}
         uses: JasonEtco/create-an-issue@v2
-        uses: actions/checkout@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
