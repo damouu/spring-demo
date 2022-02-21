@@ -1,8 +1,11 @@
 name: YouTrack ticket Sync
 
 on:
+  workflow_run:
+    workflows: [ "Test" ]
+    types:
+      - completed
   pull_request:
-    types: [ assigned, opened, synchronize, reopened ]
     branches:
       - main
 
