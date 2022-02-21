@@ -1,9 +1,10 @@
 name: YouTrack ticket Sync
 
 on:
-  push:
   pull_request:
-    types: [ opened ]
+    types: [ assigned, opened, synchronize, reopened ]
+    branches:
+      - main
 
 jobs:
   build:
