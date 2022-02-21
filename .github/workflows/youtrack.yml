@@ -2,7 +2,7 @@ name: YouTrack ticket Sync
 
 on:
   pull_request:
-    types: [ unlabeled ]
+    types: [ unlabeled,unassigned,review_request_removed ]
 
 jobs:
   build:
