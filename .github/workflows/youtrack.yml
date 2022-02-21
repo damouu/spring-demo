@@ -7,7 +7,7 @@ on:
       - dismissed
       - edited
   pull_request:
-    types: [ opened,unlocked,unlabeled,unassigned,review_request_removed ]
+    types: [ unlocked,unlabeled,unassigned,review_request_removed ]
 
 jobs:
   build:
