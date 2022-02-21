@@ -2,12 +2,10 @@ name: YouTrack ticket Sync
 
 on:
   pull_request:
-    branches:
-      - main
-      - test
+    branches: [ main, test ]
 
 jobs:
-  youtrack_sync:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: bloobirds-it/action-youtrack-sync@v1.0.0
