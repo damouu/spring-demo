@@ -1,5 +1,8 @@
 name: Auto reviews release
-on: pull_request
+on:
+  pull_request_review:
+    types:
+      - submitted
 jobs:
   reviews:
     runs-on: ubuntu-latest

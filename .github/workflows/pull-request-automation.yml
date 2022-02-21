@@ -1,11 +1,14 @@
 name: Automatic pull request review
-on: [ pull_request ]
+on:
+  pull_request_review:
+    types:
+      - submitted
 jobs:
   automate-pullrequest-review:
     runs-on: ubuntu-latest
     steps:
       - name: Approve pull request
-        if: github.actor == 'damouu'
+        if: github.actor == 'github-actions'
         uses: andrewmusgrave/automatic-pull-request-review@0.0.5
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
