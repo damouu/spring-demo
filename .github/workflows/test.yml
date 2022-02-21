@@ -38,14 +38,3 @@ jobs:
           body: ${{ github.event.head_commit.message }}
           pr_title: ${{ github.event.head_commit.message }}
           pr_body: ${{ github.event.head_commit.message }}
-
-      - name: Youtrack
-        if: ${{ success() }}
-        uses: bloobirds-it/action-youtrack-sync@v1.0.0
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          yt-url: ${{ secrets.YOUTRACK_URL }}
-          yt-token: ${{ secrets.YOUTRACK_TOKEN }}
-          yt-project-id: "SD"
-          yt-column-triggers: "Test"
-          yt-column-target: "Done"
