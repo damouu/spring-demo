@@ -4,7 +4,7 @@ on:
   pull_request_review:
     types:
       - submitted
-      - edited
+      - dismissed
       - edited
   pull_request:
     types: [ unlocked,unlabeled,unassigned,review_request_removed ]
