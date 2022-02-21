@@ -28,4 +28,4 @@ jobs:
           MERGE_LABELS: "auto-pr-test"
           MERGE_FORKS: "false"
           MERGE_REQUIRED_APPROVALS: "0"
-          UPDATE_LABELS: "merged-ok"
+          UPDATE_LABELS: ""
