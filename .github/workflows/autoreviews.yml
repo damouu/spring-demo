@@ -9,6 +9,6 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN}}
           EVENT_TYPE: APPROVE
-          BRANCHES: test
+          BRANCHES: main
           AUTHOR: 'dependabot-preview[bot], dependabot[bot], damouu, github-actions, github-actions[bot]'
           MESSAGE: Nice approve from github bot.
