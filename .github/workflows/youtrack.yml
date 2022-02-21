@@ -2,7 +2,7 @@ name: YouTrack ticket Sync
 
 on:
   pull_request:
-    types: [ closed,auto_merge_enabled ]
+    types: [ closed ]
 
 jobs:
   build:
