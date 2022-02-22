@@ -3,10 +3,7 @@ name: YouTrack-Staging
 on:
   pull_request:
     types:
-      - opened
-  issue_comment:
-    types:
-      - created
+      - edited
 
 jobs:
   build:
