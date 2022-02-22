@@ -1,6 +1,10 @@
 name: YouTrack-review_request_removed
 
 on:
+  pull_request_review:
+    types:
+      - dismissed
+      - edited
   pull_request:
     types: [ review_request_removed ]
 
