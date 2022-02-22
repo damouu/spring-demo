@@ -1,6 +1,9 @@
 name: YouTrack-Closed
 
 on:
+  pull_request:
+    types:
+      - closed
   pull_request_target:
     types:
       - closed
@@ -17,4 +20,4 @@ jobs:
           yt-token: ${{ secrets.YOUTRACK_TOKEN }}
           yt-project-id: "SD"
           yt-column-triggers: "Review"
-          yt-column-target: "Approved"
+          yt-column-target: "Done"
