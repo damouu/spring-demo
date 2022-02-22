@@ -1,8 +1,9 @@
-name: YouTrack-assigned
+name: YouTrack-Approved
 
 on:
-  pull_request:
-    types: [ assigned ]
+  pull_request_review:
+    types:
+      - submitted
 
 jobs:
   build:
@@ -14,5 +15,5 @@ jobs:
           yt-url: ${{ secrets.YOUTRACK_URL }}
           yt-token: ${{ secrets.YOUTRACK_TOKEN }}
           yt-project-id: "SD"
-          yt-column-triggers: "Test"
-          yt-column-target: "Staging"
+          yt-column-triggers: "Review"
+          yt-column-target: "Approved"

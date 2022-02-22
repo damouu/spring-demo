@@ -1,11 +1,13 @@
-name: YouTrack-assigned
+name: YouTrack-Review
 
 on:
   pull_request:
-    types: [ closed ]
+    types:
+      - labeled
 
 jobs:
   build:
+    if: github.event.label.name == 'reviewing'
     runs-on: ubuntu-latest
     steps:
       - uses: bloobirds-it/action-youtrack-move@v1.0.0
@@ -14,5 +16,5 @@ jobs:
           yt-url: ${{ secrets.YOUTRACK_URL }}
           yt-token: ${{ secrets.YOUTRACK_TOKEN }}
           yt-project-id: "SD"
-          yt-column-triggers: "Review"
-          yt-column-target: "Done"
+          yt-column-triggers: "Staging"
+          yt-column-target: "Review"
