@@ -1,0 +1,20 @@
+name: pull-request-responsibility
+
+on:
+  pull_request_review:
+    types:
+      - submitted
+  pull_request_target:
+    types:
+      - review_request_removed
+
+
+jobs:
+  pull-request-responsibility:
+    runs-on: ubuntu-latest
+    name: pull-request-responsibility
+    steps:
+      - uses: actions-automation/pull-request-responsibility@main
+        with:
+          actions: "merge"
+          token: ${{ secrets.GITHUB_TOKEN }}
