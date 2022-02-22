@@ -32,10 +32,10 @@ jobs:
         if: ${{ success() }}
         uses: repo-sync/pull-request@v2
         with:
+          source_branch: "test"
           destination_branch: "main"
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_title: ${{ github.event.head_commit.message }}
           pr_body: ${{ github.event.head_commit.message }}
           pr_label: "auto-pr-test"
-          pr_assignee: "damouu"
           pr_reviewer: "damouu"

@@ -1,13 +1,8 @@
-name: YouTrack-review_request_removed
+name: YouTrack-assigned
 
 on:
-  pull_request_review:
-    types:
-      - submitted
-      - dismissed
-      - edited
   pull_request:
-    types: [ review_requested,ready_for_review,review_request_removed ]
+    types: [ assigned ]
 
 jobs:
   build:
@@ -19,5 +14,5 @@ jobs:
           yt-url: ${{ secrets.YOUTRACK_URL }}
           yt-token: ${{ secrets.YOUTRACK_TOKEN }}
           yt-project-id: "SD"
-          yt-column-triggers: "Staging"
-          yt-column-target: "Review"
+          yt-column-triggers: "Test"
+          yt-column-target: "Staging"
