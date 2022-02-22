@@ -1,6 +1,10 @@
 name: YouTrack-Staging
 
 on:
+  workflow_run:
+    workflows: [ "Test" ]
+    types:
+      - completed
   pull_request:
     types:
       - labeled
