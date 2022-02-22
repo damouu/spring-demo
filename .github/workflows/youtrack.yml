@@ -1,4 +1,4 @@
-name: YouTrack-review_request_removed
+name: YouTrack-Review
 
 on:
   pull_request_review:

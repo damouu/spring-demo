@@ -1,4 +1,4 @@
-name: YouTrack-assigned
+name: YouTrack-Done
 
 on:
   pull_request:
