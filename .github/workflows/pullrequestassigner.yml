@@ -1,22 +1,13 @@
 name: pull-request-responsibility
 
 on:
-  check_run:
-  check_suite:
-  create:
-  delete:
-  deployment:
-  deployment_status:
-  fork:
-  gollum:
-  issue_comment:
-  issues:
-  label:
-  milestone:
-  page_build:
-  project:
-  project_card:
-  project_column:
+  pull_request:
+    types: [ assigned,opened,review_requested,ready_for_review,review_request_removed ]
+  pull_request_review:
+    types:
+      - submitted
+      - dismissed
+      - edited
   public:
   pull_request_target:
     types:
@@ -34,11 +25,7 @@ on:
       - unlocked
       - review_requested
       - review_request_removed
-  push:
-  registry_package:
-  release:
-  status:
-  workflow_dispatch:
+
 
 jobs:
   pull-request-responsibility:
