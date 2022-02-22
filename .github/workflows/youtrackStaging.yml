@@ -1,14 +1,22 @@
 name: YouTrack-Staging
 
 on:
-  workflow_run:
-    workflows: [ "Test" ]
+  pull_request_target:
     types:
-      - completed
+      - review_requested
+      - ready_for_review
+      - opened
+      - assigned
+  pull_request:
+    types:
+      - labeled
+      - opened
+      - ready_for_review
+      - review_requested
 
 jobs:
   build:
-#    if: github.event.label.name == 'Staging'
+    if: github.event.label.name == 'Staging'
     runs-on: ubuntu-latest
     steps:
       - uses: bloobirds-it/action-youtrack-move@v1.0.0
