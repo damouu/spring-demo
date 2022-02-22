@@ -2,7 +2,7 @@ name: Java CI with Maven
 
 on:
   workflow_run:
-    workflows: [ "YouTrack-Closed" ]
+    workflows: [ "automerge" ]
     types:
       - completed
 
