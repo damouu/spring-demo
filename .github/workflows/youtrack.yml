@@ -4,10 +4,6 @@ on:
   pull_request_review:
     types:
       - submitted
-      - dismissed
-      - edited
-  pull_request:
-    types: [ review_requested,ready_for_review,review_request_removed ]
 
 jobs:
   build:
