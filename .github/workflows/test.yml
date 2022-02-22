@@ -39,3 +39,4 @@ jobs:
           pr_body: ${{ github.event.head_commit.message }}
           pr_label: "auto-pr-test"
           pr_reviewer: "damouu"
+          pr_assignee: "damouu"
