@@ -3,18 +3,8 @@ name: YouTrack-Staging
 on:
   pull_request_target:
     types:
-      - review_requested
-      - ready_for_review
+      - labeled
       - edited
-      - opened
-      - synchronize
-  pull_request:
-    types:
-      - edited
-      - synchronize
-      - opened
-      - ready_for_review
-      - assigned
 
 jobs:
   build:
