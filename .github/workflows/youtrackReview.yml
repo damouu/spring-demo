@@ -1,4 +1,4 @@
-name: YouTrack-Staging
+name: YouTrack-Review
 
 on:
   pull_request:
@@ -16,5 +16,5 @@ jobs:
           yt-url: ${{ secrets.YOUTRACK_URL }}
           yt-token: ${{ secrets.YOUTRACK_TOKEN }}
           yt-project-id: "SD"
-          yt-column-triggers: "Test"
-          yt-column-target: "Staging"
+          yt-column-triggers: "Staging"
+          yt-column-target: "Review"

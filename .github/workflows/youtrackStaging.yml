@@ -1,12 +1,13 @@
-name: YouTrack-Review
+name: YouTrack-Staging
 
 on:
-  pull_request_review:
+  pull_request:
     types:
-      - submitted
+      - labeled
 
 jobs:
   build:
+    if: github.event.label.name == 'Staging'
     runs-on: ubuntu-latest
     steps:
       - uses: bloobirds-it/action-youtrack-move@v1.0.0
@@ -15,5 +16,5 @@ jobs:
           yt-url: ${{ secrets.YOUTRACK_URL }}
           yt-token: ${{ secrets.YOUTRACK_TOKEN }}
           yt-project-id: "SD"
-          yt-column-triggers: "Staging"
-          yt-column-target: "Review"
+          yt-column-triggers: "Test"
+          yt-column-target: "Staging"
