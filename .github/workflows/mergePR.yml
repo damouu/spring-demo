@@ -1,9 +1,8 @@
 name: automerge
 on:
-  workflow_run:
-    workflows: [ "YouTrack-Staging" ]
+  pull_request:
     types:
-      - completed
+      - opened
   check_suite:
     types:
       - completed
