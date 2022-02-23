@@ -1,0 +1,6 @@
+- wip:
+    prs:
+      label:
+        - 'automerge'
+      unlabel:
+        - 'Staging'

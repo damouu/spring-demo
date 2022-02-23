@@ -17,4 +17,5 @@ jobs:
       - uses: dessant/label-actions@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          label: 'automerge'
+          config-path: '.github/workflows/label-actions.yml'
+          process-only: 'prs'
