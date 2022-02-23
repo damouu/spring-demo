@@ -15,4 +15,4 @@ jobs:
         with:
           labels: |
             documentation
-            bug
+            changelog
