@@ -5,7 +5,7 @@ on:
       - review_request_removed
   pull_request_review:
     types:
-      - submitted
+      - dismissed
   check_suite:
     types:
       - completed
