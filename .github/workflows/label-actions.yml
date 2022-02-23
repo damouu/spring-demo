@@ -1,6 +1,4 @@
-- wip:
+- Staging:
     prs:
       label:
         - 'automerge'
-      unlabel:
-        - 'Staging'
