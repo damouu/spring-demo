@@ -3,11 +3,14 @@ name: YouTrack-Closed
 on:
   pull_request:
     types:
-      - labeled
+      - closed
+  pull_request_target:
+    types:
+      - closed
 
 jobs:
   build:
-    if: github.event.label.name == 'automerge'
+    if: ${{ github.event.pull_request.merged }}
     runs-on: ubuntu-latest
     steps:
       - uses: bloobirds-it/action-youtrack-move@v1.0.0
@@ -16,5 +19,5 @@ jobs:
           yt-url: ${{ secrets.YOUTRACK_URL }}
           yt-token: ${{ secrets.YOUTRACK_TOKEN }}
           yt-project-id: "SD"
-          yt-column-triggers: "Review"
+          yt-column-triggers: "Staging"
           yt-column-target: "Done"
