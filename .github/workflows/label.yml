@@ -1,18 +1,20 @@
-name: Add Labels
+name: 'Label Actions'
 
 on:
   pull_request:
     types:
-      - opened
+      - labeled
+
+permissions:
+  contents: read
+  pull-requests: write
 
 jobs:
-  add_labels:
+  action:
+    if: github.event.label.name == 'Staging'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions-ecosystem/action-add-labels@v1
-        if: ${{ startsWith(github.event.comment.body, '/add-labels') }}
+      - uses: dessant/label-actions@v2
         with:
-          labels: |
-            documentation
-            changelog
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          label: 'automerge'
