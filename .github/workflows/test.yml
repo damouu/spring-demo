@@ -40,13 +40,3 @@ jobs:
           pr_label: "Staging"
           pr_reviewer: "damouu"
           pr_assignee: "damouu"
-
-      - name: youtrack-same
-        uses: bloobirds-it/action-youtrack-move@v1.0.0
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          yt-url: ${{ secrets.YOUTRACK_URL }}
-          yt-token: ${{ secrets.YOUTRACK_TOKEN }}
-          yt-project-id: "SD"
-          yt-column-triggers: "Test"
-          yt-column-target: "Staging"
