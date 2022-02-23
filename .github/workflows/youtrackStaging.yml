@@ -19,9 +19,8 @@ jobs:
           yt-project-id: "SD"
           yt-column-triggers: "Test"
           yt-column-target: "Staging"
-
       - name: add-label-automerge
-        uses: actions-ecosystem/action-add-labels@v1
+      - uses: actions-ecosystem/action-add-labels@v1
         if: ${{ startsWith(github.event.comment.body, '/add-labels') }}
         with:
           labels: |
