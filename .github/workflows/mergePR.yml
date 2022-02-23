@@ -1,11 +1,8 @@
 name: automerge
 on:
-  pull_request:
+  pull_request_target:
     types:
       - labeled
-  check_suite:
-    types:
-      - completed
   status: { }
 jobs:
   automerge:
