@@ -2,7 +2,13 @@ name: automerge
 on:
   pull_request:
     types:
-      - opened
+      - review_request_removed
+  pull_request_review:
+    types:
+      - dismissed
+  check_suite:
+    types:
+      - completed
   status: { }
 jobs:
   automerge:
