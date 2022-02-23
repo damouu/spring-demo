@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: bloobirds-it/action-youtrack-move@v1.0.0
+      - name: Youtrack-Staging
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           yt-url: ${{ secrets.YOUTRACK_URL }}
@@ -18,3 +19,11 @@ jobs:
           yt-project-id: "SD"
           yt-column-triggers: "Test"
           yt-column-target: "Staging"
+
+      - uses: actions/checkout@v2
+      - uses: actions-ecosystem/action-add-labels@v1
+      - name: pull-request
+        if: ${{ startsWith(github.event.comment.body, '/add-labels') }}
+        with:
+          labels: |
+            automerge
