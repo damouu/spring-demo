@@ -5,9 +5,6 @@ on:
     branches:
       - test
 
-env:
-  GITHUB_TOKEN: ${{ secrets.MyWorkflow  }}
-
 jobs:
   Test:
 
@@ -34,6 +31,8 @@ jobs:
       - name: pull-request
         if: ${{ success() }}
         uses: repo-sync/pull-request@v2
+        env:
+          GITHUB_TOKEN: ${{secrets.MyWorkflow}}
         with:
           GITHUB_TOKEN: ${{ secrets.MyWorkflow  }}
           source_branch: "test"
