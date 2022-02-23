@@ -2,7 +2,7 @@ name: automerge
 on:
   pull_request:
     types:
-      - labeled
+      - edited
   status: { }
 jobs:
   automerge:
