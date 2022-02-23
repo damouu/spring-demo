@@ -9,7 +9,6 @@ on:
   status: { }
 jobs:
   automerge:
-    if: github.event.label.name == 'automerge'
     runs-on: ubuntu-latest
     steps:
       - name: automerge
