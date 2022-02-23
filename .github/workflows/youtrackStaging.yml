@@ -18,3 +18,9 @@ jobs:
           yt-project-id: "SD"
           yt-column-triggers: "Test"
           yt-column-target: "Staging"
+
+      - uses: actions/checkout@v2
+      - uses: actions-ecosystem/action-add-labels@v1
+        with:
+          github_token: ${{ secrets.MyWorkflow  }}
+          labels: automerge

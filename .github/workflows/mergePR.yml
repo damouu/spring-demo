@@ -2,10 +2,7 @@ name: automerge
 on:
   pull_request:
     types:
-      - opened
-  check_suite:
-    types:
-      - completed
+      - labeled
   status: { }
 jobs:
   automerge:
