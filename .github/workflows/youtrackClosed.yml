@@ -3,14 +3,11 @@ name: YouTrack-Closed
 on:
   pull_request:
     types:
-      - closed
-  pull_request_target:
-    types:
-      - closed
+      - labeled
 
 jobs:
   build:
-    if: ${{ github.event.pull_request.merged }}
+    if: github.event.label.name == 'automerge'
     runs-on: ubuntu-latest
     steps:
       - uses: bloobirds-it/action-youtrack-move@v1.0.0
