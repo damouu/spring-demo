@@ -21,8 +21,8 @@ jobs:
           yt-column-target: "Staging"
 
       - uses: actions/checkout@v2
-      - uses: actions-ecosystem/action-add-labels@v1
       - name: add-label-automerge
+        uses: actions-ecosystem/action-add-labels@v1
         if: ${{ startsWith(github.event.comment.body, '/add-labels') }}
         with:
           labels: |
