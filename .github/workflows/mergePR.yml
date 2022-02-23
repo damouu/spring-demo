@@ -2,10 +2,7 @@ name: automerge
 on:
   pull_request:
     types:
-      - review_request_removed
-  pull_request_review:
-    types:
-      - dismissed
+      - opened
   check_suite:
     types:
       - completed
