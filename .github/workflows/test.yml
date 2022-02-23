@@ -31,12 +31,14 @@ jobs:
       - name: pull-request
         if: ${{ success() }}
         uses: repo-sync/pull-request@v2
+        env:
+          GITHUB_TOKEN: ${{secrets.MyWorkflow}}
         with:
+          GITHUB_TOKEN: ${{ secrets.MyWorkflow  }}
           source_branch: "test"
           destination_branch: "main"
-          github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_title: ${{ github.event.head_commit.message }}
           pr_body: ${{ github.event.head_commit.message }}
-          pr_label: "Staging"
+          pr_label: "Staging,automerge"
           pr_reviewer: "damouu"
           pr_assignee: "damouu"

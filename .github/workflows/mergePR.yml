@@ -2,10 +2,7 @@ name: automerge
 on:
   pull_request:
     types:
-      - review_request_removed
-  pull_request_review:
-    types:
-      - submitted
+      - opened
   check_suite:
     types:
       - completed
@@ -17,4 +14,4 @@ jobs:
       - name: automerge
         uses: "pascalgn/automerge-action@v0.14.3"
         env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          GITHUB_TOKEN: ${{ secrets.MyWorkflow  }}
