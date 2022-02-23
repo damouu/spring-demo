@@ -36,7 +36,6 @@ jobs:
         uses: repo-sync/pull-request@v2
         with:
           github_token: ${{ secrets.MyWorkflow  }}
-          GITHUB_TOKEN: ${{ secrets.MyWorkflow  }}
           source_branch: "test"
           destination_branch: "main"
           pr_title: ${{ github.event.head_commit.message }}
