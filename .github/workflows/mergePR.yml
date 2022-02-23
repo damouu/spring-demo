@@ -2,14 +2,20 @@ name: automerge
 on:
   pull_request_target:
     types:
-      - edited
+      - unlabeled
   status: { }
 jobs:
   automerge:
-    if: github.event.label.name == 'Staging'
     runs-on: ubuntu-latest
     steps:
       - name: automerge
         uses: "pascalgn/automerge-action@v0.14.3"
         env:
           GITHUB_TOKEN: ${{ secrets.MyWorkflow  }}
+
+      - uses: actions/checkout@v2
+      - uses: buildsville/add-remove-label@v1
+        with:
+          token: ${{ secrets.MyWorkflow  }}
+          labels: automerge
+          type: remove
