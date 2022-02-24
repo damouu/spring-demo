@@ -20,12 +20,10 @@ jobs:
 
       - name: Set environment variables
         run: |
-          echo "GIT_SHA=${GITHUB_SHA}" >> $GITHUB_ENV
-          echo "GIT_BRANCH=${GITHUB_REF##*/}" >> $GITHUB_ENV
-      - name: Use environment variables
-        run: |
-          echo "${GIT_SHA}"
-          echo "${GIT_BRANCH}"
+          echo "GITHUB_SHA_SHORT=$(echo $GITHUB_SHA | cut -c 1-6)" >> $GITHUB_ENV
+      - name: environment_variables
+        run: echo $GITHUB_SHA_SHORT
+        id: AWS
 
       - name: Runing Unit/ Integration Tests
         id: run-tests
@@ -38,7 +36,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           actor: ${{ github.actor }}
-          sha: ${GITHUB_SHA}
+          sha: ${{ steps.environment_variables.outputs.stdout }}
         with:
           assignees: ${{ github.actor }}
 
