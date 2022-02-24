@@ -1,6 +1,5 @@
 ---
 title: Tests Failed, obey !
-assignees: {{ tools.context.actor }}.
-labels: TestFailed, bug, fixCodes
+labels: bug
 ---
 Here's who did it!: {{ env.ADJECTIVE }}
