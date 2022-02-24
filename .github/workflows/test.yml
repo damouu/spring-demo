@@ -20,7 +20,8 @@ jobs:
 
       - name: Runing Unit/ Integration Tests
         id: run-tests
-        run: echo "::set-output name=mvn-tests::mvn test -Dsurefire.useFile=false"
+        run: |
+          echo ::set-env name=TAG_NAME::$(mvn test -Dsurefire.useFile=false)
 
       - uses: actions/checkout@v2
       - name: Create an issue
@@ -29,7 +30,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TITLE: ${{ github.event.head_commit.message }}
-          ERROR: ${{ steps.run-tests.outputs.mvn-tests }}
+          ERROR: ${{ env.TAG_NAME }}
         with:
           assignees: ${{ github.actor }}
 
