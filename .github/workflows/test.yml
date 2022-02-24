@@ -19,8 +19,9 @@ jobs:
           distribution: 'adopt'
 
       - name: Runing Unit/ Integration Tests
-        id: tests
-        run: mvn test
+        run: |
+          echo "::set-output name=mix-test::$(mvn test)"
+        id: run_tests
 
       - uses: actions/checkout@v2
       - name: Create an issue
@@ -30,7 +31,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           #          TITLE: ${{ github.event.head_commit.message }}
           #          WORKFLOW: ${{ github.event_name }}
-          TEST_MESSAGE: DEDEDEDEED
+          TEST_MESSAGE: ${{join(steps.run_tests.outputs.*, '\n')}}
         with:
           assignees: ${{ github.actor }}
 
