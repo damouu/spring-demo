@@ -21,8 +21,8 @@ jobs:
       - name: Runing Unit/ Integration Tests
         run: |
           mvn test -Dsurefire.useFile=false
-          echo "::set-output name=mix-test::$(mvn test -Dsurefire.useFile=false)\n"
-        id: run_tests
+          echo "::set-output name=mvn-tests::$(mvn test -Dsurefire.useFile=false)\n"
+        id: run-tests
 
       - uses: actions/checkout@v2
       - name: Create an issue
@@ -31,7 +31,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TITLE: ${{ github.event.head_commit.message }}
-          ERROR_MESSAGE: ${{join(steps.run_tests.outputs.*, '\n')}}
+          ERROR_MESSAGE: ${{ steps.run-tests.mvn-tests }}
         with:
           assignees: ${{ github.actor }}
 
