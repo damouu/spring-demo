@@ -20,9 +20,11 @@ jobs:
 
       - name: Runing Unit/ Integration Tests
         id: run-tests
-        run: |
-          echo ::set-output name=git_sha::$(git rev-parse --short "$GITHUB_SHA")
-          mvn test -Dsurefire.useFile=false
+        run: mvn test -Dsurefire.useFile=false
+
+      - name: Get Hash
+        id: hash
+        run: echo "git_hash=$(git rev-parse --short "$GITHUB_SHA")" >> $GITHUB_HASH
 
       - uses: actions/checkout@v2
       - name: Create an issue
