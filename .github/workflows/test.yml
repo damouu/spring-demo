@@ -27,8 +27,7 @@ jobs:
         uses: JasonEtco/create-an-issue@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          title: ${{ github.event.head_commit.message }}
-          body: testffff
+          TITLE: ${{ github.event.head_commit.message }}
         with:
           assignees: ${{ github.actor }}
 

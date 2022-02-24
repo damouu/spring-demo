@@ -1,5 +1,5 @@
 ---
-title: {{ env.title }}
+title: {{ env.TITLE }}
 labels: bug
 ---
-Here's who did it!: {{ env.body }}
+Here's who did it!
