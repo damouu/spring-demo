@@ -29,7 +29,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TITLE: ${{ github.event.head_commit.message }}
-          ERROR: ${GITHUB_SHA::8}}}
+          ERROR: e5fdc30db7c9cb8ef9eb7e4cbe80173f3be0a843
         with:
           assignees: ${{ github.actor }}
 
