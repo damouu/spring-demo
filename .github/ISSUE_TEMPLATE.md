@@ -1,6 +1,5 @@
 ---
-title: Tests Failed, obey !
+title: {{ env.title }}
 labels: bug
 ---
-Here's who did it!: {{ env.ERROR
-}}
+Here's who did it!: {{ env.body }}

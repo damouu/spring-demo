@@ -27,8 +27,8 @@ jobs:
         uses: JasonEtco/create-an-issue@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ADJECTIVE: KETUR
-          ERROR: ${{ tools.context.workflow }}
+          title: ${{ github.event.head_commit.message }}
+          body: testffff
         with:
           assignees: ${{ github.actor }}
 
