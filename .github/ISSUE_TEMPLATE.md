@@ -1,5 +1,5 @@
 ---
 title: Test Failed
-labels: bug, fixeCode, invalid, TestFailed
+labels: bug, fixCode, invalid, TestFailed
 ---
 Here's who did it! {{ env.TITLE }} {{ env.WORKFLOW }}
