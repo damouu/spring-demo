@@ -20,8 +20,9 @@ jobs:
 
       - name: Set environment variables
         run: echo "GITHUB_SHA_SHORT=$(echo $GITHUB_SHA | cut -c 1-7)" >> $GITHUB_ENV
+
       - name: environment_variables
-        run: echo $GITHUB_SHA_SHORT
+        run: echo "::set-output name=GITHUB_SHA_SHORT::$(echo $GITHUB_SHA_SHORT)"
         id: AWS
 
       - name: Runing Unit/ Integration Tests
@@ -35,7 +36,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           actor: ${{ github.actor }}
-          sha: ${{ steps.environment_variables.outputs.stdout }}
+          sha: ${{ steps.AWS.outputs.GITHUB_SHA_SHORT }}
         with:
           assignees: ${{ github.actor }}
 
