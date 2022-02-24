@@ -19,9 +19,7 @@ jobs:
           distribution: 'adopt'
 
       - name: Runing Unit/ Integration Tests
-        run: |
-          echo "::set-output name=mix-test::$(mvn test)"
-        id: run_tests
+        run: mvn test -Dsurefire.useFile=false
 
       - uses: actions/checkout@v2
       - name: Create an issue
@@ -29,9 +27,8 @@ jobs:
         uses: JasonEtco/create-an-issue@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          #          TITLE: ${{ github.event.head_commit.message }}
-          #          WORKFLOW: ${{ github.event_name }}
-          TEST_MESSAGE: ${{join(steps.run_tests.outputs.*, '\n')}}
+          TITLE: ${{ github.event.head_commit.message }}
+          WORKFLOW: ${{ github.event_name }}
         with:
           assignees: ${{ github.actor }}
 
