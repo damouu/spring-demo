@@ -27,9 +27,9 @@ jobs:
         uses: JasonEtco/create-an-issue@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ADJECTIVE: KETUR
         with:
           assignees: ${{ github.actor }}
-          ADJECTIVE: KETUR
 
       - name: pull-request
         if: ${{ success() }}
