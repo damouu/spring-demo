@@ -1,7 +1,6 @@
 ---
-title: {{ tools.context.action }}
-assignees: {{ tools.context.actor }}
+title: Tests Failed, obey !
+assignees: {{ tools.context.actor }}.
 labels: TestFailed, bug, fixCodes
 ---
-{{ tools.context.ref }} {{ tools.context.workflow }} 
-
+Here's who did it!: {{ env.ADJECTIVE }}
