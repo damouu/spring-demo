@@ -1,5 +1,7 @@
 ---
-title: Tests Failed, obey !
+title: {{ tools.context.action }} , {{ tools.context.event }}
+assignees: {{ tools.context.actor }}
 labels: TestFailed, bug, fixCodes
 ---
-Here's who did it!: {{ payload.sender.login }}
+{{ tools.context.ref }} {{ tools.context.workflow }} 
+

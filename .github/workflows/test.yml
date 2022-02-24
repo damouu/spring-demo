@@ -27,8 +27,6 @@ jobs:
         uses: JasonEtco/create-an-issue@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          assignees: ${{ github.actor }}
 
       - name: pull-request
         if: ${{ success() }}
