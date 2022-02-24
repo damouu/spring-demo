@@ -24,8 +24,8 @@ jobs:
           echo "GIT_BRANCH=${GITHUB_REF##*/}" >> $GITHUB_ENV
       - name: Use environment variables
         run: |
-          echo "GIT_SHA=${GIT_SHA}"
-          echo "GIT_BRANCH=${GIT_BRANCH}"
+          echo "${GIT_SHA}"
+          echo "${GIT_BRANCH}"
 
       - name: Runing Unit/ Integration Tests
         id: run-tests
