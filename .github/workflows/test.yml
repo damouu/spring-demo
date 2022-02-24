@@ -20,7 +20,9 @@ jobs:
 
       - name: Runing Unit/ Integration Tests
         id: run-tests
-        run: mvn test -Dsurefire.useFile=false
+        run: |
+        mvn test -Dsurefire.useFile=false
+        echo ::set-output name=git_sha::$(git rev-parse --short "$GITHUB_SHA")
 
       - uses: actions/checkout@v2
       - name: Create an issue
@@ -29,7 +31,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           actor: ${{ github.actor }}
-          ERROR: e5fdc30db7c9cb8ef9eb7e4cbe80173f3be0a843
+          sha: ${{ steps.run-tests.outputs.git_sha }}
         with:
           assignees: ${{ github.actor }}
 
