@@ -27,8 +27,8 @@ jobs:
         uses: JasonEtco/create-an-issue@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TITLE: great
-          WORKFLOW: dedede
+          TITLE: ${{ github.event.head_commit.message }}
+          WORKFLOW: ${{ github.event_name }}
         with:
           assignees: ${{ github.actor }}
 
