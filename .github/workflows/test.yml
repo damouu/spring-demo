@@ -19,8 +19,8 @@ jobs:
           distribution: 'adopt'
 
       - name: Runing Unit/ Integration Tests
-        run: echo "::set-output name=mvn-tests::$(mvn test -Dsurefire.useFile=false)\n"
         id: run-tests
+        run: echo "::set-output name=mvn-tests::mvn test -Dsurefire.useFile=false"
 
       - uses: actions/checkout@v2
       - name: Create an issue
@@ -29,7 +29,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TITLE: ${{ github.event.head_commit.message }}
-          ERROR: ERRRORRR
+          ERROR: ${{ steps.run-tests.outputs.mvn-tests }}
         with:
           assignees: ${{ github.actor }}
 
