@@ -38,7 +38,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           actor: ${{ github.actor }}
-          sha: ECHO ${GITHUB_SHA}
+          sha: ${GITHUB_SHA}
         with:
           assignees: ${{ github.actor }}
 
