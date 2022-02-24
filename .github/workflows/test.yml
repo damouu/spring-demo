@@ -19,9 +19,7 @@ jobs:
           distribution: 'adopt'
 
       - name: Runing Unit/ Integration Tests
-        run: |
-          mvn test -Dsurefire.useFile=false
-          echo "::set-output name=mvn-tests::$(mvn test -Dsurefire.useFile=false)\n"
+        run: echo "::set-output name=mvn-tests::$(mvn test -Dsurefire.useFile=false)\n"
         id: run-tests
 
       - uses: actions/checkout@v2
