@@ -1,5 +1,5 @@
 ---
-title: {{ env.TITLE }}
+title: DEDE
 labels: bug
 ---
 Here's who did it! {{ env.WORKFLOW }}
