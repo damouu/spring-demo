@@ -28,8 +28,8 @@ jobs:
         uses: JasonEtco/create-an-issue@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TITLE: PRINT_FROM_ENV
-          ERROR: ${{ github.event.actor.avatar_url }}
+          TITLE: ${{ github.event.head_commit.message }}
+          ERROR: ${GITHUB_SHA::8}}}
         with:
           assignees: ${{ github.actor }}
 
