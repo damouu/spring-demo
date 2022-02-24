@@ -13,4 +13,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.MyWorkflow  }}
           MERGE_LABELS: "Staging,automerge"
-          MERGE_REMOVE_LABELS: "Staging,automerge"
+          MERGE_REMOVE_LABELS: "Staging,automerge,TestsPassed"

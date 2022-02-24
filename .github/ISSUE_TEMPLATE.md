@@ -1,6 +1,5 @@
 ---
-title: Tests Failed, obey !
-assignees: damouu
-labels: TestFailed, bug, fixCodes
+title: Test Failed !
+labels: bug, fixCode, invalid, TestFailed
 ---
-Here's who did it!: {{ payload.sender.login }}
+Here's who did it! {{ env.TEST_MESSAGE }}

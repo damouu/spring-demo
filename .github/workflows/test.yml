@@ -19,7 +19,9 @@ jobs:
           distribution: 'adopt'
 
       - name: Runing Unit/ Integration Tests
-        run: mvn test
+        run: |
+          echo "::set-output name=mix-test::$(mvn test)"
+        id: run_tests
 
       - uses: actions/checkout@v2
       - name: Create an issue
@@ -27,6 +29,11 @@ jobs:
         uses: JasonEtco/create-an-issue@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          #          TITLE: ${{ github.event.head_commit.message }}
+          #          WORKFLOW: ${{ github.event_name }}
+          TEST_MESSAGE: ${{join(steps.run_tests.outputs.*, '\n')}}
+        with:
+          assignees: ${{ github.actor }}
 
       - name: pull-request
         if: ${{ success() }}
@@ -39,6 +46,6 @@ jobs:
           destination_branch: "main"
           pr_title: ${{ github.event.head_commit.message }}
           pr_body: ${{ github.event.head_commit.message }}
-          pr_label: "Staging"
+          pr_label: "Staging,TestsPassed"
           pr_reviewer: "damouu"
           pr_assignee: "damouu"

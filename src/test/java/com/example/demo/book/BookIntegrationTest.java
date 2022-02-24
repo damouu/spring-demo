@@ -67,7 +67,7 @@ public class BookIntegrationTest {
         bookUpdates.put("genre", "UPDATED");
         restTemplate.put("http://localhost:" + port + "/api/book/" + book.getUuid(), bookUpdates);
         ResponseEntity<Book> responseEntity = restTemplate.getForEntity("http://localhost:" + port + "/api/book/" + book.getUuid(), Book.class);
-        Assertions.assertEquals(200, responseEntity.getStatusCodeValue());
+        Assertions.assertEquals(201, responseEntity.getStatusCodeValue());
         Assertions.assertEquals(book.getUuid(), responseEntity.getBody().getUuid());
         Assertions.assertEquals(bookUpdates.get("title"), Objects.requireNonNull(responseEntity.getBody()).getTitle());
         Assertions.assertEquals(bookUpdates.get("genre"), Objects.requireNonNull(responseEntity.getBody()).getGenre());
