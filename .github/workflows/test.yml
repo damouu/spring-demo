@@ -22,15 +22,14 @@ jobs:
         id: run-tests
         run: mvn test -Dsurefire.useFile=false
 
-      - name: Get Hash
-        id: hash
-        run: echo "git_hash=$(git rev-parse --short "$GITHUB_SHA")" >> $GITHUB_HASH
-
-      - name: Check Hash
-        run: echo "${{ env.hash }}"
-
-      - name: dede
-        run: ECHO ${GITHUB_SHA}
+      - name: Set environment variables
+        run: |
+          echo "GIT_SHA=${GITHUB_SHA}" >> $GITHUB_ENV
+          echo "GIT_BRANCH=${GITHUB_REF##*/}" >> $GITHUB_ENV
+      - name: Use environment variables
+        run: |
+          echo "GIT_SHA=${GIT_SHA}"
+          echo "GIT_BRANCH=${GIT_BRANCH}"
 
       - uses: actions/checkout@v2
       - name: Create an issue
