@@ -28,7 +28,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TITLE: great
-          WORKFLOW: ${{ github.event_name }}
+          WORKFLOW: dedede
         with:
           assignees: ${{ github.actor }}
 
