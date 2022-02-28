@@ -50,7 +50,7 @@ jobs:
           error_short: ${{ steps.mvn_test_error_short.outputs.msg }}
         with:
           assignees: ${{ github.actor }}
-          update_existing: false
+          update_existing: true
           search_existing: open
 
       - name: pull-request
