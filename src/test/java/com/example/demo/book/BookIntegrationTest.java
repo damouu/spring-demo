@@ -54,7 +54,7 @@ public class BookIntegrationTest {
         bookRepository.save(book);
         restTemplate.delete("http://localhost:" + port + "/api/book/" + book.getUuid());
         ResponseEntity<Book> responseEntity = restTemplate.getForEntity("http://localhost:" + port + "/api/book/" + book.getUuid(), Book.class);
-        Assertions.assertEquals(401, responseEntity.getStatusCodeValue());
+        Assertions.assertEquals(404, responseEntity.getStatusCodeValue());
         Assertions.assertNotEquals(book.getUuid(), responseEntity.getBody().getUuid());
     }
 
