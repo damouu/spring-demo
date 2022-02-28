@@ -26,8 +26,12 @@ jobs:
         id: AWS
 
       - name: Runing Unit/ Integration Tests
-        id: run-tests
-        run: mvn test -Dsurefire.useFile=false
+        id: run_tests
+        run: mvn test -Dsurefire.useFile=false | grep 'ERROR' | head -4 | tail -1
+
+      - name: environment_variables
+        run: echo "::set-output name=dede::$(mvn test -Dsurefire.useFile=false | grep 'ERROR' | head -4 | tail -1)"
+        id: run_tests_1
 
       - uses: actions/checkout@v2
       - name: Create an issue
@@ -37,6 +41,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           actor: ${{ github.actor }}
           sha: ${{ steps.AWS.outputs.GITHUB_SHA_SHORT }}
+          error: ${{ steps.run_tests_1.outputs.dede }}
         with:
           assignees: ${{ github.actor }}
 
