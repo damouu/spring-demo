@@ -33,10 +33,10 @@ jobs:
         id: run_tests
         run: mvn test
 
+      - uses: stefanzweifel/git-auto-commit-action@v4
       - name: Get last commit message
       - if: ${{ failure() }}
         id: last-commit-message
-        uses: stefanzweifel/git-auto-commit-action@v4
         run: |
           echo "::set-output name=msg::$(git log -1 --pretty=%s)"
         with:
