@@ -25,13 +25,13 @@ jobs:
         run: echo "::set-output name=GITHUB_SHA_SHORT::$(echo $GITHUB_SHA_SHORT)"
         id: AWS
 
-      - name: Runing Unit/ Integration Tests
-        id: run_tests
-        run: mvn test
-
       - name: dede
         run: echo "::set-output name=dede::$(mvn test -Dsurefire.useFile=false | grep 'ERROR' | head -4 | tail -1)"
         id: run_tests_1
+
+      - name: Runing Unit/ Integration Tests
+        id: run_tests
+        run: mvn test
 
       - uses: actions/checkout@v2
       - name: Create an issue
