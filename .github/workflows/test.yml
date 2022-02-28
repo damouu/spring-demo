@@ -25,9 +25,9 @@ jobs:
         run: echo "::set-output name=GITHUB_SHA_SHORT::$(echo $GITHUB_SHA_SHORT)"
         id: AWS
 
-      - name: dede
-        run: echo "::set-output name=dede::$(mvn test -Dsurefire.useFile=false | grep 'ERROR' | head -4 | tail -1)"
-        id: run_tests_1
+      - name: maven error tests messages
+        run: echo "::set-output name=msg::$(mvn test -Dsurefire.useFile=false | grep 'ERROR' | head -4 | tail -1)"
+        id: mvn_test_error
 
       - name: Runing Unit/ Integration Tests
         id: run_tests
@@ -41,7 +41,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           actor: ${{ github.actor }}
           sha: ${{ steps.AWS.outputs.GITHUB_SHA_SHORT }}
-          error: ${{ steps.run_tests_1.outputs.dede }}
+          error: ${{ steps.mvn_test_error.outputs.msg }}
         with:
           assignees: ${{ github.actor }}
 
