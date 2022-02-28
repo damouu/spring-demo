@@ -33,6 +33,11 @@ jobs:
         id: run_tests
         run: mvn test
 
+      - name: amend the commit
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Apply php-cs-fixer changes
+
       - uses: actions/checkout@v2
       - name: Create an issue
         if: ${{ failure() }}
@@ -44,11 +49,6 @@ jobs:
           error: ${{ steps.mvn_test_error.outputs.msg }}
         with:
           assignees: ${{ github.actor }}
-
-      - name: amend the commit
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: Apply php-cs-fixer changes
 
       - name: pull-request
         if: ${{ success() }}
