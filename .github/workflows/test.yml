@@ -30,7 +30,7 @@ jobs:
         id: mvn_test_error
 
       - name: maven error tests messages
-        run: echo "::set-output name=msg::$(mvn test -Dsurefire.useFile=false | grep 'ERROR' | head -4 | tail -1 | cut -d' ' -f2- | rev | cut -c 38- | rev)"
+        run: echo "::set-output name=msg::$(mvn test -Dsurefire.useFile=false | grep 'ERROR' | head -4 | tail -1 | cut -d' ' -f2- | rev | cut -c 35- | rev)"
         id: mvn_test_error_short
 
       - name: Runing Unit/ Integration Tests
