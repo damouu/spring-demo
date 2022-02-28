@@ -45,6 +45,8 @@ jobs:
           error: ${{ steps.mvn_test_error.outputs.msg }}
         with:
           assignees: ${{ github.actor }}
+          update_existing: false
+          search_existing: open
 
       - name: pull-request
         if: ${{ success() }}
