@@ -39,7 +39,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           actor: ${{ github.actor }}
-          test: test_label
+          test: duplicate
           sha: ${{ steps.AWS.outputs.GITHUB_SHA_SHORT }}
           error: ${{ steps.mvn_test_error.outputs.msg }}
         with:
