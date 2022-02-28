@@ -34,30 +34,12 @@ jobs:
         run: mvn test
 
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 2
-
-      - name: Get last commit message
-        if: ${{ failure() }}
-        id: last-commit-message
-        run: |
-          echo "::set-output name=msg::$(git log -1 --pretty=%s | cut -d " " -f1)"
-
-      - uses: stefanzweifel/git-auto-commit-action@v4
-        if: ${{ failure() }}
-        with:
-          commit_message: ${{ steps.last-commit-message.outputs.msg }} Show-stopper ${{ github.actor }} TestFailed
-          commit_options: '--amend'
-          push_options: '--force'
-          skip_fetch: true
-
-      - uses: actions/checkout@v2
       - name: Create an issue
-        if: ${{ failure() }}
         uses: JasonEtco/create-an-issue@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           actor: ${{ github.actor }}
+          test: test_label
           sha: ${{ steps.AWS.outputs.GITHUB_SHA_SHORT }}
           error: ${{ steps.mvn_test_error.outputs.msg }}
         with:
