@@ -27,7 +27,7 @@ jobs:
 
       - name: Runing Unit/ Integration Tests
         id: run_tests
-        run: mvn test -Dsurefire.useFile=false | grep 'ERROR' | head -4 | tail -1
+        run: mvn test
 
       - name: dede
         run: echo "::set-output name=dede::$(mvn test -Dsurefire.useFile=false | grep 'ERROR' | head -4 | tail -1)"
