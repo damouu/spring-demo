@@ -1,5 +1,8 @@
 ---
-title: Test Failed !
+title: Test failed
 labels: bug, fixCode, invalid, TestFailed
 ---
-Here's who did it! {{ env.TEST_MESSAGE }}
+Hey {{ env.actor }} 👋, This commit {{ env.sha }} did not pass some tests.
+Failures: 
+❌ {{ env.error }}
+    
