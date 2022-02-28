@@ -33,14 +33,12 @@ jobs:
         id: run_tests
         run: mvn test
 
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
         with:
-          # Fetch the last 2 commits instead of just 1. (Fetching just 1 commit would overwrite the whole history)
           fetch-depth: 2
 
-      # Other steps in your workflow to trigger a changed file
-
       - name: Get last commit message
+        if: ${{ failure() }}
         id: last-commit-message
         run: |
           echo "::set-output name=msg::$(git log -1 --pretty=%s)"
