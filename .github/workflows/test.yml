@@ -26,30 +26,16 @@ jobs:
         id: AWS
 
       - name: maven error tests messages
-        run: echo "::set-output name=msg::$(mvn test -Dsurefire.useFile=false | grep 'ERROR' | head -4 | tail -1)"
+        run: echo "::set-output name=msg::$(mvn test -Dsurefire.useFile=false | grep 'ERROR' | head -4 | tail -1 | cut -d' ' -f2-)"
         id: mvn_test_error
+
+      - name: maven error tests messages
+        run: echo "::set-output name=msg::$(mvn test -Dsurefire.useFile=false | grep 'ERROR' | head -4 | tail -1 | cut -d' ' -f2- | rev | cut -c 35- | rev)"
+        id: mvn_test_error_short
 
       - name: Runing Unit/ Integration Tests
         id: run_tests
         run: mvn test
-
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 2
-
-      - name: Get last commit message
-        if: ${{ failure() }}
-        id: last-commit-message
-        run: |
-          echo "::set-output name=msg::$(git log -1 --pretty=%s | cut -d " " -f1)"
-
-      - uses: stefanzweifel/git-auto-commit-action@v4
-        if: ${{ failure() }}
-        with:
-          commit_message: ${{ steps.last-commit-message.outputs.msg }} Show-stopper ${{ github.actor }} TestFailed
-          commit_options: '--amend'
-          push_options: '--force'
-          skip_fetch: true
 
       - uses: actions/checkout@v2
       - name: Create an issue
@@ -58,10 +44,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           actor: ${{ github.actor }}
+          test: duplicate
           sha: ${{ steps.AWS.outputs.GITHUB_SHA_SHORT }}
           error: ${{ steps.mvn_test_error.outputs.msg }}
+          error_short: ${{ steps.mvn_test_error_short.outputs.msg }}
         with:
           assignees: ${{ github.actor }}
+          update_existing: true
+          search_existing: open
 
       - name: pull-request
         if: ${{ success() }}
