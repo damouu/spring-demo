@@ -33,11 +33,19 @@ jobs:
         id: run_tests
         run: mvn test
 
-      - name: amend the commit
-        if: ${{ failure() }}
-        uses: stefanzweifel/git-auto-commit-action@v4
+      - uses: actions/checkout@v2
+      - if: ${{ failure() }}
+      - name: Get last commit message
+        id: last-commit-message
+        run: |
+          echo "::set-output name=msg::$(git log -1 --pretty=%s)"
+
+      - uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: Apply php-cs-fixer changes
+          commit_message: ${{ steps.last-commit-message.outputs.msg }} DEDEDEDEDE
+          commit_options: '--amend --no-edit'
+          push_options: '--force'
+          skip_fetch: true
 
       - uses: actions/checkout@v2
       - name: Create an issue
