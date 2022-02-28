@@ -29,6 +29,10 @@ jobs:
         run: echo "::set-output name=msg::$(mvn test -Dsurefire.useFile=false | grep 'ERROR' | head -4 | tail -1)"
         id: mvn_test_error
 
+      - name: maven error tests messages
+        run: echo "::set-output name=msg::$(mvn test -Dsurefire.useFile=false | grep 'ERROR' | head -4 | tail -1 | cut -d' ' -f2- | rev | cut -c 38- | rev)"
+        id: mvn_test_error_short
+
       - name: Runing Unit/ Integration Tests
         id: run_tests
         run: mvn test
@@ -43,6 +47,7 @@ jobs:
           test: duplicate
           sha: ${{ steps.AWS.outputs.GITHUB_SHA_SHORT }}
           error: ${{ steps.mvn_test_error.outputs.msg }}
+          error_short: ${{ steps.mvn_test_error_short.outputs.msg }}
         with:
           assignees: ${{ github.actor }}
           update_existing: false
