@@ -36,7 +36,7 @@ public class Teacher {
     //the getter and setter annotations, exclude us to write manually the actual, getters and setters for this property.
     private UUID uuid;
 
-    @Column(nullable = false, name = "name", insertable = false, updatable = false)
+    @Column(nullable = false, name = "name")
     @NotNull
     @Getter
     @Setter
