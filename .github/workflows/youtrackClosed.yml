@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: bloobirds-it/action-youtrack-move@v1.0.0
         with:
-          GITHUB_TOKEN: ${{ secrets.MyWorkflow }}
+          github-token: ${{ secrets.MyWorkflow }}
           yt-url: ${{ secrets.YOUTRACK_URL }}
           yt-token: ${{ secrets.YOUTRACK_TOKEN }}
           yt-project-id: "SD"
