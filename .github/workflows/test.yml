@@ -57,9 +57,9 @@ jobs:
         if: ${{ success() }}
         uses: repo-sync/pull-request@v2
         env:
-          GITHUB_TOKEN: ${{secrets.MyWorkflow}}
+          GITHUB_TOKEN: ${{ secrets.MyWorkflow  }}
         with:
-          GITHUB_TOKEN: ${{secrets.MyWorkflow}}
+          GITHUB_TOKEN: ${{ secrets.MyWorkflow  }}
           source_branch: "test"
           destination_branch: "main"
           pr_title: ${{ github.event.head_commit.message }}
