@@ -40,6 +40,7 @@ public class Teacher {
     @NotNull
     @Getter
     @Setter
+    //the getter and setter annotations, exclude us to write manually the actual, getters and setters for this property.
     private String name;
 
     @Column(nullable = false)
