@@ -9,7 +9,7 @@ import java.util.Locale;
 import java.util.UUID;
 
 @Configuration
-// tells to the spring framework that this class has a @Bean definition method.
+// tells to the spring framework that this class has a @Bean definition method..
 public class TeacherConfiguration {
     @Bean
         // tells to the spring that the method will return an object and it should be managed like a bean.
