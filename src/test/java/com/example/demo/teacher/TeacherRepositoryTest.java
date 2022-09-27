@@ -52,4 +52,15 @@ public class TeacherRepositoryTest {
         Assertions.assertFalse(optional.isEmpty());
         Assertions.assertEquals(optional.get().getUuid(), teacher.getUuid());
     }
+
+    @Test
+    void findTeacherByDob() {
+        Teacher teacher = new Teacher(UUID.randomUUID(), "teacher_name", new Date(), "male", "bilalsensei@gmail.com");
+        entityManager.persist(teacher);
+        entityManager.flush();
+        Optional<Teacher> optional = teacherRepository.findTeacherByDob(teacher.getDob());
+        Assertions.assertTrue(optional.isPresent());
+        Assertions.assertFalse(optional.isEmpty());
+        Assertions.assertEquals(teacher.getDob(), optional.get().getDob());
+    }
 }
