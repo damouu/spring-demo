@@ -30,4 +30,15 @@ public class TeacherRepositoryTest {
         Assertions.assertTrue(optional.isPresent());
         Assertions.assertEquals(teacher.getEmail(), optional.get().getEmail());
     }
+
+    @Test
+    void findTeacherByName() {
+        Teacher teacher = new Teacher(UUID.randomUUID(), "teacher_name", new Date(), "male", "bilalsensei@gmail.com");
+        entityManager.persist(teacher);
+        entityManager.flush();
+        Optional<Teacher> optional = teacherRepository.findTeacherByName(teacher.getName());
+        Assertions.assertTrue(optional.isPresent());
+        Assertions.assertFalse(optional.isEmpty());
+        Assertions.assertEquals(optional.get().getName(), teacher.getName());
+    }
 }
