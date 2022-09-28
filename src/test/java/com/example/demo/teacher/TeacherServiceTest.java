@@ -29,4 +29,15 @@ public class TeacherServiceTest {
         Mockito.verify(teacherRepository, Mockito.times(1)).findTeacherByUuid(UUID.fromString(String.valueOf(teacher.getUuid())));
         Assertions.assertEquals(teacher1.getUuid(), teacher.getUuid());
     }
+
+    @Test
+    void getTeacherEmail() {
+        Teacher teacher = new Teacher(UUID.randomUUID(), "teacher_name", new Date(), "male", "bilalsensei@gmail.com");
+        Mockito.when(teacherRepository.findTeacherByEmail(teacher.getEmail())).thenReturn(Optional.of(teacher));
+        Optional<Teacher> teacher1 = teacherService.getTeacherEmail(teacher.getEmail());
+        Mockito.verify(teacherRepository, Mockito.times(1)).findTeacherByEmail(teacher.getEmail());
+        Assertions.assertTrue(teacher1.isPresent());
+        Assertions.assertFalse(teacher1.isEmpty());
+        Assertions.assertEquals(teacher1.get().getEmail(), teacher.getEmail());
+    }
 }
