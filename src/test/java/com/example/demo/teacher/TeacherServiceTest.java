@@ -7,6 +7,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
 
 import java.util.Date;
 import java.util.Optional;
@@ -39,5 +41,16 @@ public class TeacherServiceTest {
         Assertions.assertTrue(teacher1.isPresent());
         Assertions.assertFalse(teacher1.isEmpty());
         Assertions.assertEquals(teacher1.get().getEmail(), teacher.getEmail());
+    }
+
+    @Test
+    void deleteTeacher() {
+        Teacher teacher = new Teacher(UUID.randomUUID(), "teacher_name", new Date(), "male", "bilalsensei@gmail.com");
+        Mockito.when(teacherRepository.findTeacherByUuid(teacher.getUuid())).thenReturn(java.util.Optional.of(teacher));
+        ResponseEntity<String> deleteTest = (ResponseEntity<String>) teacherService.deleteTeacher(teacher.getUuid());
+        Mockito.verify(teacherRepository, Mockito.times(1)).delete(teacher);
+        Assertions.assertEquals(deleteTest.getBody(), "teacher successfully deleted");
+        Assertions.assertTrue(deleteTest.getStatusCode().is2xxSuccessful());
+        Mockito.verify(teacherRepository, Mockito.times(1)).delete(teacher);
     }
 }
