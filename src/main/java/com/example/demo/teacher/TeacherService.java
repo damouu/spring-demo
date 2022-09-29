@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.net.URI;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,5 +29,15 @@ public class TeacherService {
         Teacher teacher = teacherRepository.findTeacherByUuid(uuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "teacher not found"));
         teacherRepository.delete(teacher);
         return ResponseEntity.status(204).body("teacher successfully deleted");
+    }
+
+    public ResponseEntity<Teacher> postTeacher(Teacher teacher) {
+        Optional<Teacher> optional = teacherRepository.findTeacherByUuid(teacher.getUuid());
+        if (optional.isEmpty()) {
+            teacherRepository.save(teacher);
+            return ResponseEntity.created(URI.create("http://localhost:8083/api/teacher/" + teacher.getUuid())).body(teacher);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "teacher already exist");
+        }
     }
 }
