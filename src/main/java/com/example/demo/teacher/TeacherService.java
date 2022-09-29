@@ -7,7 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.persistence.EntityNotFoundException;
+import java.lang.reflect.Field;
 import java.net.URI;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -38,6 +41,25 @@ public class TeacherService {
             return ResponseEntity.created(URI.create("http://localhost:8083/api/teacher/" + teacher.getUuid())).body(teacher);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "teacher already exist");
+        }
+    }
+
+    public ResponseEntity<Optional<Teacher>> updateTeacher(UUID uuid, Map<String, String> teacherUpdates) {
+        try {
+            Optional<Teacher> teacher = teacherRepository.findTeacherByUuid(uuid);
+            teacherUpdates.forEach((key, value) -> {
+                try {
+                    Field field = teacher.get().getClass().getDeclaredField(key); // Using reflections to set an object property
+                    field.setAccessible(true);
+                    field.set(teacher.get(), value);
+                } catch (NoSuchFieldException | IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            teacherRepository.save(teacher.get());
+            return ResponseEntity.status(204).body(teacher);
+        } catch (Exception exception) {
+            throw new EntityNotFoundException("this teacher does not exist");
         }
     }
 }

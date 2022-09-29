@@ -11,10 +11,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @ExtendWith(MockitoExtension.class)
 public class TeacherServiceTest {
@@ -66,6 +63,19 @@ public class TeacherServiceTest {
         Assertions.assertEquals(responseEntity.getHeaders().get("Location"), List.of("http://localhost:8083/api/teacher/" + teacher.getUuid()));
         Assertions.assertEquals(teacher, responseEntity.getBody());
         Assertions.assertEquals(responseEntity.getStatusCode(), HttpStatus.CREATED);
+        Mockito.verify(teacherRepository, Mockito.times(1)).save(teacher);
+    }
+
+    @Test
+    void updateTeacher() {
+        Map<String, String> map = new HashMap<>();
+        map.put("name", "name_updated");
+        Teacher teacher = new Teacher(UUID.randomUUID(), "teacher_name", new Date(), "male", "bilalsensei@gmail.com");
+        Mockito.when(teacherRepository.findTeacherByUuid(teacher.getUuid())).thenReturn(java.util.Optional.of(teacher));
+        var responseEntity = teacherService.updateTeacher(teacher.getUuid(), map);
+        Assertions.assertNotNull(responseEntity);
+        Assertions.assertEquals(teacher.getName(), responseEntity.getBody().get().getName());
+        Assertions.assertEquals(204, responseEntity.getStatusCode().value());
         Mockito.verify(teacherRepository, Mockito.times(1)).save(teacher);
     }
 }
