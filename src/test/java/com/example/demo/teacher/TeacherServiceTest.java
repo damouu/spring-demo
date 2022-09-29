@@ -8,9 +8,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -52,5 +54,18 @@ public class TeacherServiceTest {
         Assertions.assertEquals(deleteTest.getBody(), "teacher successfully deleted");
         Assertions.assertTrue(deleteTest.getStatusCode().is2xxSuccessful());
         Mockito.verify(teacherRepository, Mockito.times(1)).delete(teacher);
+    }
+
+    @Test
+    void postTeacher() {
+        Teacher teacher = new Teacher(UUID.randomUUID(), "teacher_name", new Date(), "male", "bilalsensei@gmail.com");
+        Mockito.when(teacherRepository.findTeacherByUuid(teacher.getUuid())).thenReturn(Optional.empty());
+        var responseEntity = teacherService.postTeacher(teacher);
+        Assertions.assertNotNull(responseEntity);
+        Assertions.assertTrue(responseEntity.getHeaders().containsKey("Location"));
+        Assertions.assertEquals(responseEntity.getHeaders().get("Location"), List.of("http://localhost:8083/api/teacher/" + teacher.getUuid()));
+        Assertions.assertEquals(teacher, responseEntity.getBody());
+        Assertions.assertEquals(responseEntity.getStatusCode(), HttpStatus.CREATED);
+        Mockito.verify(teacherRepository, Mockito.times(1)).save(teacher);
     }
 }
