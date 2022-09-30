@@ -7,10 +7,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -24,7 +24,7 @@ public class TeacherServiceTest {
 
     @Test
     void getTeacher() {
-        Teacher teacher = new Teacher(UUID.randomUUID(), "teacher_name", new Date(), "male", "bilalsensei@gmail.com");
+        Teacher teacher = new Teacher(UUID.randomUUID(), "teacher_name", LocalDate.parse("2004, 1, 5"), "male", "bilalsensei@gmail.com");
         Mockito.when(teacherRepository.findTeacherByUuid(teacher.getUuid())).thenReturn(Optional.of(teacher));
         Teacher teacher1 = teacherService.getTeacherUuid(teacher.getUuid());
         Mockito.verify(teacherRepository, Mockito.times(1)).findTeacherByUuid(UUID.fromString(String.valueOf(teacher.getUuid())));
@@ -33,7 +33,7 @@ public class TeacherServiceTest {
 
     @Test
     void getTeacherEmail() {
-        Teacher teacher = new Teacher(UUID.randomUUID(), "teacher_name", new Date(), "male", "bilalsensei@gmail.com");
+        Teacher teacher = new Teacher(UUID.randomUUID(), "teacher_name", LocalDate.parse("2004, 1, 5"), "male", "bilalsensei@gmail.com");
         Mockito.when(teacherRepository.findTeacherByEmail(teacher.getEmail())).thenReturn(Optional.of(teacher));
         Optional<Teacher> teacher1 = teacherService.getTeacherEmail(teacher.getEmail());
         Mockito.verify(teacherRepository, Mockito.times(1)).findTeacherByEmail(teacher.getEmail());
@@ -44,7 +44,7 @@ public class TeacherServiceTest {
 
     @Test
     void deleteTeacher() {
-        Teacher teacher = new Teacher(UUID.randomUUID(), "teacher_name", new Date(), "male", "bilalsensei@gmail.com");
+        Teacher teacher = new Teacher(UUID.randomUUID(), "teacher_name", LocalDate.parse("2004, 1, 5"), "male", "bilalsensei@gmail.com");
         Mockito.when(teacherRepository.findTeacherByUuid(teacher.getUuid())).thenReturn(java.util.Optional.of(teacher));
         ResponseEntity<String> deleteTest = (ResponseEntity<String>) teacherService.deleteTeacher(teacher.getUuid());
         Mockito.verify(teacherRepository, Mockito.times(1)).delete(teacher);
@@ -55,7 +55,7 @@ public class TeacherServiceTest {
 
     @Test
     void postTeacher() {
-        Teacher teacher = new Teacher(UUID.randomUUID(), "teacher_name", new Date(), "male", "bilalsensei@gmail.com");
+        Teacher teacher = new Teacher(UUID.randomUUID(), "teacher_name", LocalDate.parse("2004-01-05"), "male", "bilalsensei@gmail.com");
         Mockito.when(teacherRepository.findTeacherByUuid(teacher.getUuid())).thenReturn(Optional.empty());
         var responseEntity = teacherService.postTeacher(teacher);
         Assertions.assertNotNull(responseEntity);
@@ -70,7 +70,7 @@ public class TeacherServiceTest {
     void updateTeacher() {
         Map<String, String> map = new HashMap<>();
         map.put("name", "name_updated");
-        Teacher teacher = new Teacher(UUID.randomUUID(), "teacher_name", new Date(), "male", "bilalsensei@gmail.com");
+        Teacher teacher = new Teacher(UUID.randomUUID(), "teacher_name", LocalDate.parse("2004, 1, 5"), "male", "bilalsensei@gmail.com");
         Mockito.when(teacherRepository.findTeacherByUuid(teacher.getUuid())).thenReturn(java.util.Optional.of(teacher));
         var responseEntity = teacherService.updateTeacher(teacher.getUuid(), map);
         Assertions.assertNotNull(responseEntity);
