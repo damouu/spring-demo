@@ -1,11 +1,13 @@
 package com.example.demo.teacher;
 
+import com.github.javafaker.Faker;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
@@ -21,7 +23,9 @@ public class TeacherRepositoryTest {
 
     @Test
     void findByEmail() {
-        Teacher teacher = new Teacher(UUID.randomUUID(), "teacher_name", LocalDate.parse("2004, 1, 5"), "male", "bilalsensei@gmail.com");
+        Faker faker = new Faker();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd");
+        Teacher teacher = new Teacher(UUID.randomUUID(), "teacher_name", LocalDate.parse(sdf.format(faker.date().birthday(18, 100))), "male", "bilalsensei@gmail.com");
         entityManager.persist(teacher);
         entityManager.flush();
         Optional<Teacher> optional = teacherRepository.findTeacherByEmail(teacher.getEmail());
@@ -32,7 +36,9 @@ public class TeacherRepositoryTest {
 
     @Test
     void findTeacherByName() {
-        Teacher teacher = new Teacher(UUID.randomUUID(), "teacher_name", LocalDate.parse("2004, 1, 5"), "male", "bilalsensei@gmail.com");
+        Faker faker = new Faker();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd");
+        Teacher teacher = new Teacher(UUID.randomUUID(), "teacher_name", LocalDate.parse(sdf.format(faker.date().birthday(18, 100))), "male", "bilalsensei@gmail.com");
         entityManager.persist(teacher);
         entityManager.flush();
         Optional<Teacher> optional = teacherRepository.findTeacherByName(teacher.getName());
@@ -43,7 +49,9 @@ public class TeacherRepositoryTest {
 
     @Test
     void findTeacherByUuid() {
-        Teacher teacher = new Teacher(UUID.randomUUID(), "teacher_name", LocalDate.parse("2004, 1, 5"), "male", "bilalsensei@gmail.com");
+        Faker faker = new Faker();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd");
+        Teacher teacher = new Teacher(UUID.randomUUID(), "teacher_name", LocalDate.parse(sdf.format(faker.date().birthday(18, 100))), "male", "bilalsensei@gmail.com");
         entityManager.persist(teacher);
         entityManager.flush();
         Optional<Teacher> optional = teacherRepository.findTeacherByUuid(teacher.getUuid());
@@ -54,7 +62,9 @@ public class TeacherRepositoryTest {
 
     @Test
     void findTeacherByDob() {
-        Teacher teacher = new Teacher(UUID.randomUUID(), "teacher_name", LocalDate.parse("2007, 1, 5"), "male", "bilalsensei@gmail.com");
+        Faker faker = new Faker();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd");
+        Teacher teacher = new Teacher(UUID.randomUUID(), "teacher_name", LocalDate.parse(sdf.format(faker.date().birthday(18, 100))), "male", "bilalsensei@gmail.com");
         entityManager.persist(teacher);
         entityManager.flush();
         Optional<Teacher> optional = teacherRepository.findTeacherByDob(teacher.getDob());
