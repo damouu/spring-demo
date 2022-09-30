@@ -5,7 +5,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.Locale;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Configuration
@@ -17,7 +18,8 @@ public class TeacherConfiguration {
         return args -> {
             Faker faker = new Faker();
             for (int i = 0; i < 20; i++) {
-                Teacher teacher = new Teacher(UUID.randomUUID(), faker.name().name(), faker.date().birthday(), faker.demographic().sex(), faker.internet().emailAddress());
+                SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd");
+                Teacher teacher = new Teacher(UUID.randomUUID(), faker.name().name(), LocalDate.parse(sdf.format(faker.date().birthday(18, 100))), faker.demographic().sex(), faker.internet().emailAddress());
                 teacherRepository.save(teacher);
             }
         };

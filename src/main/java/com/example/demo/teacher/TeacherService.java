@@ -10,6 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.persistence.EntityNotFoundException;
 import java.lang.reflect.Field;
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -36,7 +37,7 @@ public class TeacherService {
 
     public ResponseEntity<Teacher> postTeacher(Teacher teacher) {
         Optional<Teacher> optional = teacherRepository.findTeacherByUuid(teacher.getUuid());
-        if (optional.isEmpty()) {
+        if (optional.isEmpty() && (LocalDate.now().getYear() - teacher.getDob().getYear() >= 18)) {
             teacherRepository.save(teacher);
             return ResponseEntity.created(URI.create("http://localhost:8083/api/teacher/" + teacher.getUuid())).body(teacher);
         } else {

@@ -14,7 +14,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)    //  ignore all null fields
@@ -46,10 +46,9 @@ public class Teacher {
     @Column(nullable = false)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
-    @NotNull
     @Getter
     @Setter
-    private Date dob;
+    private LocalDate dob;
     @Column(nullable = false, name = "gender", columnDefinition = "TEXT")
     @NotNull
     @Getter
@@ -64,7 +63,7 @@ public class Teacher {
     private String email;
 
     @JsonCreator
-    public Teacher(UUID uuid, String name, Date dob, String gender, String email) {
+    public Teacher(UUID uuid, String name, LocalDate dob, String gender, String email) {
         this.uuid = uuid;
         this.name = name;
         this.dob = dob;
