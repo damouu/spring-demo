@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -40,5 +41,14 @@ public class TeacherControllerTest {
         Mockito.when(teacherService.getTeacherUuid(teacher.getUuid())).thenReturn(teacher);
         mockMvc.perform(get("/api/teacher/" + teacher.getUuid())).andExpect(status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON)).andExpect(content().json("{\"uuid\":\"" + uuid + "\",\"name\":\"" + "teacher_name" + "\", \"dob\":\"" + "2022-10-01" + "\", \"gender\": \"" + "male" + "\" ,\"email\":\"" + "teacher@email.com" + "\"}"));
         Mockito.verify(teacherService, Mockito.times(1)).getTeacherUuid(teacher.getUuid());
+    }
+
+    @Test
+    void getTeacherEmail() throws Exception {
+        UUID uuid = UUID.randomUUID();
+        Teacher teacher = new Teacher(uuid, "teacher_name", LocalDate.parse("2022-10-01"), "male", "teacher@email.com");
+        Mockito.when(teacherService.getTeacherEmail(teacher.getEmail())).thenReturn(Optional.of(teacher));
+        mockMvc.perform(get("/api/teacher/email/teacher@email.com")).andExpect(status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON)).andExpect(content().json("{\"uuid\":\"" + uuid + "\",\"name\":\"" + "teacher_name" + "\", \"dob\":\"" + "2022-10-01" + "\", \"gender\": \"" + "male" + "\" ,\"email\":\"" + "teacher@email.com" + "\"}"));
+        Mockito.verify(teacherService, Mockito.times(1)).getTeacherEmail(teacher.getEmail());
     }
 }
