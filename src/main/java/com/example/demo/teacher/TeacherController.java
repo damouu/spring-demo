@@ -2,11 +2,9 @@ package com.example.demo.teacher;
 
 import lombok.Data;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -28,6 +26,11 @@ public class TeacherController {
     @GetMapping(path = "/email/{teacherEmail}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Optional<Teacher> getTeacherEmail(@PathVariable("teacherEmail") String teacherEmail) {
         return teacherService.getTeacherEmail(teacherEmail);
+    }
+
+    @DeleteMapping(path = "/{teacherUuid}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> deleteTeacher(@PathVariable("teacherUuid") UUID uuid) {
+        return teacherService.deleteTeacher(uuid);
     }
 
 }
