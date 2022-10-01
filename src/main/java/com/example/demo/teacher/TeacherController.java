@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Data
@@ -22,6 +23,11 @@ public class TeacherController {
     @GetMapping(path = "/{teacherUuid}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Teacher getTeacherUuid(@PathVariable("teacherUuid") UUID teacherUuid) {
         return teacherService.getTeacherUuid(teacherUuid);
+    }
+
+    @GetMapping(path = "/email/{teacherEmail}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Optional<Teacher> getTeacherEmail(@PathVariable("teacherEmail") String teacherEmail) {
+        return teacherService.getTeacherEmail(teacherEmail);
     }
 
 }
