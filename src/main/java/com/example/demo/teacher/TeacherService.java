@@ -35,12 +35,16 @@ public class TeacherService {
     }
 
     public ResponseEntity<Teacher> postTeacher(Teacher teacher) {
-        Optional<Teacher> optional = teacherRepository.findTeacherByUuid(teacher.getUuid());
-        if (optional.isEmpty() && (LocalDate.now().getYear() - teacher.getDob().getYear() >= 18)) {
-            teacherRepository.save(teacher);
-            return ResponseEntity.created(URI.create("http://localhost:8083/api/teacher/" + teacher.getUuid())).body(teacher);
+        if ((LocalDate.now().getYear() - teacher.getDob().getYear() >= 18)) {
+            try {
+                teacher.setUuid(UUID.randomUUID());
+                teacherRepository.save(teacher);
+                return ResponseEntity.created(URI.create("http://localhost:8083/api/teacher/" + teacher.getUuid())).body(teacher);
+            } catch (Exception exception) {
+                throw new Error("this email can not be used.");
+            }
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "teacher already exist");
+            return ResponseEntity.badRequest().body(teacher);
         }
     }
 
