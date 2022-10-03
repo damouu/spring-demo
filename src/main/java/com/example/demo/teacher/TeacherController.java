@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -36,5 +37,10 @@ public class TeacherController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Teacher> postTeacher(@Validated @RequestBody Teacher teacher) {
         return teacherService.postTeacher(teacher);
+    }
+
+    @PutMapping(path = "/{teacherUuid}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Teacher> updateTeacher(@PathVariable("teacherUuid") UUID uuid, @RequestBody HashMap<String, String> teacherUpdates) {
+        return teacherService.updateTeacher(uuid, teacherUpdates);
     }
 }
