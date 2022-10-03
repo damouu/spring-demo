@@ -12,7 +12,7 @@ import java.util.UUID;
 @Data
 @Validated
 @RestController
-@RequestMapping("api/teacher")
+@RequestMapping("/api/teacher")
 public class TeacherController {
 
     // first, we do need the TeacherService bean, to be able to forward to the good method.
@@ -33,4 +33,8 @@ public class TeacherController {
         return teacherService.deleteTeacher(uuid);
     }
 
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Teacher> postTeacher(@Validated @RequestBody Teacher teacher) {
+        return teacherService.postTeacher(teacher);
+    }
 }
