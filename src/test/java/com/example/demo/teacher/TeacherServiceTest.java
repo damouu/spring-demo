@@ -66,8 +66,7 @@ public class TeacherServiceTest {
         Faker faker = new Faker();
         SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd");
         Teacher teacher = new Teacher(UUID.randomUUID(), "teacher_name", LocalDate.parse(sdf.format(faker.date().birthday(18, 100))), "male", "bilalsensei@gmail.com");
-        Mockito.when(teacherRepository.findTeacherByUuid(teacher.getUuid())).thenReturn(Optional.empty());
-        var responseEntity = teacherService.postTeacher(teacher);
+         var responseEntity = teacherService.postTeacher(teacher);
         Assertions.assertNotNull(responseEntity);
         Assertions.assertTrue(responseEntity.getHeaders().containsKey("Location"));
         Assertions.assertEquals(responseEntity.getHeaders().get("Location"), List.of("http://localhost:8083/api/teacher/" + teacher.getUuid()));
