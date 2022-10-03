@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import java.text.SimpleDateFormat;
@@ -66,7 +67,7 @@ public class TeacherServiceTest {
         Faker faker = new Faker();
         SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd");
         Teacher teacher = new Teacher(UUID.randomUUID(), "teacher_name", LocalDate.parse(sdf.format(faker.date().birthday(18, 100))), "male", "bilalsensei@gmail.com");
-         var responseEntity = teacherService.postTeacher(teacher);
+        var responseEntity = teacherService.postTeacher(teacher);
         Assertions.assertNotNull(responseEntity);
         Assertions.assertTrue(responseEntity.getHeaders().containsKey("Location"));
         Assertions.assertEquals(responseEntity.getHeaders().get("Location"), List.of("http://localhost:8083/api/teacher/" + teacher.getUuid()));
@@ -79,14 +80,18 @@ public class TeacherServiceTest {
     void updateTeacher() {
         Map<String, String> map = new HashMap<>();
         map.put("name", "name_updated");
-        Faker faker = new Faker();
+        map.put("email", "email_updated");
         SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd");
-        Teacher teacher = new Teacher(UUID.randomUUID(), "teacher_name", LocalDate.parse(sdf.format(faker.date().birthday(18, 100))), "male", "bilalsensei@gmail.com");
-        Mockito.when(teacherRepository.findTeacherByUuid(teacher.getUuid())).thenReturn(java.util.Optional.of(teacher));
+        Teacher teacher = new Teacher(UUID.randomUUID(), "teacher_name", LocalDate.parse(sdf.format(Faker.instance().date().birthday(18, 100))), "male", "bilalsensei@gmail.com");
+        Mockito.when(teacherRepository.findTeacherByUuid(teacher.getUuid())).thenReturn(Optional.of(teacher));
         var responseEntity = teacherService.updateTeacher(teacher.getUuid(), map);
         Assertions.assertNotNull(responseEntity);
-        Assertions.assertEquals(teacher.getName(), responseEntity.getBody().get().getName());
-        Assertions.assertEquals(204, responseEntity.getStatusCode().value());
+        Assertions.assertEquals(map.get("name"), responseEntity.getBody().getName());
+        Assertions.assertEquals(map.get("email"), responseEntity.getBody().getEmail());
+        Assertions.assertNotEquals("teacher_name", responseEntity.getBody().getName());
+        Assertions.assertNotEquals("bilalsensei@gmail.com", responseEntity.getBody().getEmail());
+        Assertions.assertEquals(200, responseEntity.getStatusCode().value());
+        Mockito.verify(teacherRepository, Mockito.times(1)).findTeacherByUuid(teacher.getUuid());
         Mockito.verify(teacherRepository, Mockito.times(1)).save(teacher);
     }
 }

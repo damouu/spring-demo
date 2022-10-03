@@ -48,22 +48,27 @@ public class TeacherService {
         }
     }
 
-    public ResponseEntity<Optional<Teacher>> updateTeacher(UUID uuid, Map<String, String> teacherUpdates) {
+    public ResponseEntity<Teacher> updateTeacher(UUID uuid, Map<String, String> teacherUpdates) {
+        Teacher teacher = teacherRepository.findTeacherByUuid(uuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "teacher not found"));
         try {
-            Optional<Teacher> teacher = teacherRepository.findTeacherByUuid(uuid);
             teacherUpdates.forEach((key, value) -> {
                 try {
-                    Field field = teacher.get().getClass().getDeclaredField(key); // Using reflections to set an object property
-                    field.setAccessible(true);
-                    field.set(teacher.get(), value);
+                    Field field = teacher.getClass().getDeclaredField(key); // Using reflections to set an object property
+                    if (field.getName().equals("dob")) {
+                        field.setAccessible(true);
+                        field.set(teacher, LocalDate.parse((value)));
+                    } else {
+                        field.setAccessible(true);
+                        field.set(teacher, value);
+                    }
                 } catch (NoSuchFieldException | IllegalAccessException e) {
                     throw new RuntimeException(e);
                 }
             });
-            teacherRepository.save(teacher.get());
-            return ResponseEntity.status(204).body(teacher);
         } catch (Exception exception) {
-            throw new EntityNotFoundException("this teacher does not exist");
+            throw new EntityNotFoundException("incorrect teacher's UUID");
         }
+        teacherRepository.save(teacher);
+        return ResponseEntity.ok(teacher);
     }
 }
