@@ -1,6 +1,7 @@
 package com.example.demo.teacher;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -67,5 +69,22 @@ public class TeacherControllerTest {
         ResponseEntity<Teacher> responseEntity = ResponseEntity.status(HttpStatus.CREATED).contentType(MediaType.APPLICATION_JSON).body(teacher);
         Mockito.when(teacherService.postTeacher(teacher)).thenReturn(responseEntity);
         mockMvc.perform(post("/api/teacher").contentType(MediaType.APPLICATION_JSON_VALUE).content(objectMapper.writeValueAsString(teacher))).andExpect(status().is2xxSuccessful());
+    }
+
+    @Test
+    void updateTeacher() throws Exception {
+        Teacher teacher = new Teacher(UUID.randomUUID(), "previous_name", LocalDate.parse("2022-10-01"), "male", "previous_teacher@email.com");
+        Teacher teacher1 = new Teacher(teacher.getUuid(), "next_name", LocalDate.parse("2022-10-01"), "male", "next_teacher@email.com");
+        ResponseEntity<Teacher> responseEntity = ResponseEntity.status(204).contentType(MediaType.valueOf(MediaType.APPLICATION_JSON_VALUE)).body(teacher1);
+        HashMap<String, String> map = new HashMap();
+        map.put("name", "next_name");
+        map.put("email", "next_teacher@email.com");
+        Mockito.when(teacherService.updateTeacher(teacher.getUuid(), map)).thenReturn(responseEntity);
+        mockMvc.perform(put("/api/teacher/" + teacher.getUuid()).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsBytes(map))).andExpect(status().is(204)).andExpect(content().contentType(MediaType.APPLICATION_JSON));
+        Assertions.assertNotNull(responseEntity);
+        Assertions.assertEquals(teacher1.getName(), responseEntity.getBody().getName());
+        Assertions.assertEquals(teacher1.getEmail(), responseEntity.getBody().getEmail());
+        Assertions.assertEquals(204, responseEntity.getStatusCode().value());
+        Mockito.verify(teacherService, Mockito.times(1)).updateTeacher(teacher.getUuid(), map);
     }
 }
