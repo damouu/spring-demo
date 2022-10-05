@@ -64,4 +64,9 @@ public class CourseController {
     public ResponseEntity<?> getCourseSearchQueryParam(@RequestParam(name = "university", required = false, defaultValue = "") String university, @RequestParam(name = "campus", required = false, defaultValue = "") String campus, @RequestParam(name = "name", required = false, defaultValue = "") String name) {
         return courseService.getCourseSearchQueryParam(university, campus, name);
     }
+
+    @PostMapping(path = "/{courseUuid}/teacher/{teacherUuid}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> postTeacherCourse(@PathVariable("courseUuid") UUID courseUuid, @PathVariable("teacherUuid") UUID teachersUuid) {
+        return courseService.postTeacherCourse(courseUuid, teachersUuid);
+    }
 }
