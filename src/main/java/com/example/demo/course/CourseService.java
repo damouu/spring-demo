@@ -2,6 +2,8 @@ package com.example.demo.course;
 
 import com.example.demo.student_id_card.StudentIdCard;
 import com.example.demo.student_id_card.StudentIdCardRepository;
+import com.example.demo.teacher.Teacher;
+import com.example.demo.teacher.TeacherRepository;
 import lombok.Data;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,6 +24,8 @@ import java.util.UUID;
 public class CourseService {
 
     private final CourseRepository courseRepository;
+
+    private final TeacherRepository teacherRepository;
 
     private final StudentIdCardRepository studentIdCardRepository;
 
@@ -85,6 +89,15 @@ public class CourseService {
     public ResponseEntity<Collection<StudentIdCard>> getStudentsCourse(UUID courseUuid) {
         Course course = courseRepository.findByUuid(courseUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "course does not exist"));
         return ResponseEntity.ok(course.getStudentIdCards());
+    }
+
+
+    public ResponseEntity<String> postTeacherCourse(UUID courseUuid, UUID teachersUuid) {
+        Course course = courseRepository.findByUuid(courseUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Error Course UUID"));
+        Teacher teacher = teacherRepository.findTeacherByUuid(teachersUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Error Teacher UUID"));
+        course.setTeacher(teacher);
+        this.courseRepository.save(course);
+        return ResponseEntity.status(201).body("teacher" + " " + teacher.getUuid() + " " + "is now in charge of the course" + " " + course.getUuid());
     }
 
 

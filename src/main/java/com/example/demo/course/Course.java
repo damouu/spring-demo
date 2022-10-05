@@ -59,12 +59,11 @@ public class Course {
 
     /* so for HIbernate, you create the Table's columns just by adding properties to a class. as simple as that.
     / the table's columns are most private properties whereas, shared properties/ columns are marked as protected.
-    / I've could picked the @ManuToOne annotation instead of the OneToMany but, as i am writing this from the viewpoint of the
-    Course Table i decided to go fot the OneToMany annotation */
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.ALL})
+    yeah so the ManyToOne annotations was the good one from the start. */
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.ALL})
     @Getter(onMethod = @__(@JsonIgnore))
     @Setter
-    protected Set<Teacher> teacher;
+    protected Teacher teacher;
 
     @JsonCreator
     public Course(@JsonProperty("uuid") UUID uuid, @JsonProperty("name") String name, @JsonProperty("campus") String campus, @JsonProperty("university") String university) {
