@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -94,9 +95,13 @@ public class CourseService {
     public ResponseEntity<String> postTeacherCourse(UUID courseUuid, UUID teachersUuid) {
         Course course = courseRepository.findByUuid(courseUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Error Course UUID"));
         Teacher teacher = teacherRepository.findTeacherByUuid(teachersUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Error Teacher UUID"));
-        course.setTeacher(teacher);
-        this.courseRepository.save(course);
-        return ResponseEntity.status(201).body("teacher" + " " + teacher.getUuid() + " " + "is now in charge of the course" + " " + course.getUuid());
+        if (course.getTeacher() == null) {
+            course.setTeacher(teacher);
+            this.courseRepository.save(course);
+            return ResponseEntity.created(URI.create("http://localhost:8083/api/course/" + course.getUuid() + "/teacher/")).contentType(MediaType.APPLICATION_JSON).body("teacher" + " " + teacher.getUuid() + " " + "is now in charge of the course" + " " + course.getUuid());
+        } else {
+            return ResponseEntity.badRequest().body("This course is already assigned to a teacher");
+        }
     }
 
     public ResponseEntity<String> deleteTeacherCourse(UUID courseUuid) {
