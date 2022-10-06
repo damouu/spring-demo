@@ -91,7 +91,6 @@ public class CourseService {
         return ResponseEntity.ok(course.getStudentIdCards());
     }
 
-
     public ResponseEntity<String> postTeacherCourse(UUID courseUuid, UUID teachersUuid) {
         Course course = courseRepository.findByUuid(courseUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Error Course UUID"));
         Teacher teacher = teacherRepository.findTeacherByUuid(teachersUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Error Teacher UUID"));
@@ -100,6 +99,16 @@ public class CourseService {
         return ResponseEntity.status(201).body("teacher" + " " + teacher.getUuid() + " " + "is now in charge of the course" + " " + course.getUuid());
     }
 
+    public ResponseEntity<String> deleteTeacherCourse(UUID courseUuid) {
+        Course course = courseRepository.findByUuid(courseUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Error Course UUID"));
+        if (course.getTeacher() != null) {
+            course.setTeacher(null);
+            this.courseRepository.save(course);
+            return ResponseEntity.status(204).body("teacher successfully removed from his assigned course :" + " " + course.getUuid());
+        } else {
+            return ResponseEntity.badRequest().body("This course does not have any teacher assigned to");
+        }
+    }
 
     public ResponseEntity<?> getCourseSearchQueryParam(String university, String campus, String name) {
 //        if (!(university == null) && (campus == null) && (name == null)) {

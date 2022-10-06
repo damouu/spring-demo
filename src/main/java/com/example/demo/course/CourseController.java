@@ -69,4 +69,9 @@ public class CourseController {
     public ResponseEntity<String> postTeacherCourse(@PathVariable("courseUuid") UUID courseUuid, @PathVariable("teacherUuid") UUID teachersUuid) {
         return courseService.postTeacherCourse(courseUuid, teachersUuid);
     }
+
+    @DeleteMapping(path = "/{courseUuid}/teacher", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> deleteTeacherCourse(@PathVariable("courseUuid") UUID courseUuid) {
+        return courseService.deleteTeacherCourse(courseUuid);
+    }
 }
