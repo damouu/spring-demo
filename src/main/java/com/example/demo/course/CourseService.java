@@ -115,6 +115,15 @@ public class CourseService {
         }
     }
 
+    public ResponseEntity<String> getTeacherCourse(UUID courseUuid) {
+        Course course = courseRepository.findByUuid(courseUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Error Course UUID"));
+        if (course.getTeacher() != null) {
+            return ResponseEntity.status(200).contentType(MediaType.APPLICATION_JSON).body("course :" + " " + course.getName() + " " + " teacher:" + " " + course.getTeacher().getName());
+        } else {
+            return ResponseEntity.badRequest().body("this course does not have any teacher assigned to it");
+        }
+    }
+
     public ResponseEntity<?> getCourseSearchQueryParam(String university, String campus, String name) {
 //        if (!(university == null) && (campus == null) && (name == null)) {
 //            Optional<Collection<Course>> courses = courseRepository.findByUniversityContaining(university);

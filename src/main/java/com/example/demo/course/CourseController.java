@@ -65,6 +65,11 @@ public class CourseController {
         return courseService.getCourseSearchQueryParam(university, campus, name);
     }
 
+    @GetMapping(path = "/{courseUuid}/teacher", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getTeacherCourse(@PathVariable UUID courseUuid) {
+        return courseService.getTeacherCourse(courseUuid);
+    }
+
     @PostMapping(path = "/{courseUuid}/teacher/{teacherUuid}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> postTeacherCourse(@PathVariable("courseUuid") UUID courseUuid, @PathVariable("teacherUuid") UUID teachersUuid) {
         return courseService.postTeacherCourse(courseUuid, teachersUuid);
