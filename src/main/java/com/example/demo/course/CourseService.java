@@ -124,6 +124,19 @@ public class CourseService {
         }
     }
 
+    public ResponseEntity<String> putTeacherCourse(UUID courseUuid, UUID teacherUuid) {
+        Course course = courseRepository.findByUuid(courseUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Error Course UUID"));
+        Teacher teacher = teacherRepository.findTeacherByUuid(teacherUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Error Teacher UUID"));
+        if (course.getTeacher() == null || course.getTeacher().getUuid() != teacher.getUuid()) {
+            course.setTeacher(null);
+            course.setTeacher(teacher);
+            courseRepository.save(course);
+            return ResponseEntity.created(URI.create("http://localhost:8083/api/course/" + course.getUuid() + "/teacher/")).contentType(MediaType.APPLICATION_JSON).body("teacher" + " " + teacher.getUuid() + " " + "is now in charge of the course" + " " + course.getUuid());
+        } else {
+            return ResponseEntity.badRequest().body("does not exist course or teacher");
+        }
+    }
+
     public ResponseEntity<?> getCourseSearchQueryParam(String university, String campus, String name) {
 //        if (!(university == null) && (campus == null) && (name == null)) {
 //            Optional<Collection<Course>> courses = courseRepository.findByUniversityContaining(university);

@@ -79,4 +79,9 @@ public class CourseController {
     public ResponseEntity<String> deleteTeacherCourse(@PathVariable("courseUuid") UUID courseUuid) {
         return courseService.deleteTeacherCourse(courseUuid);
     }
+
+    @PutMapping(path = "/{courseUuid}/teacher/{teacherUuid}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> putTeacherCourse(@PathVariable UUID courseUuid, @PathVariable UUID teacherUuid) {
+        return courseService.putTeacherCourse(courseUuid, teacherUuid);
+    }
 }
