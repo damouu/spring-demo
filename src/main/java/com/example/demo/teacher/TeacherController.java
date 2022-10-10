@@ -7,6 +7,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -42,5 +43,10 @@ public class TeacherController {
     @PutMapping(path = "/{teacherUuid}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Teacher> updateTeacher(@PathVariable("teacherUuid") UUID uuid, @RequestBody HashMap<String, String> teacherUpdates) {
         return teacherService.updateTeacher(uuid, teacherUpdates);
+    }
+
+    @GetMapping(path = "/{teacherUuid}/courses/", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<?>> getCourseTeacher(@PathVariable("teacherUuid") UUID teacherUuid) {
+        return teacherService.getCourseTeacher(teacherUuid);
     }
 }
