@@ -10,6 +10,7 @@ import javax.persistence.EntityNotFoundException;
 import java.lang.reflect.Field;
 import java.net.URI;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -70,5 +71,10 @@ public class TeacherService {
         }
         teacherRepository.save(teacher);
         return ResponseEntity.ok(teacher);
+    }
+
+    public ResponseEntity<List<?>> getCourseTeacher(UUID teacherUuid) {
+        List<?> courses = teacherRepository.FindAllTeacherCourses(teacherUuid);
+        return ResponseEntity.ok(courses);
     }
 }
