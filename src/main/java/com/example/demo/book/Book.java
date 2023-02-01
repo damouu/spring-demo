@@ -76,14 +76,7 @@ public class Book {
     private StudentIdCard studentIdCard;
 
     @JsonCreator
-    public Book(
-            @JsonProperty("uuid") UUID uuid,
-            @JsonProperty("title") String title,
-            @JsonProperty("genre") String genre,
-            @JsonProperty("totalPages") Integer totalPages,
-            @JsonProperty("publisher") String publisher,
-            @JsonProperty("author") String author,
-            @JsonProperty("created_at") LocalDate created_at) {
+    public Book(@JsonProperty("uuid") UUID uuid, @JsonProperty("title") String title, @JsonProperty("genre") String genre, @JsonProperty("totalPages") Integer totalPages, @JsonProperty("publisher") String publisher, @JsonProperty("author") String author, @JsonProperty("created_at") LocalDate created_at) {
         this.uuid = uuid;
         this.title = title;
         this.genre = genre;
