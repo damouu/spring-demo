@@ -48,14 +48,8 @@ public class StudentIdCard implements Serializable {
     @Setter
     private Set<Book> books;
 
-    @ManyToMany(fetch = FetchType.EAGER,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.ALL
-            })
-    @JoinTable(name = "course_student",
-            joinColumns = {@JoinColumn(name = "student_id_card")},
-            inverseJoinColumns = {@JoinColumn(name = "course")})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.ALL})
+    @JoinTable(name = "course_student", joinColumns = {@JoinColumn(name = "student_id_card")}, inverseJoinColumns = {@JoinColumn(name = "course")})
     @Getter(onMethod = @__(@JsonIgnore))
     @Setter
     protected Set<Course> courses = new HashSet<>();
