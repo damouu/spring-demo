@@ -70,6 +70,5 @@ jobs:
           title: ${{ github.event.head_commit.message }}
           body: ${{ github.event.head_commit.message }}
           labels: "Staging,TestsPassed"
-          delete-branch: true
           reviewers: "damouu"
           assignees: "damouu"
