@@ -58,17 +58,17 @@ jobs:
           update_existing: true
           search_existing: open
 
-      - name: create pull-request
+      - name: pull-request
         if: ${{ success() }}
-        uses: devops-infra/action-pull-request@v0.5.3
+        uses: repo-sync/pull-request@v2
         env:
-          GITHUB_TOKEN: ${{ secrets.MyWorkflow  }}
+          GITHUB_TOKEN: ${{ secrets.MYWORKFLOW  }}
         with:
-          github_token: ${{ secrets.MyWorkflow  }}
+          GITHUB_TOKEN: ${{ secrets.MYWORKFLOW  }}
           source_branch: "test"
-          target_branch: "main"
-          title: ${{ github.event.head_commit.message }}
-          body: ${{ github.event.head_commit.message }}
-          label: "Staging,TestsPassed"
-          reviewer: "damouu"
-          assignee: "damouu"
+          destination_branch: "main"
+          pr_title: ${{ github.event.head_commit.message }}
+          pr_body: ${{ github.event.head_commit.message }}
+          pr_label: "Staging,TestsPassed"
+          pr_reviewer: "damouu"
+          pr_assignee: "damouu"
