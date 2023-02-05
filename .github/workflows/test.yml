@@ -37,7 +37,7 @@ jobs:
         id: run_tests
         run: mvn test
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Create an issue
         if: ${{ failure() }}
         uses: JasonEtco/create-an-issue@v2
