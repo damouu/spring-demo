@@ -16,7 +16,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           node-version: '12'
-          java-version: '17'
+          java-version: '11'
           distribution: 'adopt'
 
       - name: Set environment variables
