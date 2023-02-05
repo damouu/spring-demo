@@ -21,10 +21,7 @@ import java.util.UUID;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)    //  ignore all null fields
 @Entity(name = "student")
-@Table(name = "student", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"email", "email"}, name = "student_email_unique"),
-        @UniqueConstraint(columnNames = {"uuid", "uuid"}, name = "student_uuid_unique")
-})
+@Table(name = "student", uniqueConstraints = {@UniqueConstraint(columnNames = {"email", "email"}, name = "student_email_unique"), @UniqueConstraint(columnNames = {"uuid", "uuid"}, name = "student_uuid_unique")})
 @NoArgsConstructor
 public class Student {
     @Id
