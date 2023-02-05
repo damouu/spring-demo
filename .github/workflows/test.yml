@@ -60,15 +60,15 @@ jobs:
 
       - name: pull-request
         if: ${{ success() }}
-        uses: peter-evans/create-pull-request@v4.2.3
+        uses: repo-sync/pull-request@v2
         env:
-          GITHUB_TOKEN: ${{ secrets.MyWorkflow  }}
+          GITHUB_TOKEN: ${{ secrets.MYWORKFLOW  }}
         with:
-          token: ${{ secrets.MyWorkflow  }}
-          base: "test"
-          branch: "main"
-          title: ${{ github.event.head_commit.message }}
-          body: ${{ github.event.head_commit.message }}
-          labels: "Staging,TestsPassed"
-          reviewers: "damouu"
-          assignees: "damouu"
+          GITHUB_TOKEN: ${{ secrets.MYWORKFLOW  }}
+          source_branch: "test"
+          destination_branch: "main"
+          pr_title: ${{ github.event.head_commit.message }}
+          pr_body: ${{ github.event.head_commit.message }}
+          pr_label: "Staging,TestsPassed"
+          pr_reviewer: "damouu"
+          pr_assignee: "damouu"
