@@ -18,6 +18,11 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
 
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+
       - name: Set environment variables
         run: echo "GITHUB_SHA_SHORT=$(echo $GITHUB_SHA | cut -c 1-7)" >> $GITHUB_ENV
 
@@ -55,15 +60,16 @@ jobs:
 
       - name: pull-request
         if: ${{ success() }}
-        uses: repo-sync/pull-request@v2
+        uses: peter-evans/create-pull-request@v4.2.3
         env:
-          GITHUB_TOKEN: ${{ secrets.MYWORKFLOW  }}
+          GITHUB_TOKEN: ${{ secrets.MyWorkflow  }}
         with:
-          GITHUB_TOKEN: ${{ secrets.MYWORKFLOW  }}
-          source_branch: "test"
-          destination_branch: "main"
-          pr_title: ${{ github.event.head_commit.message }}
-          pr_body: ${{ github.event.head_commit.message }}
-          pr_label: "Staging,TestsPassed"
-          pr_reviewer: "damouu"
-          pr_assignee: "damouu"
+          token: ${{ secrets.MyWorkflow  }}
+          base: "test"
+          branch: "main"
+          title: ${{ github.event.head_commit.message }}
+          body: ${{ github.event.head_commit.message }}
+          labels: "Staging,TestsPassed"
+          delete-branch: true
+          reviewers: "damouu"
+          assignees: "damouu"
