@@ -49,4 +49,9 @@ public class TeacherController {
     public ResponseEntity<List<?>> getCourseTeacher(@PathVariable("teacherUuid") UUID teacherUuid) {
         return teacherService.getCourseTeacher(teacherUuid);
     }
+
+    @GetMapping(path = "/id/{teacherId}/", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Teacher> getTeacherId(@PathVariable("teacherId") int teacherId) {
+        return teacherService.getTeacherId(teacherId);
+    }
 }
