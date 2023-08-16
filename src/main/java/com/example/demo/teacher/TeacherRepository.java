@@ -25,4 +25,8 @@ public interface TeacherRepository extends JpaRepository<Teacher, Integer> {
 
     @Query("SELECT c.campus, c.name, c.university, c.uuid from course c INNER JOIN teacher t on c.teacher.id = t.id where t.uuid = :teacherUuid")
     List<?> FindAllTeacherCourses(UUID teacherUuid);
+
+    @Query("SELECT t FROM teacher t WHERE t.id = :teacherId")
+    Teacher findTeacherById(int teacherId);
+
 }
