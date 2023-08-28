@@ -14,6 +14,7 @@ import java.util.UUID;
 
 @Data
 @Validated
+@CrossOrigin
 @RestController
 @RequestMapping("api/studentCard")
 public class StudentIdCardController {
@@ -31,7 +32,7 @@ public class StudentIdCardController {
     }
 
     @DeleteMapping(value = "/{studentCardUuid}", produces = MediaType.APPLICATION_JSON_VALUE)
-     public ResponseEntity deleteStudentIdCard(@PathVariable("studentCardUuid") UUID studentCardUuid) {
+    public ResponseEntity deleteStudentIdCard(@PathVariable("studentCardUuid") UUID studentCardUuid) {
         return studentIdCardService.deleteStudentIdCard(studentCardUuid);
     }
 

@@ -13,6 +13,7 @@ import java.util.UUID;
 
 @Data
 @Validated
+@CrossOrigin
 @RestController
 @RequestMapping("/api/teacher")
 public class TeacherController {
