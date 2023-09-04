@@ -17,6 +17,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)    //  ignore all null fields
@@ -62,6 +63,11 @@ public class Student {
     @Getter
     @Setter
     private String email;
+
+    @Column(columnDefinition = "DATETIME")
+    @Getter
+    @Setter
+    private LocalDateTime deleted_at;
 
     @OneToOne(mappedBy = "student")
     @Getter(onMethod = @__(@JsonIgnore))
