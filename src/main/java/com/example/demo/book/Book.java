@@ -61,6 +61,11 @@ public class Book {
     @Setter
     private String author;
 
+    @Column(name = "deleted_at", columnDefinition = "DATE")
+    @Getter
+    @Setter
+    private LocalDate deleted_at;
+
     @Column(name = "created_at", nullable = false, columnDefinition = "Date")
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
