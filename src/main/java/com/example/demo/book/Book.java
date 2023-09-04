@@ -46,7 +46,7 @@ public class Book {
     @Setter
     private String genre;
 
-    @Column(name = "totalPages", nullable = false)
+    @Column(name = "total_pages", nullable = false)
     @Getter
     @Setter
     private Integer totalPages;
@@ -75,7 +75,7 @@ public class Book {
     private LocalDate created_at;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "studentUuidCard", referencedColumnName = "uuid")
+    @JoinColumn(name = "student_uuid_card", referencedColumnName = "uuid")
     @Getter(onMethod = @__(@JsonIgnore)) // generate the getter with the specific annotation.
     @Setter
     private StudentIdCard studentIdCard;
