@@ -57,7 +57,8 @@ class StudentServiceTest {
         ResponseEntity<String> dede = studentService.deleteStudent(student.getUuid());
         Assertions.assertEquals(dede.getBody(), "student successfully deleted");
         Assertions.assertTrue(dede.getStatusCode().is2xxSuccessful());
-        Mockito.verify(studentRepository, Mockito.times(1)).delete(student);
+        Assertions.assertNotNull(student.getDeleted_at());
+        Mockito.verify(studentRepository, Mockito.times(1)).save(student);
     }
 
     @Test
