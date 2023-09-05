@@ -34,8 +34,7 @@ class StudentIntegrationTest {
 
     @Test
     void allStudents() {
-        ResponseEntity<List> responseEntity =
-                this.restTemplate.getForEntity("http://localhost:" + port + "/api/student", List.class);
+        ResponseEntity<List> responseEntity = this.restTemplate.getForEntity("http://localhost:" + port + "/api/student", List.class);
         Assertions.assertTrue(responseEntity.getStatusCode().is2xxSuccessful());
         Assertions.assertTrue(Objects.requireNonNull(responseEntity.getHeaders().getContentType()).includes(MediaType.APPLICATION_JSON));
         Assertions.assertFalse(Objects.requireNonNull(responseEntity.getBody()).isEmpty());
@@ -43,12 +42,10 @@ class StudentIntegrationTest {
 
     @Test
     void getStudent() {
-        Student student = new Student(UUID.randomUUID(), "test",
-                LocalDate.of(2000, Month.JANUARY, 21), "test.finalfantasy@hotmail.com");
+        Student student = new Student(UUID.randomUUID(), "test", LocalDate.of(2000, Month.JANUARY, 21), "test.finalfantasy@hotmail.com");
         studentRepository.save(student);
         Optional<Student> student1 = studentRepository.findStudentsByEmail(student.getEmail());
-        ResponseEntity<Student> responseEntity =
-                this.restTemplate.getForEntity("http://localhost:" + port + "/api/student/" + student1.get().getUuid(), Student.class);
+        ResponseEntity<Student> responseEntity = this.restTemplate.getForEntity("http://localhost:" + port + "/api/student/" + student1.get().getUuid(), Student.class);
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         Assertions.assertTrue(Objects.requireNonNull(responseEntity.getHeaders().getContentType()).includes(MediaType.APPLICATION_JSON));
         Assertions.assertEquals(student1.get().getUuid(), Objects.requireNonNull(responseEntity.getBody()).getUuid());
@@ -69,19 +66,18 @@ class StudentIntegrationTest {
     }
 
     @Test
-    void deleteStudent() throws Exception {
+    void deleteStudent() {
         Optional<Student> student = studentRepository.findById(1);
         restTemplate.delete("http://localhost:" + port + "/api/student/" + student.get().getUuid());
         Optional<Student> optionalStudent = studentRepository.findById(1);
-        Assertions.assertTrue(optionalStudent.isEmpty());
+        Assertions.assertNotNull(optionalStudent.get().getDeleted_at());
     }
 
     @Test
     void updateStudent() throws Exception {
         var studentUpdates = new Student(null, "second_iteration", LocalDate.now(), "second_iteration@hotmail.com");
         HttpEntity<Student> entity = new HttpEntity<Student>(studentUpdates);
-        ResponseEntity<String> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/student/" + studentRepository.findById(2).get().getUuid(),
-                HttpMethod.PUT, entity, String.class);
+        ResponseEntity<String> responseEntity = restTemplate.exchange("http://localhost:" + port + "/api/student/" + studentRepository.findById(2).get().getUuid(), HttpMethod.PUT, entity, String.class);
         Assertions.assertTrue(responseEntity.getStatusCode().is2xxSuccessful());
     }
 }
