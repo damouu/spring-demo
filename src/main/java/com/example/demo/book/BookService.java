@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,7 +40,8 @@ public class BookService {
 
     public ResponseEntity<?> deleteBook(UUID bookUuid) throws ResponseStatusException {
         Book book = bookRepository.findByUuid(bookUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "book not found"));
-        bookRepository.delete(book);
+        book.setDeleted_at(LocalDate.now());
+        bookRepository.save(book);
         return ResponseEntity.accepted().build();
     }
 

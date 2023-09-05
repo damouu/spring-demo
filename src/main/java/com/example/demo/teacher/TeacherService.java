@@ -31,7 +31,8 @@ public class TeacherService {
 
     public ResponseEntity<String> deleteTeacher(UUID uuid) {
         Teacher teacher = teacherRepository.findTeacherByUuid(uuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "teacher not found"));
-        teacherRepository.delete(teacher);
+        teacher.setDeleted_at(LocalDate.now());
+        teacherRepository.save(teacher);
         return ResponseEntity.status(204).body("teacher successfully deleted");
     }
 
@@ -76,5 +77,14 @@ public class TeacherService {
     public ResponseEntity<List<?>> getCourseTeacher(UUID teacherUuid) {
         List<?> courses = teacherRepository.FindAllTeacherCourses(teacherUuid);
         return ResponseEntity.ok(courses);
+    }
+
+    public ResponseEntity<Teacher> getTeacherId(int teacherId) {
+        try {
+            Teacher teacher = teacherRepository.findTeacherById(teacherId);
+            return ResponseEntity.ok(teacher);
+        } catch (EntityNotFoundException exception) {
+            throw new EntityNotFoundException("この先生が居ません。");
+        }
     }
 }

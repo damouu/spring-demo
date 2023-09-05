@@ -62,6 +62,13 @@ public class Teacher {
     @Setter
     private String email;
 
+    @Column(nullable = true)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @Getter
+    @Setter
+    private LocalDate deleted_at;
+
     @JsonCreator
     public Teacher(UUID uuid, String name, LocalDate dob, String gender, String email) {
         this.uuid = uuid;

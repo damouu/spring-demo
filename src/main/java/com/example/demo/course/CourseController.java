@@ -14,6 +14,7 @@ import java.util.UUID;
 
 @Data
 @Validated
+@CrossOrigin
 @RestController
 @RequestMapping("api/course")
 public class CourseController {

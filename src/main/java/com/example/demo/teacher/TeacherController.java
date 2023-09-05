@@ -13,6 +13,7 @@ import java.util.UUID;
 
 @Data
 @Validated
+@CrossOrigin
 @RestController
 @RequestMapping("/api/teacher")
 public class TeacherController {
@@ -48,5 +49,10 @@ public class TeacherController {
     @GetMapping(path = "/{teacherUuid}/courses/", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<?>> getCourseTeacher(@PathVariable("teacherUuid") UUID teacherUuid) {
         return teacherService.getCourseTeacher(teacherUuid);
+    }
+
+    @GetMapping(path = "/id/{teacherId}/", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Teacher> getTeacherId(@PathVariable("teacherId") int teacherId) {
+        return teacherService.getTeacherId(teacherId);
     }
 }

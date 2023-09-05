@@ -43,7 +43,8 @@ class BookServiceTest {
         Mockito.when(bookRepository.findByUuid(book.getUuid())).thenReturn(java.util.Optional.of(book));
         ResponseEntity<?> responseEntity = bookService.deleteBook(book.getUuid());
         Assertions.assertTrue(responseEntity.getStatusCode().is2xxSuccessful());
-        Mockito.verify(bookRepository, Mockito.times(1)).delete(book);
+        Assertions.assertNotNull(book.getDeleted_at());
+        Mockito.verify(bookRepository, Mockito.times(1)).save(book);
     }
 
     @Test

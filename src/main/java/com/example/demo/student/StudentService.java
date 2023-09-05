@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -41,7 +42,8 @@ public class StudentService {
 
     public ResponseEntity<String> deleteStudent(UUID studentUuid) {
         Student student = studentRepository.findStudentByUuid(studentUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "student does not exist"));
-        studentRepository.delete(student);
+        student.setDeleted_at(LocalDateTime.now().withNano(0));
+        studentRepository.save(student);
         return ResponseEntity.status(204).body("student successfully deleted");
     }
 
