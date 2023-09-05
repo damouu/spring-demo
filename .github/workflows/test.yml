@@ -55,15 +55,17 @@ jobs:
 
       - name: Add TestFailed
         if: ${{ failure() }}
-        uses: EndBug/add-and-commit@v9.1.3
+        uses: devops-infra/action-commit-push@master
         with:
-          message: ${{ github.event.head_commit.message }} | TestFailed
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          commit_prefix: ${{ github.event.head_commit.message }} TestFailed
 
       - name: Add TestsPassed
         if: ${{ success() }}
-        uses: EndBug/add-and-commit@v9.1.3
+        uses: devops-infra/action-commit-push@master
         with:
-          message: ${{ github.event.head_commit.message }} | TestsPassed
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          commit_prefix: ${{ github.event.head_commit.message }} TestsPassed
 
       - name: pull-request
         if: ${{ success() }}
