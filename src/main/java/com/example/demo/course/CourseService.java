@@ -72,7 +72,7 @@ public class CourseService {
             course.getStudentIdCards().add(studentIdCard);
             this.studentIdCardRepository.save(studentIdCard);
             this.courseRepository.save(course);
-            return ResponseEntity.status(201).body("student card" + " " + studentIdCard.getUuid() + " " + "added to the course" + " " + course.getUuid());
+            return ResponseEntity.status(201).body("the student card" + " " + studentIdCard.getUuid() + " " + "added to the course" + " " + course.getUuid());
         }
     }
 
