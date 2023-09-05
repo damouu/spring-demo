@@ -9,7 +9,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import java.text.SimpleDateFormat;
@@ -56,10 +55,11 @@ public class TeacherServiceTest {
         Teacher teacher = new Teacher(UUID.randomUUID(), "teacher_name", LocalDate.parse(sdf.format(faker.date().birthday(18, 100))), "male", "bilalsensei@gmail.com");
         Mockito.when(teacherRepository.findTeacherByUuid(teacher.getUuid())).thenReturn(java.util.Optional.of(teacher));
         ResponseEntity<String> deleteTest = (ResponseEntity<String>) teacherService.deleteTeacher(teacher.getUuid());
-        Mockito.verify(teacherRepository, Mockito.times(1)).delete(teacher);
+        Mockito.verify(teacherRepository, Mockito.times(1)).save(teacher);
         Assertions.assertEquals(deleteTest.getBody(), "teacher successfully deleted");
         Assertions.assertTrue(deleteTest.getStatusCode().is2xxSuccessful());
-        Mockito.verify(teacherRepository, Mockito.times(1)).delete(teacher);
+        Assertions.assertNotNull(teacher.getDeleted_at());
+        Mockito.verify(teacherRepository, Mockito.times(1)).save(teacher);
     }
 
     @Test
