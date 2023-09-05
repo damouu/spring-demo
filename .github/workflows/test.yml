@@ -53,6 +53,18 @@ jobs:
           update_existing: true
           search_existing: open
 
+      - name: Add TestFailed
+        if: ${{ failure() }}
+        uses: EndBug/add-and-commit@v9.1.3
+        with:
+          message: ${{ github.event.head_commit.message }} | TestFailed
+
+      - name: Add TestsPassed
+        if: ${{ success() }}
+        uses: EndBug/add-and-commit@v9.1.3
+        with:
+          message: ${{ github.event.head_commit.message }} | TestsPassed
+
       - name: pull-request
         if: ${{ success() }}
         uses: repo-sync/pull-request@v2
