@@ -1,5 +1,6 @@
 package com.example.demo.student_id_card;
 
+import com.example.demo.book.Book;
 import com.example.demo.course.Course;
 import com.example.demo.student.Student;
 import com.example.demo.student.StudentRepository;
@@ -13,9 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.net.URI;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Data
@@ -31,8 +30,23 @@ public class StudentIdCardService {
         return ResponseEntity.ok(pages.toList());
     }
 
-    public StudentIdCard getStudentIdCard(UUID studentCardNumber) throws ResponseStatusException {
-        return this.studentIdCardRepository.findStudentIdCardByUuid(studentCardNumber).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "student card does not exist"));
+    public ResponseEntity<LinkedHashMap<String, Object>> getStudentIdCard(UUID studentCardUuid) throws ResponseStatusException {
+        LinkedHashMap<String, Object> response = new LinkedHashMap<>();
+        Optional<StudentIdCard> studentIdCard = Optional.ofNullable(studentIdCardRepository.findStudentIdCardByUuid(studentCardUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "student card does not exist")));
+        Set<Book> book = studentIdCard.get().getBooks();
+        Set<Course> courses = studentIdCard.get().getCourses();
+        LinkedHashMap<String, Object> data = new LinkedHashMap<>();
+        LinkedHashMap<String, Integer> list = new LinkedHashMap<>();
+        list.put("book", book.size());
+        list.put("courses", courses.size());
+        response.put("status", "success");
+        response.put("type", "Collection");
+        response.put("size", list);
+        data.put("student", studentIdCard.get().getStudent());
+        data.put("book", book);
+        data.put("courses", courses);
+        response.put("data", data);
+        return ResponseEntity.status(200).body(response);
     }
 
     public ResponseEntity deleteStudentIdCard(UUID studentCardUuid) throws ResponseStatusException {
@@ -49,15 +63,5 @@ public class StudentIdCardService {
         return ResponseEntity.status(HttpStatus.CREATED).location(URI.create("http://localhost:8083/api/studentCard/" + studentIdCard.getUuid())).body(studentIdCard);
     }
 
-    public ResponseEntity<Collection<Course>> getStudentIdCardCourse(UUID studentCardUuid) throws ResponseStatusException {
-        StudentIdCard studentIdCard = studentIdCardRepository.findStudentIdCardByUuid(studentCardUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "student card does not exist"));
-        Collection<Course> courses = studentIdCard.getCourses();
-        return ResponseEntity.ok(courses);
-    }
-
-    public ResponseEntity<Student> getStudentStudentIdCard(UUID studentCardUuid) throws ResponseStatusException {
-        StudentIdCard studentIdCard = studentIdCardRepository.findStudentIdCardByUuid(studentCardUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "student card does not exist"));
-        return ResponseEntity.ok(studentIdCard.getStudent());
-    }
 
 }
