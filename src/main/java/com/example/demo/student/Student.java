@@ -71,7 +71,7 @@ public class Student {
     private LocalDateTime deleted_at;
 
     @OneToOne(mappedBy = "student")
-    @Getter(onMethod = @__(@JsonIgnore))
+    @Getter
     @Setter
     private StudentIdCard studentIdCard;
 
