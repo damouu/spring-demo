@@ -1,14 +1,12 @@
 package com.example.demo.student_id_card;
 
-import com.example.demo.course.Course;
-import com.example.demo.student.Student;
 import lombok.Data;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,7 +25,7 @@ public class StudentIdCardController {
     }
 
     @GetMapping(path = "{studentCardUuid}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public StudentIdCard getStudentIdCard(@PathVariable("studentCardUuid") UUID studentCardUuid) {
+    public ResponseEntity<LinkedHashMap<String, Object>> getStudentIdCard(@PathVariable("studentCardUuid") UUID studentCardUuid) {
         return studentIdCardService.getStudentIdCard(studentCardUuid);
     }
 
@@ -39,16 +37,6 @@ public class StudentIdCardController {
     @PostMapping(path = "/student/{studentUuid}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<StudentIdCard> postStudentIdCard(@PathVariable("studentUuid") UUID studentUuid) {
         return studentIdCardService.postStudentIdCard(studentUuid);
-    }
-
-    @GetMapping(path = "/{studentCardUuid}/course", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<Course>> getStudentIdCardCourse(@PathVariable("studentCardUuid") UUID studentCardUuid) {
-        return studentIdCardService.getStudentIdCardCourse(studentCardUuid);
-    }
-
-    @GetMapping(path = "/{studentCardUuid}/student", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Student> getStudentStudentIdCard(@PathVariable("studentCardUuid") UUID studentCardUuid) {
-        return studentIdCardService.getStudentStudentIdCard(studentCardUuid);
     }
 
 }
