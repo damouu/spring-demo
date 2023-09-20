@@ -67,6 +67,7 @@ public class Student {
     @Column(columnDefinition = "DATETIME")
     @Getter
     @Setter
+    @JsonIgnore
     private LocalDateTime deleted_at;
 
     @OneToOne(mappedBy = "student")
