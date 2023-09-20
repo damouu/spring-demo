@@ -87,10 +87,10 @@ class CourseControllerTest {
     void postStudentCourse() throws Exception {
         StudentIdCard studentIdCard = new StudentIdCard(UUID.randomUUID());
         Course course = new Course(UUID.randomUUID(), "course_test", "campus_test", "university_test");
-        Mockito.when(courseService.postStudentCourse(course.getUuid(), studentIdCard.getUuid())).thenReturn(ResponseEntity.status(HttpStatus.CREATED).body("student card" + "" + studentIdCard.getUuid() + "" + "added to the course" + "" + course.getUuid()));
+        Mockito.when(courseService.postStudentCourse(course.getUuid(), studentIdCard.getUuid())).thenReturn(ResponseEntity.status(HttpStatus.CREATED).body("student card" + studentIdCard.getUuid() + "added to the course" + course.getUuid()));
         mockMvc.perform(post("/api/course/" + course.getUuid() + "/student/" + studentIdCard.getUuid()))
                 .andExpect(status().is(201))
-                .andExpect(content().string("student card" + "" + studentIdCard.getUuid() + "" + "added to the course" + "" + course.getUuid()));
+                .andExpect(content().string("student card" + studentIdCard.getUuid() + "added to the course" + course.getUuid()));
     }
 
     @Test
