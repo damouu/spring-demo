@@ -54,7 +54,7 @@ public class TeacherServiceTest {
         SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd");
         Teacher teacher = new Teacher(UUID.randomUUID(), "teacher_name", LocalDate.parse(sdf.format(faker.date().birthday(18, 100))), "male", "bilalsensei@gmail.com");
         Mockito.when(teacherRepository.findTeacherByUuid(teacher.getUuid())).thenReturn(java.util.Optional.of(teacher));
-        ResponseEntity<String> deleteTest = (ResponseEntity<String>) teacherService.deleteTeacher(teacher.getUuid());
+        ResponseEntity<String> deleteTest = teacherService.deleteTeacher(teacher.getUuid());
         Mockito.verify(teacherRepository, Mockito.times(1)).save(teacher);
         Assertions.assertEquals(deleteTest.getBody(), "teacher successfully deleted");
         Assertions.assertTrue(deleteTest.getStatusCode().is2xxSuccessful());
