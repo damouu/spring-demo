@@ -12,6 +12,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -64,6 +65,13 @@ public class Course {
     @Getter(onMethod = @__(@JsonIgnore))
     @Setter
     protected Teacher teacher;
+
+    @Column(name = "deleted_at")
+    @Basic
+    @Getter
+    @Setter
+    @JsonIgnore
+    private LocalDateTime deleted_at;
 
     @JsonCreator
     public Course(@JsonProperty("uuid") UUID uuid, @JsonProperty("name") String name, @JsonProperty("campus") String campus, @JsonProperty("university") String university) {
