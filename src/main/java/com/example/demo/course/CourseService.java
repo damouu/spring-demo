@@ -16,6 +16,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityNotFoundException;
 import java.net.URI;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -49,7 +52,14 @@ public class CourseService {
 
     public ResponseEntity<String> deleteCourse(UUID courseUuid) {
         Course course = courseRepository.findByUuid(courseUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "course does not exist"));
-        courseRepository.delete(course);
+        LocalDateTime localDateTime = LocalDateTime.now();
+        ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.of("UTC"));
+        ZonedDateTime time = zonedDateTime.withZoneSameInstant(ZoneId.of("Asia/Tokyo")).withNano(0).withFixedOffsetZone();
+        String s = time.toString();
+        s = s.replace("+09:00", "");
+        LocalDateTime dateTime = LocalDateTime.parse(s);
+        course.setDeleted_at(dateTime);
+        courseRepository.save(course);
         return ResponseEntity.status(204).body("course successfully deleted");
     }
 
