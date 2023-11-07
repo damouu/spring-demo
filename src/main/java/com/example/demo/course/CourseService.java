@@ -60,7 +60,7 @@ public class CourseService {
         LocalDateTime dateTime = LocalDateTime.parse(s);
         course.setDeleted_at(dateTime);
         courseRepository.save(course);
-        return ResponseEntity.status(204).body("course successfully deleted");
+        return ResponseEntity.ok("course " + courseUuid + " successfully deleted.");
     }
 
     public ResponseEntity updateCourse(UUID courseUuid, Course course) {
