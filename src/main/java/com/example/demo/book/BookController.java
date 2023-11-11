@@ -7,8 +7,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @Data
@@ -22,8 +22,8 @@ public class BookController {
     private UUID bookUuid;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Collection<Book> getBooks(@RequestParam(name = "page", required = false, defaultValue = "0") int page, @RequestParam(name = "size", required = false, defaultValue = "5") int size) {
-        return bookService.getBooks(page, size);
+    public ResponseEntity<?> getBooks(@RequestParam Map<String, ?> allParams) {
+        return bookService.getBooks(allParams);
     }
 
     @GetMapping(path = "/{bookUuid}", produces = MediaType.APPLICATION_JSON_VALUE)
