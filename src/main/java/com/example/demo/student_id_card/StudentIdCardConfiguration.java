@@ -10,7 +10,7 @@ import java.util.UUID;
 @Configuration
 public class StudentIdCardConfiguration {
 
-    @Bean
+//    @Bean
     CommandLineRunner runner(StudentIdCardRepository serializable, StudentRepository studentRepository) {
         return args -> {
             for (int i = 1; i < 20; i++) {
