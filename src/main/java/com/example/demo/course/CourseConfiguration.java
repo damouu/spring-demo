@@ -10,7 +10,7 @@ import java.util.UUID;
 @Configuration
 public class CourseConfiguration {
 
-    @Bean
+//    @Bean
     CommandLineRunner lineRunner(CourseRepository courseRepository) {
         return args -> {
             Faker faker = new Faker();
