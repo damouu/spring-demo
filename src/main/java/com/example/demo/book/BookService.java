@@ -27,11 +27,18 @@ public class BookService {
 
     private final StudentIdCardRepository studentIdCardRepository;
 
-    public Collection<Book> getBooks(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Book> pages = bookRepository.findAll(pageable);
-        return pages.toList();
+    public ResponseEntity<?> getBooks(Map allParams) {
+        Pageable pageable = PageRequest.of(Integer.parseInt((String) allParams.get("page")), Integer.parseInt((String) allParams.get("size")));
+        if (!allParams.containsKey("title")) {
+            Page<Book> pages = bookRepository.findAll(pageable);
+            return ResponseEntity.ok(pages.toList());
+        } else {
+            String title = String.valueOf(allParams.get("title"));
+            Collection<Book> books = bookRepository.findByTitleContaining(title, pageable).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "book not found"));
+            return ResponseEntity.ok(books);
+        }
     }
+
 
     public ResponseEntity<Book> getBookUuid(UUID bookUuid) throws ResponseStatusException {
         Book book = bookRepository.findByUuid(bookUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "book not found"));
