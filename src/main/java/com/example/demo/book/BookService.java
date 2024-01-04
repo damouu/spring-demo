@@ -39,12 +39,25 @@ public class BookService {
         }
     }
 
-
+    /**
+     * find a book by the passed UUID.
+     *
+     * @param bookUuid a book's UUID
+     * @return book returns a book if found.
+     * @throws ResponseStatusException throws an exception if the given UUID does not correspond to a book in the database.
+     */
     public ResponseEntity<Book> getBookUuid(UUID bookUuid) throws ResponseStatusException {
         Book book = bookRepository.findByUuid(bookUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "book not found"));
         return ResponseEntity.ok(book);
     }
 
+    /**
+     * deletes a book by providing a book's UUID, if the given UUID does not correspond to an existing bok in the db, throws an error
+     *
+     * @param bookUuid a book's UUID
+     * @return returns an ResponseEntity object with a confirmation message in it, confirming the book is deleted.
+     * @throws ResponseStatusException throws if the given UUID does not correspond to an existing book in the db.
+     */
     public ResponseEntity<?> deleteBook(UUID bookUuid) throws ResponseStatusException {
         Book book = bookRepository.findByUuid(bookUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "book not found"));
         book.setDeleted_at(LocalDate.now());
@@ -52,12 +65,25 @@ public class BookService {
         return ResponseEntity.accepted().build();
     }
 
+    /**
+     * inserts the passed book object into the database.
+     *
+     * @param book a book's UUID
+     * @return ResponseEntity return with a location URI in the header of the response with the created book in it.
+     * @throws ResponseStatusException throws if the given UUID does not correspond to an existing book in the db.
+     */
     public ResponseEntity<Book> postBook(Book book) {
         book.setUuid(UUID.randomUUID());
         bookRepository.save(book);
         return ResponseEntity.status(201).location(URI.create("http://localhost:8083/api/book/" + book.getUuid())).body(book);
     }
 
+    /**
+     * @param bookUuid    the wanted book to be updated.
+     * @param bookUpdates a key value array containing the updated data to be replaced with the current book.
+     * @return ResponseEntity returns a ResponseEntity object with a URI location of the updated book.
+     * @throws ResponseStatusException throws an exception if the given UUID does not exist in the database.
+     */
     public ResponseEntity<Book> updateBook(UUID bookUuid, HashMap<String, String> bookUpdates) {
         Book book = bookRepository.findByUuid(bookUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "book not found"));
         ObjectMapper oMapper = new ObjectMapper();
