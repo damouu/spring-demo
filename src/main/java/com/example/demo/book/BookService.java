@@ -47,6 +47,7 @@ public class BookService {
      * @throws ResponseStatusException throws an exception if the given UUID does not correspond to a book in the database.
      */
     public ResponseEntity<Book> getBookUuid(UUID bookUuid) throws ResponseStatusException {
+
         Book book = bookRepository.findByUuid(bookUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "book not found"));
         return ResponseEntity.ok(book);
     }
@@ -130,5 +131,24 @@ public class BookService {
             return ResponseEntity.status(200).body(studentIdCard.getBooks());
         }
         return ResponseEntity.noContent().build();
+    }
+
+
+    /**
+     * @param intArray
+     * @return number of pairs found in the given array
+     * @author mouad
+     */
+    public ResponseEntity<String> leetCode(int[] intArray) {
+        int numberOfPairs = 0;
+        for (int i = 0; i < intArray.length; i++) {
+            for (int j = i + 1; j < intArray.length; j++) {
+                if (intArray[i] == intArray[j]) {
+                    System.out.println("une paire");
+                    numberOfPairs++;
+                }
+            }
+        }
+        return ResponseEntity.ok("number of pairs found:" + " " + numberOfPairs);
     }
 }

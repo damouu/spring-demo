@@ -31,6 +31,11 @@ public class BookController {
         return bookService.getBookUuid(bookUuid);
     }
 
+    @GetMapping(path = "/goodPairs", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getBookUuid() {
+        return bookService.leetCode(new int[]{1, 1, 1, 1});
+    }
+
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Book> postBook(@Valid @RequestBody Book book) {
         return bookService.postBook(book);
