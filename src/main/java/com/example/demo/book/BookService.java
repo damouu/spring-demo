@@ -132,23 +132,4 @@ public class BookService {
         }
         return ResponseEntity.noContent().build();
     }
-
-
-    /**
-     * @param intArray
-     * @return number of pairs found in the given array
-     * @author mouad
-     */
-    public ResponseEntity<String> leetCode(int[] intArray) {
-        int numberOfPairs = 0;
-        for (int i = 0; i < intArray.length; i++) {
-            for (int j = i + 1; j < intArray.length; j++) {
-                if (intArray[i] == intArray[j]) {
-                    System.out.println("une paire");
-                    numberOfPairs++;
-                }
-            }
-        }
-        return ResponseEntity.ok("number of pairs found:" + " " + numberOfPairs);
-    }
 }
