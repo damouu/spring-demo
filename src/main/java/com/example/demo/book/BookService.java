@@ -43,13 +43,27 @@ public class BookService {
      * find a book by the passed UUID.
      *
      * @param bookUuid a book's UUID
-     * @return book returns a book if found.
+     * @return Array returns if the given UUID exists, a book resource and also attach to it, the studentCard associated to it.
      * @throws ResponseStatusException throws an exception if the given UUID does not correspond to a book in the database.
      */
-    public ResponseEntity<Book> getBookUuid(UUID bookUuid) throws ResponseStatusException {
-
+    public ResponseEntity<Map<String, Map<String, String>>> getBookUuid(UUID bookUuid) throws ResponseStatusException {
         Book book = bookRepository.findByUuid(bookUuid).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "book not found"));
-        return ResponseEntity.ok(book);
+        Map<String, String> bookData = new HashMap<>();
+        Map<String, Map<String, String>> response = new HashMap<>();
+        if (book.getStudentIdCard() != null) {
+            Map<String, String> studentCard = new HashMap<>();
+            studentCard.put("studentCardUUID", String.valueOf(book.getStudentIdCard().getUuid()));
+            response.put("studentCard", studentCard);
+        }
+        bookData.put("UUID", String.valueOf(book.getUuid()));
+        bookData.put("author", book.getAuthor());
+        bookData.put("genre", book.getGenre());
+        bookData.put("publisher", book.getPublisher());
+        bookData.put("title", book.getTitle());
+        bookData.put("total_pages", String.valueOf(book.getTotalPages()));
+        bookData.put("created_at", String.valueOf(book.getCreated_at()));
+        response.put("book", bookData);
+        return ResponseEntity.ok(response);
     }
 
     /**
