@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.net.URI;
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -28,13 +27,14 @@ public class BookService {
     private final StudentIdCardRepository studentIdCardRepository;
 
     public ResponseEntity<?> getBooks(Map allParams) {
-        Pageable pageable = PageRequest.of(Integer.parseInt((String) allParams.get("page")), Integer.parseInt((String) allParams.get("size")));
-        if (!allParams.containsKey("title")) {
+        if (allParams.size() == 2 && allParams.containsKey("page") && allParams.containsKey("size")) {
+            PageRequest pageable = PageRequest.of(Integer.parseInt((String) allParams.get("page")), Integer.parseInt((String) allParams.get("size")));
             Page<Book> pages = bookRepository.findAll(pageable);
             return ResponseEntity.ok(pages.toList());
         } else {
-            String title = String.valueOf(allParams.get("title"));
-            Collection<Book> books = bookRepository.findByTitleContaining(title, pageable).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "book not found"));
+            final Specification<Book> specification = BookSpecification.filterBook(allParams);
+            PageRequest pageable = PageRequest.of(Integer.parseInt((String) allParams.get("page")), Integer.parseInt((String) allParams.get("size")));
+            final Page<Book> books = (bookRepository.findAll(specification, pageable));
             return ResponseEntity.ok(books);
         }
     }
