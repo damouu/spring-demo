@@ -27,13 +27,24 @@ public class BookService {
     private final StudentIdCardRepository studentIdCardRepository;
 
     public ResponseEntity<?> getBooks(Map allParams) {
+        PageRequest pageable;
         if (allParams.size() == 2 && allParams.containsKey("page") && allParams.containsKey("size")) {
-            PageRequest pageable = PageRequest.of(Integer.parseInt((String) allParams.get("page")), Integer.parseInt((String) allParams.get("size")));
+            pageable = PageRequest.of(Integer.parseInt((String) allParams.get("page")), Integer.parseInt((String) allParams.get("size")));
             Page<Book> pages = bookRepository.findAll(pageable);
             return ResponseEntity.ok(pages.toList());
         } else {
             final Specification<Book> specification = BookSpecification.filterBook(allParams);
-            PageRequest pageable = PageRequest.of(Integer.parseInt((String) allParams.get("page")), Integer.parseInt((String) allParams.get("size")));
+            if (!allParams.containsKey("page") && !allParams.containsKey("size")) {
+                pageable = PageRequest.of(1, 20);
+            } else if (allParams.size() > 2 && allParams.containsKey("page") && allParams.containsKey("size")) {
+                pageable = PageRequest.of(Integer.parseInt((String) allParams.get("page")), Integer.parseInt((String) allParams.get("size")));
+            } else {
+                if (allParams.containsKey("page")) {
+                    pageable = PageRequest.of(Integer.parseInt((String) allParams.get("page")), 20);
+                } else {
+                    pageable = PageRequest.of(1, Integer.parseInt((String) allParams.get("size")));
+                }
+            }
             final Page<Book> books = (bookRepository.findAll(specification, pageable));
             return ResponseEntity.ok(books);
         }
