@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -35,9 +37,9 @@ public class BookService {
         } else {
             final Specification<Book> specification = BookSpecification.filterBook(allParams);
             if (!allParams.containsKey("page") && !allParams.containsKey("size")) {
-                pageable = PageRequest.of(1, 20);
+                pageable = PageRequest.of(1, 20, Sort.unsorted());
             } else if (allParams.size() > 2 && allParams.containsKey("page") && allParams.containsKey("size")) {
-                pageable = PageRequest.of(Integer.parseInt((String) allParams.get("page")), Integer.parseInt((String) allParams.get("size")));
+                pageable = PageRequest.of(Integer.parseInt((String) allParams.get("page")), Integer.parseInt((String) allParams.get("size")), Sort.unsorted());
             } else {
                 if (allParams.containsKey("page")) {
                     pageable = PageRequest.of(Integer.parseInt((String) allParams.get("page")), 20);
@@ -48,6 +50,12 @@ public class BookService {
             final Page<Book> books = (bookRepository.findAll(specification, pageable));
             return ResponseEntity.ok(books);
         }
+    }
+
+    public List<Book> searchBooks(String search) {
+        final Specification<Book> specification = BookSpecification.searchBook(search);
+        final List<Book> books = bookRepository.findAll(specification);
+        return books;
     }
 
     /**
