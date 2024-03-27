@@ -31,6 +31,11 @@ public class BookController {
         return bookService.getBookUuid(bookUuid);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<?> getPhones(@RequestParam String search) {
+        return ResponseEntity.ok(bookService.searchBooks(search));
+    }
+
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Book> postBook(@Valid @RequestBody Book book) {
         return bookService.postBook(book);
