@@ -18,6 +18,14 @@ public class BookSpecification {
     }
 
 
+    public static Specification<Book> searchBook(String search) {
+        return (root, query, criteriaBuilder) -> {
+            Predicate titlePredicate = criteriaBuilder.like(root.get("title"), likePattern(search));
+            return criteriaBuilder.or(titlePredicate);
+        };
+    }
+
+
     private static String likePattern(String value) {
         return "%" + value + "%";
     }
