@@ -52,9 +52,12 @@ public class BookService {
         }
     }
 
-    public List<Book> searchBooks(String search) {
+    public List<Book> searchBooks(String search) throws ResponseStatusException {
         final Specification<Book> specification = BookSpecification.searchBook(search);
         final List<Book> books = bookRepository.findAll(specification);
+        if (books.size() == 0) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
         return books;
     }
 
