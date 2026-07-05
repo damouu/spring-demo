@@ -71,9 +71,9 @@ class BorrowControllerTest {
     @DisplayName("Should reject return request when member card UUID does not match JWT")
     void shouldRejectReturnRequestWhenJwtDoesNotMatchMemberCard() {
         when(jwt.getClaimAsString("member_card_uuid")).thenReturn(String.valueOf(UUID.randomUUID()));
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> borrowController.returnBorrowBooks(memberCardUUID, borrowUUID, bookPayload, jwt));
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> borrowController.returnBorrowBooks(memberCardUUID, borrowUUID, jwt));
         assertEquals(403, exception.getStatus().value());
-        verify(loanService, never()).returnBorrowBooks(any(), any(), any());
+        verify(loanService, never()).returnBorrowBooks(any(), any());
     }
 
     @Test
@@ -83,10 +83,10 @@ class BorrowControllerTest {
         UUID borrowUuid = UUID.randomUUID();
         when(jwt.getClaimAsString("member_card_uuid")).thenReturn(memberCardUuid.toString());
         ReturnBorrowCreatedSummaryDTO expected = Instancio.create(ReturnBorrowCreatedSummaryDTO.class);
-        when(loanService.returnBorrowBooks(memberCardUuid, borrowUuid, bookPayload)).thenReturn(expected);
-        ResponseEntity<?> response = borrowController.returnBorrowBooks(memberCardUuid, borrowUuid, bookPayload, jwt);
+        when(loanService.returnBorrowBooks(memberCardUuid, borrowUuid)).thenReturn(expected);
+        ResponseEntity<?> response = borrowController.returnBorrowBooks(memberCardUuid, borrowUuid, jwt);
         assertEquals(200, response.getStatusCode().value());
         assertEquals(expected, response.getBody());
-        verify(loanService).returnBorrowBooks(memberCardUuid, borrowUuid, bookPayload);
+        verify(loanService).returnBorrowBooks(memberCardUuid, borrowUuid);
     }
 }
