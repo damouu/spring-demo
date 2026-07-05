@@ -74,15 +74,15 @@ public class LoanService {
      * @return the response entity
      */
     @Transactional
-    public ReturnBorrowCreatedSummaryDTO returnBorrowBooks(UUID memberCardUUID, UUID borrowUUID, BookPayload booksArrayJson) {
+    public ReturnBorrowCreatedSummaryDTO returnBorrowBooks(UUID memberCardUUID, UUID borrowUUID) {
         LocalDate currentDate = LocalDate.now();
         List<Borrow> borrows = borrowRepository.getBorrowsByBorrowUuidAndMemberCardUuidAndBorrowReturnDateIsNull(borrowUUID, memberCardUUID);
         Borrow borrow = returnBorrowPolicy.validateAndGetBorrow(borrows);
         long daysLate = returnBorrowPolicy.calculateDaysLate(borrow.getBorrowEndDate(), currentDate);
         boolean isLate = returnBorrowPolicy.isLate(daysLate);
         BigDecimal fineAmount = returnBorrowPolicy.calculateFine(daysLate, DAILY_FINE_RATE);
+        List<LoanItemDetails> items = borrowRepository.findBorrowItemsByBorrowUuid(borrowUUID);
         borrowRepository.setReturnDateForBorrows(borrows, currentDate);
-        List<LoanItemDetails> items = booksArrayJson.data().stream().map(b -> new LoanItemDetails(b.book_uuid(), b.chapter_uuid())).toList();
         ReturnBorrowAggregate aggregate = returnBorrowAssembler.toAggregate(borrow, borrowUUID, memberCardUUID, currentDate, isLate, daysLate, fineAmount, items);
         borrowEventPublisher.publishReturnBorrowCreated(aggregate, borrows);
         return returnMapper.toSummaryDTO(aggregate);
