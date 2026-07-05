@@ -1,5 +1,6 @@
 package com.example.demo.repository;
 
+import com.example.demo.dto.LoanItemDetails;
 import com.example.demo.model.Borrow;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -28,5 +29,15 @@ public interface BorrowRepository extends JpaRepository<Borrow, Integer>, JpaSpe
     @Modifying
     @Query("UPDATE Borrow b SET b.borrowReturnDate = :returnDate WHERE b IN :borrows")
     void setReturnDateForBorrows(List<Borrow> borrows, LocalDate returnDate);
+
+    @Query("""
+                SELECT new com.example.demo.dto.LoanItemDetails(
+                    bi.bookUuid,
+                    bi.chapterUuid
+                )
+                FROM Borrow bi
+                WHERE bi.borrowUuid = :borrowUuid
+            """)
+    List<LoanItemDetails> findBorrowItemsByBorrowUuid(UUID borrowUuid);
 
 }
