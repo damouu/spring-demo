@@ -36,7 +36,7 @@ public class BorrowController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping(path = "/{borrowUUID}/return", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/{borrowUUID}/return", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> returnBorrowBooks(@RequestHeader("X-User-UUID") UUID memberCardUUID, @PathVariable UUID borrowUUID, @AuthenticationPrincipal Jwt jwt) {
         String jwtMemberCard = jwt.getClaimAsString("member_card_uuid");
         if (!jwtMemberCard.equals(memberCardUUID.toString())) {
