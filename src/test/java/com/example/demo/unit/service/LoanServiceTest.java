@@ -159,7 +159,7 @@ class LoanServiceTest {
         when(returnBorrowPolicy.calculateFine(eq(0L), any())).thenReturn(BigDecimal.ZERO);
         ReturnBorrowCreatedSummaryDTO expected = new ReturnBorrowCreatedSummaryDTO(borrowUuid, memberCardUUID, borrow.getBorrowStartDate().toString(), borrow.getBorrowEndDate().toString(), LocalDate.now().toString(), false, 0L, BigDecimal.ZERO, List.of());
         when(returnMapper.toSummaryDTO(any(ReturnBorrowAggregate.class))).thenReturn(expected);
-        ReturnBorrowCreatedSummaryDTO response = loanService.returnBorrowBooks(memberCardUUID, borrowUuid, bookPayload);
+        ReturnBorrowCreatedSummaryDTO response = loanService.returnBorrowBooks(memberCardUUID, borrowUuid);
         verify(borrowRepository).setReturnDateForBorrows(eq(borrows), any(LocalDate.class));
         verify(borrowEventPublisher).publishReturnBorrowCreated(any(ReturnBorrowAggregate.class), eq(borrows));
         assertThat(response).isEqualTo(expected);
@@ -182,7 +182,7 @@ class LoanServiceTest {
         when(returnBorrowPolicy.calculateFine(eq(5L), any())).thenReturn(BigDecimal.valueOf(500));
         when(returnBorrowAssembler.toAggregate(eq(borrow), eq(borrowUuid), eq(memberCardUUID), any(LocalDate.class), eq(true), eq(5L), eq(BigDecimal.valueOf(500)), anyList())).thenReturn(aggregate);
         when(returnMapper.toSummaryDTO(aggregate)).thenReturn(expectedDto);
-        ReturnBorrowCreatedSummaryDTO result = loanService.returnBorrowBooks(memberCardUUID, borrowUuid, bookPayload);
+        ReturnBorrowCreatedSummaryDTO result = loanService.returnBorrowBooks(memberCardUUID, borrowUuid);
         verify(borrowRepository).getBorrowsByBorrowUuidAndMemberCardUuidAndBorrowReturnDateIsNull(borrowUuid, memberCardUUID);
         verify(borrowRepository).setReturnDateForBorrows(eq(borrows), any(LocalDate.class));
         verify(borrowEventPublisher).publishReturnBorrowCreated(aggregate, borrows);
@@ -196,7 +196,7 @@ class LoanServiceTest {
         UUID memberCardUUID = UUID.randomUUID();
         when(borrowRepository.getBorrowsByBorrowUuidAndMemberCardUuidAndBorrowReturnDateIsNull(borrowUuid, memberCardUUID)).thenReturn(List.of());
         when(returnBorrowPolicy.validateAndGetBorrow(anyList())).thenThrow(new UnreturnedBorrowExistsException("まだ貸出返却されていないの貸し出しがあります。"));
-        assertThrows(UnreturnedBorrowExistsException.class, () -> loanService.returnBorrowBooks(memberCardUUID, borrowUuid, bookPayload));
+        assertThrows(UnreturnedBorrowExistsException.class, () -> loanService.returnBorrowBooks(memberCardUUID, borrowUuid));
         verify(borrowRepository, never()).setReturnDateForBorrows(any(), any());
         verify(borrowEventPublisher, never()).publishReturnBorrowCreated(any(), any());
     }
