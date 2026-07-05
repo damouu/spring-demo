@@ -37,12 +37,12 @@ public class BorrowController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping(path = "/{borrowUUID}/return", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> returnBorrowBooks(@RequestHeader("X-User-UUID") UUID memberCardUUID, @PathVariable UUID borrowUUID, @RequestBody BookPayload booksArrayJson, @AuthenticationPrincipal Jwt jwt) {
+    public ResponseEntity<?> returnBorrowBooks(@RequestHeader("X-User-UUID") UUID memberCardUUID, @PathVariable UUID borrowUUID, @AuthenticationPrincipal Jwt jwt) {
         String jwtMemberCard = jwt.getClaimAsString("member_card_uuid");
         if (!jwtMemberCard.equals(memberCardUUID.toString())) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "memberCard UUID mismatch");
         }
-        ReturnBorrowCreatedSummaryDTO result = loanService.returnBorrowBooks(memberCardUUID, borrowUUID, booksArrayJson);
+        ReturnBorrowCreatedSummaryDTO result = loanService.returnBorrowBooks(memberCardUUID, borrowUUID);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 }
